@@ -16,4 +16,10 @@ abstract class BaseApiServices {
   final reSendOtpUrl =
       "https://chanakyamathskendra.batechnology.in/api/resendOtp";
       
+
+
+  final String updateUserDetailsURL = "https://chanakyamathskendra.batechnology.in/api/auth/update-user";
+
+
+  final String updateBankDetailURL = "https://chanakyamathskendra.batechnology.in/api/auth/add-bank-details";
 }
