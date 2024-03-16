@@ -2,23 +2,30 @@ import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:online_class_app/const/app_fonts.dart';
+import 'package:online_class_app/controller/auth_api_controller/auth_api_controller.dart';
+import 'package:online_class_app/model/signup_model.dart';
 import 'package:online_class_app/screen/Auth/Otp_screen.dart';
-import 'package:online_class_app/screen/Auth/sign_screen.dart';
+import 'package:online_class_app/screen/Auth/signin_screen.dart';
 
 class SignupScreen extends StatefulWidget {
-  const SignupScreen({super.key});
+  int id;
+  SignupScreen({super.key, required this.id});
 
   @override
   State<SignupScreen> createState() => _SignupScreenState();
 }
 
 class _SignupScreenState extends State<SignupScreen> {
+  AuthController authController = Get.find<AuthController>();
   bool value = false;
   bool passwordVisible = false;
+
   var selectClassOption;
+
+  TextEditingController studentNamecontroller = TextEditingController();
   TextEditingController userNamecontroller = TextEditingController();
   TextEditingController emailcontroller = TextEditingController();
-  TextEditingController phonecontroller = TextEditingController();
+  TextEditingController mobilecontroller = TextEditingController();
   TextEditingController passwordcontroller = TextEditingController();
 
   final formKey = GlobalKey<FormState>();
@@ -45,7 +52,7 @@ class _SignupScreenState extends State<SignupScreen> {
             child: Icon(
               Icons.arrow_back_ios_new,
               size: 15,
-              color: Colors.black,
+              color: const Color.fromARGB(255, 110, 83, 83),
             ),
           ),
           title: const Text(
@@ -111,7 +118,7 @@ class _SignupScreenState extends State<SignupScreen> {
                       Padding(
                         padding: const EdgeInsets.only(right: 20, left: 20),
                         child: TextFormField(
-                          controller: userNamecontroller,
+                          controller: studentNamecontroller,
                           validator: (value) {
                             if (value!.isEmpty) {
                               return 'Enter a Student Name';
@@ -246,7 +253,7 @@ class _SignupScreenState extends State<SignupScreen> {
                       Padding(
                         padding: const EdgeInsets.only(right: 20, left: 20),
                         child: TextFormField(
-                          controller: phonecontroller,
+                          controller: mobilecontroller,
                           keyboardType: TextInputType.number,
                           validator: (value) {
                             if (value!.isEmpty) {
@@ -327,62 +334,62 @@ class _SignupScreenState extends State<SignupScreen> {
                           ),
                         ),
                       ),
-                      SizedBox(
-                        height: height * 0.04,
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.only(right: 20, left: 20),
-                        child: DropdownButtonFormField(
-                          decoration: InputDecoration(
-                            hintText: "Select Class",
-                            hintStyle: TextStyle(
-                              fontSize: 16,
-                              color: Color(0xFF7C86A2),
-                            ),
-                            contentPadding:
-                                const EdgeInsets.fromLTRB(10, 10, 15, 18),
-                            focusedBorder: OutlineInputBorder(
-                              borderSide: const BorderSide(
-                                  color: Color.fromARGB(255, 243, 243, 243),
-                                  width: 1),
-                              borderRadius: BorderRadius.circular(10),
-                            ),
-                            border: OutlineInputBorder(
-                                borderRadius: BorderRadius.circular(10),
-                                borderSide: BorderSide.none),
-                            filled: true,
-                            fillColor: Colors.grey.withOpacity(0.10),
-                          ),
-                          dropdownColor: Colors.white,
-                          value: selectClassOption,
-                          borderRadius: BorderRadius.circular(10),
-                          alignment: Alignment.center,
-                          isExpanded: true,
-                          onChanged: (value) {
-                            setState(() {
-                              selectClassOption = value;
-                            });
-                          },
-                          items: getProjectName(context)
-                              .map<DropdownMenuItem<String>>(
-                            (projectnameslist) {
-                              return DropdownMenuItem<String>(
-                                value: projectnameslist,
-                                child: Padding(
-                                  padding: const EdgeInsets.only(left: 15),
-                                  child: Text(
-                                    projectnameslist,
-                                    style: const TextStyle(
-                                      fontSize: 15,
-                                      color: Colors.black,
-                                    ),
-                                  ),
-                                ),
-                              );
-                            },
-                          ).toList(),
-                        ),
-                      ),
+                      // SizedBox(
+                      //   height: height * 0.04,
+                      // ),
+                      // Padding(
+                      //   padding: const EdgeInsets.only(right: 20, left: 20),
+                      //   child: DropdownButtonFormField(
+                      //     decoration: InputDecoration(
+                      //       hintText: "Select Class",
+                      //       hintStyle: TextStyle(
+                      //         fontSize: 16,
+                      //         color: Color(0xFF7C86A2),
+                      //       ),
+                      //       contentPadding:
+                      //           const EdgeInsets.fromLTRB(10, 10, 15, 18),
+                      //       focusedBorder: OutlineInputBorder(
+                      //         borderSide: const BorderSide(
+                      //             color: Color.fromARGB(255, 243, 243, 243),
+                      //             width: 1),
+                      //         borderRadius: BorderRadius.circular(10),
+                      //       ),
+                      //       border: OutlineInputBorder(
+                      //           borderRadius: BorderRadius.circular(10),
+                      //           borderSide: BorderSide.none),
+                      //       filled: true,
+                      //       fillColor: Colors.grey.withOpacity(0.10),
+                      //     ),
+                      //     dropdownColor: Colors.white,
+                      //     value: selectClassOption,
+                      //     borderRadius: BorderRadius.circular(10),
+                      //     alignment: Alignment.center,
+                      //     isExpanded: true,
+                      //     onChanged: (value) {
+                      //       setState(() {
+                      //         selectClassOption = value;
+                      //       });
+                      //     },
+                      //     items: getProjectName(context)
+                      //         .map<DropdownMenuItem<String>>(
+                      //       (projectnameslist) {
+                      //         return DropdownMenuItem<String>(
+                      //           value: projectnameslist,
+                      //           child: Padding(
+                      //             padding: const EdgeInsets.only(left: 15),
+                      //             child: Text(
+                      //               projectnameslist,
+                      //               style: const TextStyle(
+                      //                 fontSize: 15,
+                      //                 color: Colors.black,
+                      //               ),
+                      //             ),
+                      //           ),
+                      //         );
+                      //       },
+                      //     ).toList(),
+                      //   ),
+                      // ),
                       SizedBox(
                         height: height * 0.02,
                       ),
@@ -449,26 +456,44 @@ class _SignupScreenState extends State<SignupScreen> {
                       ),
                       InkWell(
                         onTap: () {
-                          Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (context) => OtpValidation()));
+                          if (value == true) {
+                            if (formKey.currentState!.validate()) {
+                              SignUp signUp = SignUp(
+                                  name: studentNamecontroller.text,
+                                  userName: userNamecontroller.text,
+                                  email: emailcontroller.text,
+                                  mobile: mobilecontroller.text,
+                                  password: passwordcontroller.text);
+                              authController.singUpUser(signUp);
+                            }
+                          }
                         },
-                        child: Padding(
-                          padding: const EdgeInsets.only(right: 20, left: 20),
-                          child: Container(
-                            height: height * 0.06,
-                            decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(10),
-                                color: Colors.blue),
-                            child: const Center(
-                              child: Text(
-                                "Sign Up",
-                                style: TextStyle(
-                                    color: Colors.white, fontSize: 18),
-                              ),
-                            ),
-                          ),
+                        child: Obx(
+                          () => Padding(
+                              padding:
+                                  const EdgeInsets.only(right: 20, left: 20),
+                              child: authController.isLoading.isTrue
+                                  ? Container(
+                                      child: CircularProgressIndicator())
+                                  : Padding(
+                                      padding: const EdgeInsets.only(
+                                          right: 20, left: 20),
+                                      child: Container(
+                                        height: height * 0.06,
+                                        decoration: BoxDecoration(
+                                            borderRadius:
+                                                BorderRadius.circular(10),
+                                            color: Colors.blue),
+                                        child: const Center(
+                                          child: Text(
+                                            "Sign Up",
+                                            style: TextStyle(
+                                                color: Colors.white,
+                                                fontSize: 18),
+                                          ),
+                                        ),
+                                      ),
+                                    )),
                         ),
                       ),
                       SizedBox(

@@ -3,7 +3,7 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:online_class_app/comman/class.dart';
 import 'package:online_class_app/screen/Auth/landing_screen.dart';
-import 'package:online_class_app/screen/Auth/sign_screen.dart';
+import 'package:online_class_app/screen/Auth/signin_screen.dart';
 // import 'package:online_class_app/screen/BottomNavigation/Home/home_screen.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 

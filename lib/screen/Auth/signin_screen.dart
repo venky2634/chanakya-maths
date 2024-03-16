@@ -2,7 +2,9 @@ import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:online_class_app/const/app_fonts.dart';
+import 'package:online_class_app/screen/Auth/select_class.dart';
 import 'package:online_class_app/screen/Auth/signup_screen.dart';
+import 'package:online_class_app/screen/BottomNavigation/Home/home_screen.dart';
 
 class SignScreen extends StatefulWidget {
   const SignScreen({super.key});
@@ -258,6 +260,7 @@ class _SignScreenState extends State<SignScreen> {
                       onTap: () {
                         if (formKey.currentState!.validate()) {
                           FocusScope.of(context).unfocus();
+                          Get.to(HomeScreen());
                         }
                       },
                       child: Padding(
@@ -336,7 +339,7 @@ class _SignScreenState extends State<SignScreen> {
                         Navigator.push(
                             context,
                             MaterialPageRoute(
-                                builder: (context) => const SignupScreen()));
+                                builder: (context) => SelectClass()));
                       },
                       child: RichText(
                         text: const TextSpan(

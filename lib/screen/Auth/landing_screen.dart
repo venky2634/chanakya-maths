@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:online_class_app/const/app_fonts.dart';
 import 'package:online_class_app/screen/Auth/select_class.dart';
-import 'package:online_class_app/screen/Auth/sign_screen.dart';
+import 'package:online_class_app/screen/Auth/signin_screen.dart';
 import 'package:online_class_app/screen/Auth/signup_screen.dart';
 
 class LandingScreen extends StatelessWidget {
@@ -27,7 +27,7 @@ class LandingScreen extends StatelessWidget {
                 children: [
                   GestureDetector(
                     onTap: () {
-                      Get.to(SelectClass());
+                      Get.to(SignScreen());
                     },
                     child: Container(
                       height: 50,
@@ -45,7 +45,7 @@ class LandingScreen extends StatelessWidget {
                   ),
                   GestureDetector(
                     onTap: () {
-                      Get.to(SignupScreen());
+                      Get.to(SelectClass());
                     },
                     child: Container(
                       height: 50,

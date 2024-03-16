@@ -1,18 +1,23 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:online_class_app/const/app_fonts.dart';
-import 'package:online_class_app/screen/Auth/sign_screen.dart';
+import 'package:online_class_app/controller/auth_api_controller/auth_api_controller.dart';
+import 'package:online_class_app/model/get_classlist_model.dart';
+import 'package:online_class_app/screen/Auth/signin_screen.dart';
 import 'package:online_class_app/screen/Auth/signup_screen.dart';
 
 class SelectClass extends StatefulWidget {
-  const SelectClass({super.key});
+  SelectClass({super.key});
 
   @override
   State<SelectClass> createState() => _SelectClassState();
 }
 
 class _SelectClassState extends State<SelectClass> {
+  AuthController authController = Get.find<AuthController>();
   int isSelected = 0;
+
+  int? selectedId;
 
   selectedImage(int index) {
     setState(() {
@@ -32,6 +37,12 @@ class _SelectClassState extends State<SelectClass> {
   ];
 
   @override
+  void initState() {
+    super.initState();
+    authController.getClassListUser();
+  }
+
+  @override
   Widget build(BuildContext context) {
     var size = MediaQuery.of(context).size;
 
@@ -48,221 +59,75 @@ class _SelectClassState extends State<SelectClass> {
               SizedBox(
                 height: 140,
               ),
-              Text("Select Class you want to Learn",
-                  style: primaryFonts.copyWith(
-                      fontSize: 18,
-                      fontWeight: FontWeight.w600,
-                      color: Colors.black)),
-              GestureDetector(
-                onTap: () {
-                  selectedImage(0);
-                },
-                child: Container(
-                  margin: EdgeInsets.only(top: 100),
-                  padding: EdgeInsets.symmetric(horizontal: 15),
-                  height: 50,
-                  width: size.width * .9,
-                  alignment: Alignment.center,
-                  decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(10),
-                      border: Border.all(color: Colors.blue, width: 1)),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Text("9th Standard",
-                          style: primaryFonts.copyWith(
-                              fontSize: 17,
-                              fontWeight: FontWeight.w500,
-                              color: Colors.blue)),
-                      Container(
-                        height: 25,
-                        width: 25,
-                        decoration: BoxDecoration(
-                            color: isSelected == 0
-                                ? Colors.blue
-                                : Colors.grey.withOpacity(.30),
-                            shape: BoxShape.circle),
-                        child: Image.asset(
-                          "Assets/Check.png",
-                          color: isSelected == 0
-                              ? Colors.white
-                              : Colors.grey.withOpacity(.30),
-                        ),
-                      )
-                    ],
-                  ),
-                ),
+              Padding(
+                padding: const EdgeInsets.only(bottom: 100),
+                child: Text("Select Class you want to Learn",
+                    style: primaryFonts.copyWith(
+                        fontSize: 18,
+                        fontWeight: FontWeight.w600,
+                        color: Colors.black)),
               ),
-              ksizedbox30,
-              GestureDetector(
-                onTap: () {
-                  selectedImage(1);
-                },
-                child: Container(
-                  padding: EdgeInsets.symmetric(horizontal: 15),
-                  height: 50,
-                  width: size.width * .9,
-                  alignment: Alignment.center,
-                  decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(10),
-                      border: Border.all(color: Colors.blue, width: 1)),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Text("10th Standard",
-                          style: primaryFonts.copyWith(
-                              fontSize: 17,
-                              fontWeight: FontWeight.w500,
-                              color: Colors.blue)),
-                      Container(
-                        height: 25,
-                        width: 25,
-                        decoration: BoxDecoration(
-                            color: isSelected == 1
-                                ? Colors.blue
-                                : Colors.grey.withOpacity(.30),
-                            shape: BoxShape.circle),
-                        child: Image.asset(
-                          "Assets/Check.png",
-                          color: isSelected == 1
-                              ? Colors.white
-                              : Colors.grey.withOpacity(.30),
-                        ),
-                      )
-                    ],
-                  ),
-                ),
-              ),
-              ksizedbox30,
-              GestureDetector(
-                onTap: () {
-                  selectedImage(2);
-                },
-                child: Container(
-                  padding: EdgeInsets.symmetric(horizontal: 15),
-                  height: 50,
-                  width: size.width * .9,
-                  alignment: Alignment.center,
-                  decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(10),
-                      border: Border.all(color: Colors.blue, width: 1)),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Text("11th Standard",
-                          style: primaryFonts.copyWith(
-                              fontSize: 17,
-                              fontWeight: FontWeight.w500,
-                              color: Colors.blue)),
-                      GestureDetector(
-                        onTap: () {},
+              GetBuilder<AuthController>(builder: (_) {
+                return ListView.builder(
+                    itemCount: authController.classesList.length,
+                    shrinkWrap: true,
+                    itemBuilder: (context, index) {
+                      return GestureDetector(
+                        onTap: () {
+                          selectedImage(index);
+                          setState(() {
+                            selectedId = authController.classesList[index].id;
+                          });
+                          if (authController.classesList[index].standard ==
+                              "JEE") {
+                            popUp();
+                          }
+                        },
                         child: Container(
-                          height: 25,
-                          width: 25,
+                          margin:
+                              EdgeInsets.only(bottom: 15, right: 15, left: 15),
+                          padding: EdgeInsets.symmetric(horizontal: 15),
+                          height: 50,
+                          width: size.width * .9,
+                          alignment: Alignment.center,
                           decoration: BoxDecoration(
-                              color: isSelected == 2
-                                  ? Colors.blue
-                                  : Colors.grey.withOpacity(.30),
-                              shape: BoxShape.circle),
-                          child: Image.asset(
-                            "Assets/Check.png",
-                            color: isSelected == 2
-                                ? Colors.white
-                                : Colors.grey.withOpacity(.30),
+                              borderRadius: BorderRadius.circular(10),
+                              border: Border.all(color: Colors.blue, width: 1)),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Text(authController.classesList[index].standard,
+                                  style: primaryFonts.copyWith(
+                                      fontSize: 17,
+                                      fontWeight: FontWeight.w500,
+                                      color: Colors.blue)),
+                              Container(
+                                height: 25,
+                                width: 25,
+                                decoration: BoxDecoration(
+                                    color: isSelected == index
+                                        ? Colors.blue
+                                        : Colors.grey.withOpacity(.30),
+                                    shape: BoxShape.circle),
+                                child: Image.asset(
+                                  "Assets/Check.png",
+                                  color: isSelected == index
+                                      ? Colors.white
+                                      : Colors.grey.withOpacity(.30),
+                                ),
+                              )
+                            ],
                           ),
                         ),
-                      )
-                    ],
-                  ),
-                ),
-              ),
-              ksizedbox30,
-              GestureDetector(
-                onTap: () {
-                  selectedImage(3);
-                },
-                child: Container(
-                  padding: EdgeInsets.symmetric(horizontal: 15),
-                  height: 50,
-                  width: size.width * .9,
-                  alignment: Alignment.center,
-                  decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(10),
-                      border: Border.all(color: Colors.blue, width: 1)),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Text("12th Standard",
-                          style: primaryFonts.copyWith(
-                              fontSize: 17,
-                              fontWeight: FontWeight.w500,
-                              color: Colors.blue)),
-                      Container(
-                        height: 25,
-                        width: 25,
-                        decoration: BoxDecoration(
-                            color: isSelected == 3
-                                ? Colors.blue
-                                : Colors.grey.withOpacity(.30),
-                            shape: BoxShape.circle),
-                        child: Image.asset(
-                          "Assets/Check.png",
-                          color: isSelected == 3
-                              ? Colors.white
-                              : Colors.grey.withOpacity(.30),
-                        ),
-                      )
-                    ],
-                  ),
-                ),
-              ),
-              ksizedbox30,
-              GestureDetector(
-                onTap: () {
-                  selectedImage(4);
-                  popUp();
-                },
-                child: Container(
-                  padding: EdgeInsets.symmetric(horizontal: 15),
-                  height: 50,
-                  width: size.width * .9,
-                  alignment: Alignment.center,
-                  decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(10),
-                      border: Border.all(color: Colors.blue, width: 1)),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Text("JEE Class",
-                          style: primaryFonts.copyWith(
-                              fontSize: 17,
-                              fontWeight: FontWeight.w500,
-                              color: Colors.blue)),
-                      Container(
-                        height: 25,
-                        width: 25,
-                        decoration: BoxDecoration(
-                            color: isSelected == 4
-                                ? Colors.blue
-                                : Colors.grey.withOpacity(.30),
-                            shape: BoxShape.circle),
-                        child: Image.asset(
-                          "Assets/Check.png",
-                          color: isSelected == 4
-                              ? Colors.white
-                              : Colors.grey.withOpacity(.30),
-                        ),
-                      )
-                    ],
-                  ),
-                ),
-              ),
+                      );
+                    });
+              }),
               SizedBox(
                 height: size.height * 0.11,
               ),
               InkWell(
                 onTap: () {
-                  Get.to(SignScreen());
+                  Get.to(SignupScreen(id: selectedId!));
                 },
                 child: Padding(
                   padding: const EdgeInsets.only(right: 20, left: 20),
@@ -299,7 +164,7 @@ class _SelectClassState extends State<SelectClass> {
                 padding: const EdgeInsets.symmetric(horizontal: 10),
                 child: Column(
                   children: [
-                    Align(
+                    const Align(
                         alignment: Alignment.centerLeft,
                         child: Text(
                           "User Code*",
