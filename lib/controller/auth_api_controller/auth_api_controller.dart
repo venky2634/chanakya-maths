@@ -7,12 +7,12 @@ import 'package:online_class_app/model/update_user_model.dart';
 import 'package:online_class_app/screen/Auth/Otp_screen.dart';
 import 'package:online_class_app/screen/Payment/metion_details.dart';
 import 'package:online_class_app/screen/Payment/payment_choose_screen.dart';
+import 'package:online_class_app/screen/Auth/signin_screen.dart';
+import 'package:online_class_app/screen/BottomNavigation/bottom_navigation_screen.dart';
 import 'package:online_class_app/services/network/auth_api_services/get_classlist_api_api_service.dart';
 import 'package:dio/dio.dart' as dio;
-import 'package:online_class_app/services/network/auth_api_services/otp_api_servie.dart';
-import 'package:online_class_app/services/network/auth_api_services/resend_otp_api_service.dart';
+import 'package:online_class_app/services/network/auth_api_services/login_api_service.dart';
 import 'package:online_class_app/services/network/auth_api_services/signup_api_service.dart';
-import 'package:online_class_app/update_details/update_details.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:online_class_app/services/network/auth_api_services/update_bank_details_api_services.dart';
 import 'package:online_class_app/services/network/auth_api_services/update_user_data_api_services.dart';
@@ -20,17 +20,14 @@ import 'package:online_class_app/services/network/auth_api_services/update_user_
 class AuthController extends GetxController {
   GetClassListApiServices getClassListApiServices = GetClassListApiServices();
   List<ClassListModel> classesList = [];
-  RxBool isLoading = false.obs;
+
   getClassListUser() async {
-    isLoading(true);
     dio.Response<dynamic> response =
         await getClassListApiServices.getClassListUser();
-    isLoading(false);
     print(response.data);
     if (response.data["status"] == true) {
       ClassList classListModel = ClassList.fromJson(response.data);
       classesList = classListModel.data;
-      update();
     } else {
       Get.rawSnackbar(
           backgroundColor: Colors.red,
@@ -42,13 +39,13 @@ class AuthController extends GetxController {
   }
 
   SignUpApiServices signUpApiServices = SignUpApiServices();
-  // RxBool isLoading = false.obs;
+  RxBool isLoading = false.obs;
   singUpUser(SignUp signUp) async {
     isLoading(true);
     dio.Response<dynamic> response = await signUpApiServices.signUpUser(signUp);
-    isLoading(false);
+    isLoading(true);
     if (response.data["status"] == true) {
-      Get.to(OtpValidation(mobile: signUp.mobile));
+      Get.to(OtpValidation());
       Get.rawSnackbar(
         backgroundColor: Colors.green,
         messageText: Text(
@@ -67,45 +64,31 @@ class AuthController extends GetxController {
     }
   }
 
-  SignUpOtpApiServices signUpOtpApiServices = SignUpOtpApiServices();
 
-  signUpOtpUser(String mobile, String otp) async {
+
+    LoginServicesApi loginServicesApi = LoginServicesApi();
+
+  loginUser({required String username, required String password}) async {
     isLoading(true);
     dio.Response<dynamic> response =
-        await signUpOtpApiServices.signUpOtpUser(mobile, otp);
+        await loginServicesApi.loginApi(username: username, password: password);
     isLoading(false);
-    print("----------------------------------------------------------");
-    print(response.data);
-    if (response.data["status"]) {
-      final SharedPreferences prefs = await SharedPreferences.getInstance();
-      await prefs.setString('auth_token', response.data['token']);
-      Get.offAll(UpdatedDetails());
-    } else {
-      Get.rawSnackbar(
-          backgroundColor: Colors.red,
-          messageText: Text(
-            response.data['message'],
-            style: TextStyle(color: Colors.white, fontSize: 15),
-          ));
-    }
-  }
-
-  ResendOtpApiServices resendOtpApiServices = ResendOtpApiServices();
-  reseneOtpUser(String mobile) async {
-    dio.Response<dynamic> response =
-        await resendOtpApiServices.resendOtpUser(mobile);
-    print(response.data);
-    if (response.data['status']) {
-       final SharedPreferences prefs = await SharedPreferences.getInstance();
-      await prefs.setString("auth_token", response.data['token']);
-    } else {
-       Get.rawSnackbar(
-          backgroundColor: Colors.red,
-          messageText: Text(
-            response.data['message'],
-            style: const TextStyle(color: Colors.white, fontSize: 15),
-          ));
-    }
+    if (response.data["status"] == true) {
+      final prefs = await SharedPreferences.getInstance();
+      await prefs.setString("auth_token", response.data["token"]);
+      // await prefs.setString("user_id", response.data["user"]["id"]);
+      await prefs.setString("verify", "true");
+      Get.off(BottomNavigationScreen());
+      //  Get.find<ProfileController>().checkWhetherHeGo();
+    Get.rawSnackbar(
+      
+        messageText: Text(
+          response.data["message"],
+          style: const TextStyle(color: Colors.white),
+        ),
+        backgroundColor: Colors.green,
+      );
+    } 
   }
   UpdateBankDetailsApiServices updateBankDetailsApiServices = UpdateBankDetailsApiServices();
   UpdateUserDataApiServices updateUserDataApiServices = UpdateUserDataApiServices();

@@ -22,4 +22,9 @@ abstract class BaseApiServices {
 
 
   final String updateBankDetailURL = "https://chanakyamathskendra.batechnology.in/api/auth/add-bank-details";
+  final String getuserURI =
+      "https://chanakyamathskendra.batechnology.in/api/auth/user-details";
+
+
+      final String LoginURI="https://chanakyamathskendra.batechnology.in/api/login";
 }

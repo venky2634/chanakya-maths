@@ -2,12 +2,14 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:online_class_app/controller/auth_api_controller/auth_api_controller.dart';
+import 'package:online_class_app/controller/auth_api_controller/profile_controller.dart';
 import 'package:online_class_app/screen/BottomNavigation/Home/home_screen.dart';
 import 'package:online_class_app/screen/SplashScreen/splash_sreen.dart';
 import 'package:device_preview/device_preview.dart';
 
 void main() {
   Get.put(AuthController());
+  Get.put(ProfileController());
   runApp(const MyApp());
 //   runApp(
 //   DevicePreview(

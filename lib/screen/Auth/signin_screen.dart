@@ -2,6 +2,8 @@ import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:online_class_app/const/app_fonts.dart';
+import 'package:online_class_app/const/constloader.dart';
+import 'package:online_class_app/controller/auth_api_controller/auth_api_controller.dart';
 import 'package:online_class_app/screen/Auth/select_class.dart';
 import 'package:online_class_app/screen/Auth/signup_screen.dart';
 import 'package:online_class_app/screen/BottomNavigation/Home/home_screen.dart';
@@ -19,6 +21,7 @@ class _SignScreenState extends State<SignScreen> {
 
   TextEditingController userNamecontroller = TextEditingController();
   TextEditingController passwordcontroller = TextEditingController();
+  final controller = Get.find<AuthController>();
 
   final formKey = GlobalKey<FormState>();
   @override
@@ -259,8 +262,13 @@ class _SignScreenState extends State<SignScreen> {
                     InkWell(
                       onTap: () {
                         if (formKey.currentState!.validate()) {
+                          AppConstant.showLoader(context: context);
+                          controller.loginUser(
+                              username: userNamecontroller.text,
+                              password: passwordcontroller.text);
+
                           FocusScope.of(context).unfocus();
-                          Get.to(HomeScreen());
+                          //  Get.to(HomeScreen());
                         }
                       },
                       child: Padding(
