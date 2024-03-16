@@ -12,4 +12,8 @@ abstract class BaseApiServices {
 
   final signUpOtpUrl =
       "https://chanakyamathskendra.batechnology.in/api/verifyOtp";
+
+  final reSendOtpUrl =
+      "https://chanakyamathskendra.batechnology.in/api/resendOtp";
+      
 }

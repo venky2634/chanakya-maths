@@ -1,20 +1,64 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:online_class_app/controller/auth_api_controller/auth_api_controller.dart';
 import 'package:online_class_app/screen/Auth/Widget/cutom_otp_card.dart';
 import 'package:online_class_app/screen/Payment/payment_choose_screen.dart';
 import 'package:online_class_app/update_details/update_details.dart';
 
 class OtpValidation extends StatefulWidget {
-  const OtpValidation({super.key});
+  String? mobile;
+  OtpValidation({super.key, required this.mobile});
 
   @override
   State<OtpValidation> createState() => _OtpValidationState();
 }
 
 class _OtpValidationState extends State<OtpValidation> {
+  AuthController authController = Get.find<AuthController>();
+  // TextEditingController otpController = TextEditingController();
+  final formKey = GlobalKey<FormState>();
   String field1 = '';
   String field2 = '';
   String field3 = '';
   String field4 = '';
+
+  late Timer timer;
+  int start = 60;
+  bool isLoading = false;
+  bool hasError = false;
+  String currentText = "";
+ // late StreamController<ErrorAnimationType> errorController;
+  startTimer() {
+    timer = Timer.periodic(Duration(seconds: 1), (Timer _timer) {
+      if (start == 0) {
+        setState(() {
+          timer.cancel();
+          isLoading = false;
+        });
+      } else {
+        setState(() {
+          start = start - 1;
+        });
+      }
+    });
+  }
+
+  @override
+  void initState() {
+    super.initState();
+   // errorController = StreamController<ErrorAnimationType>();
+    startTimer();
+  }
+
+  @override
+  void dispose() {
+  //  errorController.close();
+    timer.cancel();
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
     double height = MediaQuery.of(context).size.height;
@@ -55,12 +99,12 @@ class _OtpValidationState extends State<OtpValidation> {
               ),
             ),
           ),
-          const Padding(
+          Padding(
             padding: EdgeInsets.only(left: 15),
             child: Align(
               alignment: Alignment.centerLeft,
               child: Text(
-                "Code is send to +91 9876543210",
+                "Code is send to ${widget.mobile}",
                 style: TextStyle(color: Colors.grey, fontSize: 16),
               ),
             ),
@@ -109,30 +153,42 @@ class _OtpValidationState extends State<OtpValidation> {
             ),
           ),
           const Spacer(),
-          Center(
-              child: Padding(
-            padding: const EdgeInsets.only(right: 20, left: 20),
-            child: InkWell(
-              onTap: () {
-                Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                        builder: (context) => const UpdatedDetails()));
-              },
-              child: Container(
-                height: height * 0.05,
-                decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(10),
-                    color: Colors.blue),
-                child: const Center(
-                  child: Text(
-                    "Verify",
-                    style: TextStyle(color: Colors.white, fontSize: 18),
-                  ),
-                ),
+          InkWell(
+            onTap: () {
+              String otpValue = "$field1$field2$field3$field4";
+
+              if (otpValue.length == 4) {
+                authController.signUpOtpUser(widget.mobile!, otpValue);
+              }
+                else {
+                //    errorController.add(ErrorAnimationType.shake);
+                    setState(() {
+                      hasError = true;
+                      //  scaffoldKey.currentState!;
+                    });
+                  }
+              
+            },
+            child: Obx(
+              () => Padding(
+                padding: const EdgeInsets.only(right: 20, left: 20),
+                child: authController.isLoading.isTrue
+                    ? Container(child: CircularProgressIndicator())
+                    : Container(
+                        height: height * 0.05,
+                        decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(10),
+                            color: Colors.blue),
+                        child: const Center(
+                          child: Text(
+                            "Verify",
+                            style: TextStyle(color: Colors.white, fontSize: 18),
+                          ),
+                        ),
+                      ),
               ),
             ),
-          )),
+          ),
           SizedBox(
             height: height * 0.05,
           ),

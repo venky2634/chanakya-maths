@@ -4,22 +4,23 @@ import 'package:dio/dio.dart';
 import 'package:online_class_app/model/signup_model.dart';
 import 'package:online_class_app/services/base_api_services/base_urls.dart';
 
-class SignUpOtpApiServices extends BaseApiServices {
-  Future signUpOtpUser(String mobile, String otp) async {
+class ResendOtpApiServices extends BaseApiServices {
+  Future resendOtpUser(String mobile) async {
     dynamic responseJson;
     try {
       var dio = Dio();
-      var response = dio.post(signUpOtpUrl,
+      var response = dio.post(reSendOtpUrl,
           options: Options(
-              headers: {'Content-Type': 'application/json'},
+              headers: {
+  'Content-Type': 'application/json'
+},
               followRedirects: false,
               validateStatus: (status) {
                 return status! <= 500;
               }),
           data: {
-            "mobile": mobile,
-            "otp": otp,
-          });
+    "mobile":mobile
+});
       responseJson = response;
     } on SocketException {
       print("No internet");

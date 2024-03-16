@@ -1,5 +1,6 @@
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:online_class_app/const/app_fonts.dart';
 import 'package:online_class_app/controller/auth_api_controller/auth_api_controller.dart';
@@ -209,6 +210,7 @@ class _SignupScreenState extends State<SignupScreen> {
                         padding: const EdgeInsets.only(right: 20, left: 20),
                         child: TextFormField(
                           controller: emailcontroller,
+                          keyboardType: TextInputType.emailAddress,
                           validator: (value) {
                             if (value!.isEmpty) {
                               return 'Enter a your Email';
@@ -253,10 +255,15 @@ class _SignupScreenState extends State<SignupScreen> {
                       Padding(
                         padding: const EdgeInsets.only(right: 20, left: 20),
                         child: TextFormField(
+                          inputFormatters: [
+                            LengthLimitingTextInputFormatter(10),
+                            FilteringTextInputFormatter.digitsOnly,
+                            FilteringTextInputFormatter.deny(RegExp(r'\s')),
+                          ],
                           controller: mobilecontroller,
                           keyboardType: TextInputType.number,
                           validator: (value) {
-                            if (value!.isEmpty) {
+                            if (value!.length < 10 || value.length > 10) {
                               return 'Enter your number';
                             } else {
                               return null;
