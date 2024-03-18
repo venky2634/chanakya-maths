@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:online_class_app/const/app_fonts.dart';
+import 'package:online_class_app/screen/Auth/landing_screen.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class SettingsScreen extends StatefulWidget {
   const SettingsScreen({super.key});
@@ -26,7 +29,14 @@ class _SettingsScreenState extends State<SettingsScreen> {
           child: Center(
             child: Column(
               children: [
-                Image.asset("Assets/Type=Edit Avatar, Component=Avatar.png"),
+                InkWell(
+                    onTap: () async {
+                      final SharedPreferences prefs = await SharedPreferences.getInstance();
+      await prefs.setString('auth_token', "null");
+                      Get.offAll(LandingScreen());
+                    },
+                    child: Image.asset(
+                        "Assets/Type=Edit Avatar, Component=Avatar.png")),
                 ksizedbox10,
                 Text(
                   "Andrew Ainsley",
@@ -34,7 +44,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                       fontSize: 22, fontWeight: FontWeight.w700),
                 ),
                 ksizedbox5,
-               Text(
+                Text(
                   "12th Class Student",
                   style: primaryFonts.copyWith(
                       fontSize: 14, fontWeight: FontWeight.w600),

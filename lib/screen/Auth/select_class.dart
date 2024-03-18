@@ -50,104 +50,119 @@ class _SelectClassState extends State<SelectClass> {
       // appBar: AppBar(
       //   title: Text("data"),
       // ),
-      body: Container(
-        decoration: BoxDecoration(
-            image: DecorationImage(image: AssetImage("Assets/Logo (2).png"))),
-        child: Center(
-          child: Column(
-            children: [
-              SizedBox(
-                height: 140,
-              ),
-              Padding(
-                padding: const EdgeInsets.only(bottom: 100),
-                child: Text("Select Class you want to Learn",
-                    style: primaryFonts.copyWith(
-                        fontSize: 18,
-                        fontWeight: FontWeight.w600,
-                        color: Colors.black)),
-              ),
-              GetBuilder<AuthController>(builder: (_) {
-                return ListView.builder(
-                    itemCount: authController.classesList.length,
-                    shrinkWrap: true,
-                    itemBuilder: (context, index) {
-                      return GestureDetector(
-                        onTap: () {
-                          selectedImage(index);
-                          setState(() {
-                            selectedId = authController.classesList[index].id;
-                          });
-                          if (authController.classesList[index].standard ==
-                              "JEE") {
-                            popUp();
-                          }
-                        },
-                        child: Container(
-                          margin:
-                              EdgeInsets.only(bottom: 15, right: 15, left: 15),
-                          padding: EdgeInsets.symmetric(horizontal: 15),
-                          height: 50,
-                          width: size.width * .9,
-                          alignment: Alignment.center,
-                          decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(10),
-                              border: Border.all(color: Colors.blue, width: 1)),
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              Text(authController.classesList[index].standard,
-                                  style: primaryFonts.copyWith(
-                                      fontSize: 17,
-                                      fontWeight: FontWeight.w500,
-                                      color: Colors.blue)),
-                              Container(
-                                height: 25,
-                                width: 25,
-                                decoration: BoxDecoration(
-                                    color: isSelected == index
-                                        ? Colors.blue
-                                        : Colors.grey.withOpacity(.30),
-                                    shape: BoxShape.circle),
-                                child: Image.asset(
-                                  "Assets/Check.png",
-                                  color: isSelected == index
-                                      ? Colors.white
-                                      : Colors.grey.withOpacity(.30),
+      body: Obx(
+        () => authController.isLoading.isTrue
+            ? Center(
+                child: Container(
+                child: CircularProgressIndicator(),
+              ))
+            : Container(
+                decoration: BoxDecoration(
+                    image: DecorationImage(
+                        image: AssetImage("Assets/Logo (2).png"))),
+                child: Center(
+                  child: Column(
+                    children: [
+                      SizedBox(
+                        height: 140,
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.only(bottom: 100),
+                        child: Text("Select Class you want to Learn",
+                            style: primaryFonts.copyWith(
+                                fontSize: 18,
+                                fontWeight: FontWeight.w600,
+                                color: Colors.black)),
+                      ),
+                      GetBuilder<AuthController>(builder: (_) {
+                        return ListView.builder(
+                            itemCount: authController.classesList.length,
+                            shrinkWrap: true,
+                            itemBuilder: (context, index) {
+                              return GestureDetector(
+                                onTap: () {
+                                  selectedImage(index);
+                                  setState(() {
+                                    selectedId =
+                                        authController.classesList[index].id;
+                                  });
+                                  if (authController
+                                          .classesList[index].standard ==
+                                      "JEE") {
+                                    popUp();
+                                  }
+                                },
+                                child: Container(
+                                  margin: EdgeInsets.only(
+                                      bottom: 15, right: 15, left: 15),
+                                  padding: EdgeInsets.symmetric(horizontal: 15),
+                                  height: 50,
+                                  width: size.width * .9,
+                                  alignment: Alignment.center,
+                                  decoration: BoxDecoration(
+                                      borderRadius: BorderRadius.circular(10),
+                                      border: Border.all(
+                                          color: Colors.blue, width: 1)),
+                                  child: Row(
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceBetween,
+                                    children: [
+                                      Text(
+                                          authController
+                                              .classesList[index].standard,
+                                          style: primaryFonts.copyWith(
+                                              fontSize: 17,
+                                              fontWeight: FontWeight.w500,
+                                              color: Colors.blue)),
+                                      Container(
+                                        height: 25,
+                                        width: 25,
+                                        decoration: BoxDecoration(
+                                            color: isSelected == index
+                                                ? Colors.blue
+                                                : Colors.grey.withOpacity(.30),
+                                            shape: BoxShape.circle),
+                                        child: Image.asset(
+                                          "Assets/Check.png",
+                                          color: isSelected == index
+                                              ? Colors.white
+                                              : Colors.grey.withOpacity(.30),
+                                        ),
+                                      )
+                                    ],
+                                  ),
                                 ),
-                              )
-                            ],
+                              );
+                            });
+                      }),
+                      SizedBox(
+                        height: size.height * 0.11,
+                      ),
+                      InkWell(
+                        onTap: () {
+                          Get.to(SignupScreen(id: selectedId!));
+                        },
+                        child: Padding(
+                          padding: const EdgeInsets.only(right: 20, left: 20),
+                          child: Container(
+                            height: size.height * 0.06,
+                            decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(10),
+                                color: Colors.blue),
+                            child: const Center(
+                              child: Text(
+                                "Submit",
+                                style: TextStyle(
+                                    color: Colors.white, fontSize: 18),
+                              ),
+                            ),
                           ),
                         ),
-                      );
-                    });
-              }),
-              SizedBox(
-                height: size.height * 0.11,
-              ),
-              InkWell(
-                onTap: () {
-                  Get.to(SignupScreen(id: selectedId!));
-                },
-                child: Padding(
-                  padding: const EdgeInsets.only(right: 20, left: 20),
-                  child: Container(
-                    height: size.height * 0.06,
-                    decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(10),
-                        color: Colors.blue),
-                    child: const Center(
-                      child: Text(
-                        "Submit",
-                        style: TextStyle(color: Colors.white, fontSize: 18),
                       ),
-                    ),
+                    ],
                   ),
                 ),
               ),
-            ],
-          ),
-        ),
       ),
     );
   }
