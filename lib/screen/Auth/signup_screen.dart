@@ -1,5 +1,6 @@
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:online_class_app/const/app_fonts.dart';
 import 'package:online_class_app/controller/auth_api_controller/auth_api_controller.dart';
@@ -21,6 +22,8 @@ class _SignupScreenState extends State<SignupScreen> {
   final controller =Get.find<ProfileController>();
   bool value = false;
   bool passwordVisible = false;
+  bool isChecked = false;
+  bool isClicked = false;
 
   var selectClassOption;
 
@@ -33,7 +36,7 @@ class _SignupScreenState extends State<SignupScreen> {
   }
 
   TextEditingController studentNamecontroller = TextEditingController();
-//  TextEditingController userNamecontroller = TextEditingController();
+ TextEditingController userNamecontroller = TextEditingController();
   TextEditingController emailcontroller = TextEditingController();
   TextEditingController mobilecontroller = TextEditingController();
   TextEditingController passwordcontroller = TextEditingController();
@@ -260,6 +263,7 @@ class _SignupScreenState extends State<SignupScreen> {
                         padding: const EdgeInsets.only(right: 20, left: 20),
                         child: TextFormField(
                           controller: emailcontroller,
+                          keyboardType: TextInputType.emailAddress,
                           validator: (value) {
                             if (value!.isEmpty) {
                               return 'Enter a your Email';
@@ -306,6 +310,11 @@ class _SignupScreenState extends State<SignupScreen> {
                         child: TextFormField(
                           controller: mobilecontroller,
                           keyboardType: TextInputType.number,
+                          inputFormatters: [
+                            LengthLimitingTextInputFormatter(10),
+                            FilteringTextInputFormatter.digitsOnly,
+                            FilteringTextInputFormatter.deny(RegExp(r'\s')),
+                          ],
                           validator: (value) {
                             if (value!.isEmpty) {
                               return 'Enter your number';
@@ -458,6 +467,7 @@ class _SignupScreenState extends State<SignupScreen> {
                               onChanged: (bool? value) {
                                 setState(() {
                                   this.value = value!;
+                                  isChecked = this.value;
                                 });
                               },
                             ),
@@ -578,22 +588,42 @@ class _SignupScreenState extends State<SignupScreen> {
                           ],
                         ),
                       ),
+                      if (isClicked == true)
+                        Padding(
+                          padding: const EdgeInsets.only(left: 20),
+                          child: Align(
+                            alignment: Alignment.topLeft,
+                            child: Text(
+                              "Please agree the terms and conditions",
+                              style: primaryFonts.copyWith(
+                                  color: Colors.red, fontSize: 15),
+                            ),
+                          ),
+                        ),
                       SizedBox(
                         height: height * 0.02,
                       ),
                       InkWell(
                         onTap: () {
-                          if (value == true) {
-                            if (formKey.currentState!.validate()) {
-                              SignUp signUp = SignUp(
-                                  name: studentNamecontroller.text,
-                                  userName:
-                                      authController.userNamecontroller.text,
-                                  email: emailcontroller.text,
-                                  mobile: mobilecontroller.text,
-                                  password: passwordcontroller.text);
-                              authController.singUpUser(signUp);
+                          if (isChecked != false) {
+                            setState(() {
+                              isClicked = false;
+                            });
+                            if (value == true) {
+                              if (formKey.currentState!.validate()) {
+                                SignUp signUp = SignUp(
+                                    name: studentNamecontroller.text,
+                                    userName: userNamecontroller.text,
+                                    email: emailcontroller.text,
+                                    mobile: mobilecontroller.text,
+                                    password: passwordcontroller.text);
+                                authController.singUpUser(signUp);
+                              }
                             }
+                          } else {
+                            setState(() {
+                              isClicked = true;
+                            });
                           }
                         },
                         child: Obx(

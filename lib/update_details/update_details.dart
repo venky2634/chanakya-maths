@@ -152,9 +152,12 @@ class _UpdatedDetailsState extends State<UpdatedDetails> {
                   height: 47,
                   width: double.infinity,
                   decoration: BoxDecoration(
+                      color: Colors.grey.withOpacity(0.10),
                       borderRadius: BorderRadius.circular(5),
                       border: Border.all(
-                          width: 0.5, color: Colors.black.withOpacity(.50))),
+                        width: 0.5,
+                        color: Colors.grey.withOpacity(0.10),
+                      )),
                   child: DropdownButton<String>(
                       borderRadius: BorderRadius.circular(10),
                       isExpanded: true,
@@ -180,9 +183,10 @@ class _UpdatedDetailsState extends State<UpdatedDetails> {
                         fontSize: 15,
                       ),
                     )),
-            
+
                 TextFormField(
                   controller: placeController,
+                  textCapitalization: TextCapitalization.words,
                   validator: (value) {
                     if (value!.isEmpty) {
                       return 'Enter Place';
@@ -223,9 +227,12 @@ class _UpdatedDetailsState extends State<UpdatedDetails> {
                   height: 47,
                   width: double.infinity,
                   decoration: BoxDecoration(
+                      color: Colors.grey.withOpacity(0.10),
                       borderRadius: BorderRadius.circular(5),
                       border: Border.all(
-                          width: 0.5, color: Colors.black.withOpacity(.50))),
+                        width: 0.5,
+                        color: Colors.grey.withOpacity(0.10),
+                      )),
                   child: DropdownButton<String>(
                       borderRadius: BorderRadius.circular(10),
                       isExpanded: true,
@@ -251,9 +258,10 @@ class _UpdatedDetailsState extends State<UpdatedDetails> {
                         fontSize: 15,
                       ),
                     )),
-            
+
                 TextFormField(
                   controller: fatherNameController,
+                  textCapitalization: TextCapitalization.words,
                   validator: (value) {
                     if (value!.isEmpty) {
                       return 'Enter Father Name*';
@@ -286,14 +294,15 @@ class _UpdatedDetailsState extends State<UpdatedDetails> {
                         fontSize: 15,
                       ),
                     )),
-            
+
                 TextFormField(
                   controller: fatherPhoneNumberController,
+                  keyboardType: TextInputType.number,
                   inputFormatters: [
-                      LengthLimitingTextInputFormatter(10),
-                      FilteringTextInputFormatter.digitsOnly,
-                      FilteringTextInputFormatter.deny(RegExp(r'\s')),
-                    ],
+                    LengthLimitingTextInputFormatter(10),
+                    FilteringTextInputFormatter.digitsOnly,
+                    FilteringTextInputFormatter.deny(RegExp(r'\s')),
+                  ],
                   validator: (value) {
                     if (value!.isEmpty) {
                       return 'Enter a Father Phone Number*';
@@ -326,8 +335,9 @@ class _UpdatedDetailsState extends State<UpdatedDetails> {
                         fontSize: 15,
                       ),
                     )),
-            
+
                 TextFormField(
+                  textCapitalization: TextCapitalization.words,
                   controller: motherNameController,
                   validator: (value) {
                     if (value!.isEmpty) {
@@ -361,14 +371,15 @@ class _UpdatedDetailsState extends State<UpdatedDetails> {
                         fontSize: 15,
                       ),
                     )),
-            
+
                 TextFormField(
                   controller: motherPhoneNumberController,
+                  keyboardType: TextInputType.number,
                   inputFormatters: [
-                      LengthLimitingTextInputFormatter(10),
-                      FilteringTextInputFormatter.digitsOnly,
-                      FilteringTextInputFormatter.deny(RegExp(r'\s')),
-                    ],
+                    LengthLimitingTextInputFormatter(10),
+                    FilteringTextInputFormatter.digitsOnly,
+                    FilteringTextInputFormatter.deny(RegExp(r'\s')),
+                  ],
                   validator: (value) {
                     if (value!.isEmpty) {
                       return 'Enter a Mother Phone Number*';
@@ -398,24 +409,22 @@ class _UpdatedDetailsState extends State<UpdatedDetails> {
       ),
       bottomNavigationBar: InkWell(
         onTap: () {
-
-          if(_formKey.currentState!.validate()){
-            UpdateUserModel  updateUserModel = UpdateUserModel(
-            fatherMobileNumber: fatherPhoneNumberController.text,
-            fatherName: fatherNameController.text,
-            gender: selecteGender,
-            motherMobileNumber: motherPhoneNumberController.text,
-            motherName: motherNameController.text,
-            place: placeController.text,
-            schoolName: schoolNameController.text,
-            state: indiaStateList,
-            studentName: "",
-          );
-            Get.to(MentionDetails(updateUserModel: updateUserModel,));
+          if (_formKey.currentState!.validate()) {
+            UpdateUserModel updateUserModel = UpdateUserModel(
+              fatherMobileNumber: fatherPhoneNumberController.text,
+              fatherName: fatherNameController.text,
+              gender: selecteGender,
+              motherMobileNumber: motherPhoneNumberController.text,
+              motherName: motherNameController.text,
+              place: placeController.text,
+              schoolName: schoolNameController.text,
+              state: indiaStateList,
+              studentName: "",
+            );
+            Get.to(MentionDetails(
+              updateUserModel: updateUserModel,
+            ));
           }
-
-         
-       
         },
         child: Padding(
           padding: const EdgeInsets.only(right: 20, left: 20, bottom: 5),

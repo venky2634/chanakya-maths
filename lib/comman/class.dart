@@ -9,18 +9,18 @@ class UnbordingContent {
 
 List<UnbordingContent> contents = [
   UnbordingContent(
-      title: 'Headings',
+      title: 'WelCome to Chanakya Learning Platform',
       image: 'Assets/onbording/Group 661.png',
       discription:
-          "These Terms will be applied fully and affect to your use of this Website. By using this Website, you agreed toaccept all terms and conditions written in here. Youmust not use this Website if you disagree with any of these Website Standard Terms and Conditions"),
+          "Learning technologies to personalize the learning path for each student,to understand their strengths and weaknesses in mathematics."),
   UnbordingContent(
-      title: 'Headings',
+      title: 'Real-time Interaction',
       image: 'Assets/onbording/Frame.png',
       discription:
-          "These Terms will be applied fully and affect to your use of this Website. By using this Website, you agreed toaccept all terms and conditions written in here. Youmust not use this Website if you disagree with any of these Website Standard Terms and Conditions"),
+          "Enabling real-time collaboration between studentsand teachers, that allowing to interactive discussions, pee r-to-peer learning, and group activitie"),
   UnbordingContent(
-      title: 'Headings',
+      title: 'Enhanced Communication',
       image: 'Assets/onbording/Frame2.png',
       discription:
-          "These Terms will be applied fully and affect to your use of this Website. By using this Website, you agreed toaccept all terms and conditions written in here. Youmust not use this Website if you disagree with any of these Website Standard Terms and Conditions"),
+          "Better communication Improves the relationships between students, educators, and parents, fostering acollaborative learning community."),
 ];

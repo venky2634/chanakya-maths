@@ -13,7 +13,7 @@ class SelectClass extends StatefulWidget {
 
 class _SelectClassState extends State<SelectClass> {
   AuthController authController = Get.find<AuthController>();
-  int isSelected = 0;
+  int isSelected = -1;
 
   int? selectedId;
 

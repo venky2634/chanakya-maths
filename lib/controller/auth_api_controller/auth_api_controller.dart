@@ -1,16 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:online_class_app/model/get_classlist_model.dart';
+import 'package:online_class_app/model/get_termfee_plan_model.dart';
 import 'package:online_class_app/model/signup_model.dart';
 import 'package:online_class_app/model/update_bank_details_model.dart';
 import 'package:online_class_app/model/update_user_model.dart';
 import 'package:online_class_app/screen/Auth/Otp_screen.dart';
-import 'package:online_class_app/screen/Payment/metion_details.dart';
 import 'package:online_class_app/screen/Payment/payment_choose_screen.dart';
-import 'package:online_class_app/screen/Auth/signin_screen.dart';
 import 'package:online_class_app/screen/BottomNavigation/bottom_navigation_screen.dart';
+import 'package:online_class_app/services/network/auth_api_services/add_plans_api_service.dart';
 import 'package:online_class_app/services/network/auth_api_services/get_classlist_api_api_service.dart';
 import 'package:dio/dio.dart' as dio;
+import 'package:online_class_app/services/network/auth_api_services/get_plans_api_service.dart';
 import 'package:online_class_app/services/network/auth_api_services/login_api_service.dart';
 import 'package:online_class_app/services/network/auth_api_services/otp_api_servie.dart';
 import 'package:online_class_app/services/network/auth_api_services/resend_otp_api_service.dart';
@@ -20,6 +21,8 @@ import 'package:online_class_app/update_details/update_details.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:online_class_app/services/network/auth_api_services/update_bank_details_api_services.dart';
 import 'package:online_class_app/services/network/auth_api_services/update_user_data_api_services.dart';
+
+import '../../screen/Payment/Payment_sucess_screen.dart';
 
 class AuthController extends GetxController {
   GetClassListApiServices getClassListApiServices = GetClassListApiServices();
@@ -127,7 +130,9 @@ class AuthController extends GetxController {
       await prefs.setString("auth_token", response.data["token"]);
       // await prefs.setString("user_id", response.data["user"]["id"]);
       await prefs.setString("verify", "true");
-      Get.off(BottomNavigationScreen());
+      Get.offAll(BottomNavigationScreen());
+      print("------------------------>>>>>>>>>>>>>>>>>>>>>>>>>>>>");
+      print(response.data);
       //  Get.find<ProfileController>().checkWhetherHeGo();
       Get.rawSnackbar(
         messageText: Text(
@@ -209,5 +214,51 @@ class AuthController extends GetxController {
       print('user not avilable');
     }
     update();
+  }
+
+  GetPlanApiServices getPlanApiServices = GetPlanApiServices();
+
+  List<TermfeePlanModel> termfeeList = [];
+
+  getPlanUser() async {
+    dio.Response<dynamic> response = await getPlanApiServices.getPlansUser();
+
+    if (response.data["status"]) {
+      TermfeePlan termfeePlan = TermfeePlan.fromJson(response.data);
+      termfeeList = termfeePlan.data;
+
+      update();
+    } else {
+      Get.rawSnackbar(
+          backgroundColor: Colors.red,
+          messageText: Text(
+            response.data['message'],
+            style: const TextStyle(color: Colors.white, fontSize: 15),
+          ));
+    }
+  }
+
+  AddPlansApiServices addPlansApiServices = AddPlansApiServices();
+
+  addPlanUser(String price, int planId) async {
+    dio.Response<dynamic> response =
+        await addPlansApiServices.addPlanUser(price, planId);
+    if (response.data["status"] == true) {
+      Get.rawSnackbar(
+        backgroundColor: Colors.green,
+        messageText: Text(
+          "Add plan sucessfully",
+          style: TextStyle(color: Colors.white, fontSize: 15),
+        ),
+      );
+      Get.offAll(PaymentSucessScreen());
+    } else {
+      Get.rawSnackbar(
+          backgroundColor: Colors.red,
+          messageText: Text(
+            response.data['message'],
+            style: const TextStyle(color: Colors.white, fontSize: 15),
+          ));
+    }
   }
 }

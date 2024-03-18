@@ -2,6 +2,7 @@ import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:online_class_app/const/app_fonts.dart';
+import 'package:online_class_app/controller/auth_api_controller/auth_api_controller.dart';
 import 'package:online_class_app/model/term_fee_model.dart';
 import 'package:online_class_app/screen/Payment/Payment_sucess_screen.dart';
 
@@ -13,8 +14,14 @@ class PaymentChooseScreen extends StatefulWidget {
 }
 
 class _PaymentChooseScreenState extends State<PaymentChooseScreen> {
+  final AuthController authController = Get.find<AuthController>();
   int selectedIndex = -1;
   bool value = false;
+  bool isChecked = false;
+  bool isClicked = false;
+  int? selectedId;
+  String? price;
+  int? planId;
   // List<bool> checkboxValues = List.generate(3, (_) => false);
   List<TermFeeModel> fees = [
     TermFeeModel(
@@ -33,6 +40,12 @@ class _PaymentChooseScreenState extends State<PaymentChooseScreen> {
         days: "7 days",
         amount: "18,000/-")
   ];
+
+  @override
+  void initState() {
+    super.initState();
+    authController.getPlanUser();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -111,180 +124,164 @@ class _PaymentChooseScreenState extends State<PaymentChooseScreen> {
               ),
               Container(
                 height: 430,
-                child: ListView.builder(
-                    itemCount: fees.length,
-                    itemBuilder: (context, index) {
-                      return InkWell(
-                        onTap: () {
-                          setState(() {
-                            selectedIndex = index;
-                            //  checkboxValues[index] = !checkboxValues[index];
-                          });
-                        },
-                        child: Padding(
-                          padding: const EdgeInsets.all(15),
-                          child: Container(
-                            height: height * 0.12,
-                            width: width * 0.70,
-                            decoration: BoxDecoration(
-                                gradient: LinearGradient(
-                                  begin: Alignment.centerLeft,
-                                  end: Alignment.centerRight,
-                                  colors: [
-                                    Color(0xFFF8F8F8).withOpacity(0.2),
-                                    Color(0xFF929292).withOpacity(0.2)
-                                  ],
-                                ),
-                                border: index == selectedIndex
-                                    ? Border.all(color: const Color(0xFFFFCE8A))
-                                    : Border.all(color: Color(0xFF6A6DA6)),
-                                color: Colors.white,
-                                borderRadius: BorderRadius.circular(10)),
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                Padding(
-                                  padding: const EdgeInsets.only(left: 10),
-                                  child: Column(
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
-                                    children: [
-                                      SizedBox(
-                                        height: height * 0.01,
-                                      ),
-                                      Text(
-                                        fees[index].term!,
-                                        style: TextStyle(
-                                            color: Colors.white,
-                                            fontSize: 18,
-                                            fontWeight: FontWeight.w600),
-                                      ),
-                                      SizedBox(
-                                        height: height * 0.02,
-                                      ),
-                                      Row(
+                child: GetBuilder<AuthController>(
+                  builder: (_) {
+                    return ListView.builder(
+                        itemCount: authController.termfeeList.length,
+                        itemBuilder: (context, index) {
+                          return InkWell(
+                            onTap: () {
+                              setState(() {
+                                selectedIndex = index;
+                                //  checkboxValues[index] = !checkboxValues[index];
+                                planId = authController.termfeeList[index].id;
+                                    price = authController.termfeeList[index].price;
+                              });
+                            },
+                            child: Padding(
+                              padding: const EdgeInsets.all(15),
+                              child: Container(
+                                height: height * 0.12,
+                                width: width * 0.70,
+                                decoration: BoxDecoration(
+                                    gradient: LinearGradient(
+                                      begin: Alignment.centerLeft,
+                                      end: Alignment.centerRight,
+                                      colors: [
+                                        Color(0xFFF8F8F8).withOpacity(0.2),
+                                        Color(0xFF929292).withOpacity(0.2)
+                                      ],
+                                    ),
+                                    border: index == selectedIndex
+                                        ? Border.all(color: const Color(0xFFFFCE8A))
+                                        : Border.all(color: Color(0xFF6A6DA6)),
+                                    color: Colors.white,
+                                    borderRadius: BorderRadius.circular(10)),
+                                child: Row(
+                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    Padding(
+                                      padding: const EdgeInsets.only(left: 10),
+                                      child: Column(
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
                                         children: [
-                                          Container(
-                                            height: 5,
-                                            width: 5,
-                                            decoration: BoxDecoration(
-                                              borderRadius:
-                                                  BorderRadius.circular(50),
-                                              color: Colors.grey,
-                                            ),
-                                          ),
                                           SizedBox(
-                                            width: width * 0.01,
+                                            height: height * 0.01,
                                           ),
                                           Text(
-                                            fees[index].discount!,
+                                            authController.termfeeList[index].title,
                                             style: TextStyle(
                                                 color: Colors.white,
-                                                fontSize: 12),
-                                          ),
-                                        ],
-                                      ),
-                                      SizedBox(
-                                        height: height * 0.01,
-                                      ),
-                                      Row(
-                                        children: [
-                                          Container(
-                                            height: 5,
-                                            width: 5,
-                                            decoration: BoxDecoration(
-                                              borderRadius:
-                                                  BorderRadius.circular(50),
-                                              color: Colors.grey,
-                                            ),
+                                                fontSize: 18,
+                                                fontWeight: FontWeight.w600),
                                           ),
                                           SizedBox(
-                                            width: width * 0.01,
+                                            height: height * 0.02,
                                           ),
-                                          RichText(
-                                            text: TextSpan(
-                                              children: [
-                                                TextSpan(
-                                                  text: 'Get ',
-                                                  style: TextStyle(
-                                                      decoration:
-                                                          TextDecoration.none,
-                                                      color: Color(0xFFC7C7C7),
-                                                      fontSize: 12),
+                                          Row(
+                                            children: [
+                                              Container(
+                                                height: 5,
+                                                width: 5,
+                                                decoration: BoxDecoration(
+                                                  borderRadius:
+                                                      BorderRadius.circular(50),
+                                                  color: Colors.grey,
                                                 ),
-                                                TextSpan(
-                                                  text: fees[index].days!,
-                                                  style: TextStyle(
-                                                      decoration:
-                                                          TextDecoration.none,
-                                                      color: Colors.white,
-                                                      fontSize: 12),
-                                                ),
-                                                TextSpan(
-                                                  text: ' free',
-                                                  style: TextStyle(
-                                                      decoration:
-                                                          TextDecoration.none,
-                                                      color: Color(0xFFC7C7C7),
-                                                      fontSize: 12),
-                                                ),
-                                              ],
-                                            ),
-                                          ),
-                                        ],
-                                      )
-                                    ],
-                                  ),
-                                ),
-                                Padding(
-                                  padding: const EdgeInsets.only(
-                                      right: 10, bottom: 10),
-                                  child: Column(
-                                    mainAxisAlignment:
-                                        MainAxisAlignment.spaceBetween,
-                                    children: [
-                                      selectedIndex == index
-                                          ? Padding(
-                                              padding: const EdgeInsets.only(
-                                                  left: 20),
-                                              child: Checkbox(
-                                                shape: const CircleBorder(),
-                                                checkColor: Colors.white,
-                                                activeColor: Color(0xFFFFCE8A),
-                                                value: true,
-                                                onChanged: (bool? value) {
-                                                  // setState(() {
-                                                  //    checkboxValues[index] = value!;
-                                                  // });
-                                                },
                                               ),
-                                            )
-                                          : Checkbox(
-                                              shape: const CircleBorder(),
-                                              checkColor: Colors.white,
-                                              activeColor: Color(0xFFFFCE8A),
-                                              value: false,
-                                              onChanged: (bool? value) {
-                                                // setState(() {
-                                                //    checkboxValues[index] = value!;
-                                                // });
-                                              },
+                                              SizedBox(
+                                                width: width * 0.01,
+                                              ),
+                                              Text(
+                                                authController
+                                                    .termfeeList[index].description,
+                                                style: TextStyle(
+                                                    color: Colors.white,
+                                                    fontSize: 12),
+                                              ),
+                                            ],
+                                          ),
+                                          SizedBox(
+                                            height: height * 0.01,
+                                          ),
+                                          Row(
+                                            children: [
+                                              Container(
+                                                height: 5,
+                                                width: 5,
+                                                decoration: BoxDecoration(
+                                                  borderRadius:
+                                                      BorderRadius.circular(50),
+                                                  color: Colors.grey,
+                                                ),
+                                              ),
+                                              SizedBox(
+                                                width: width * 0.01,
+                                              ),
+                                              Text(
+                                                authController
+                                                    .termfeeList[index].validTill,
+                                                style: TextStyle(
+                                                    color: Colors.white,
+                                                    fontSize: 12),
+                                              ),
+                                            ],
+                                          )
+                                        ],
+                                      ),
+                                    ),
+                                    Padding(
+                                      padding: const EdgeInsets.only(
+                                          right: 10, bottom: 10),
+                                      child: Column(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.spaceBetween,
+                                        children: [
+                                          selectedIndex == index
+                                              ? Padding(
+                                                  padding: const EdgeInsets.only(
+                                                      left: 20),
+                                                  child: Checkbox(
+                                                    shape: const CircleBorder(),
+                                                    checkColor: Colors.white,
+                                                    activeColor: Color(0xFFFFCE8A),
+                                                    value: true,
+                                                    onChanged: (bool? value) {
+                                                      // setState(() {
+                                                      //    checkboxValues[index] = value!;
+                                                      // });
+                                                    },
+                                                  ),
+                                                )
+                                              : Checkbox(
+                                                  shape: const CircleBorder(),
+                                                  checkColor: Colors.white,
+                                                  activeColor: Color(0xFFFFCE8A),
+                                                  value: false,
+                                                  onChanged: (bool? value) {
+                                                    // setState(() {
+                                                    //    checkboxValues[index] = value!;
+                                                    // });
+                                                  },
+                                                ),
+                                          Text(
+                                            authController.termfeeList[index].price,
+                                            style: TextStyle(
+                                              color: Color(0xFFFFCE8A),
                                             ),
-                                      Text(
-                                        fees[index].amount!,
-                                        style: TextStyle(
-                                          color: Color(0xFFFFCE8A),
-                                        ),
-                                      )
-                                    ],
-                                  ),
+                                          )
+                                        ],
+                                      ),
+                                    ),
+                                  ],
                                 ),
-                              ],
+                              ),
                             ),
-                          ),
-                        ),
-                      );
-                    }),
+                          );
+                        });
+                  }
+                ),
               ),
               Row(
                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -298,6 +295,7 @@ class _PaymentChooseScreenState extends State<PaymentChooseScreen> {
                     onChanged: (bool? value) {
                       setState(() {
                         this.value = value!;
+                        isChecked = this.value;
                       });
                     },
                   ),
@@ -320,41 +318,43 @@ class _PaymentChooseScreenState extends State<PaymentChooseScreen> {
                           decoration: TextDecoration.underline),
                     )
                   ])),
-                  //  Text(
-                  //   "These Terms will be applied fully and affect to your use\n of this Website. By using this Website, you agreed to\n accept all terms and conditions written in here. You\n must not use this Website if you disagree with any\n of these Website Standard Terms and Conditions.",
-                  //   style: TextStyle(fontSize: 13, color: Colors.white),
-                  //   softWrap: true,
-                  //   textAlign: TextAlign.left,
-                  // )
                 ],
               ),
-              SizedBox(
-                height: height * 0.02,
-              ),
-              Padding(
-                padding: const EdgeInsets.only(right: 20, left: 20),
-                child: InkWell(
-                  onTap: () {
-                    Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) => const PaymentSucessScreen()));
-                  },
-                  child: Container(
-                    height: height * 0.06,
-                    decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(10),
-                        color: Colors.blue),
-                    child: const Center(
-                      child: Text(
-                        "Continue to Purchase",
-                        style: TextStyle(color: Colors.white, fontSize: 18),
-                      ),
+              if (isClicked == true)
+                Padding(
+                  padding: const EdgeInsets.only(left: 20),
+                  child: Align(
+                    alignment: Alignment.topLeft,
+                    child: Text(
+                      "Please agree the terms and conditions",
+                      style: primaryFonts.copyWith(
+                          color: Colors.red, fontSize: 15),
                     ),
                   ),
                 ),
+              SizedBox(
+                height: height * 0.02,
               ),
             ],
+          ),
+        ),
+        bottomNavigationBar: Padding(
+          padding: const EdgeInsets.only(right: 20, left: 20, bottom: 10),
+          child: InkWell(
+            onTap: () {
+              authController.addPlanUser(price!, planId!);
+            },
+            child: Container(
+              height: height * 0.06,
+              decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(10), color: Colors.blue),
+              child: const Center(
+                child: Text(
+                  "Continue to Purchase",
+                  style: TextStyle(color: Colors.white, fontSize: 18),
+                ),
+              ),
+            ),
           ),
         ),
       ),

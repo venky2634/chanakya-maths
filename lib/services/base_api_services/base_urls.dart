@@ -32,4 +32,15 @@ abstract class BaseApiServices {
 
   final String getprivacypolicyURI =
       "https://chanakyamathskendra.batechnology.in/api/privacy-policy";
+  final String loginURI =
+      "https://chanakyamathskendra.batechnology.in/api/login";
+
+// get choose plan
+
+  final String getplanUrl =
+      "https://chanakyamathskendra.batechnology.in/api/get-plans";
+
+  // add plans
+  final String addPlansUrl =
+      "https://chanakyamathskendra.batechnology.in/api/auth/add-plans";
 }

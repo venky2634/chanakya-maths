@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:online_class_app/const/app_fonts.dart';
 import 'package:online_class_app/screen/Auth/landing_screen.dart';
+import 'package:online_class_app/screen/SplashScreen/splash_sreen.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class SettingsScreen extends StatefulWidget {
@@ -14,6 +15,7 @@ class SettingsScreen extends StatefulWidget {
 class _SettingsScreenState extends State<SettingsScreen> {
   @override
   Widget build(BuildContext context) {
+    var size = MediaQuery.of(context).size;
     return Scaffold(
         appBar: AppBar(
           leading: Container(),
@@ -31,9 +33,10 @@ class _SettingsScreenState extends State<SettingsScreen> {
               children: [
                 InkWell(
                     onTap: () async {
-                      final SharedPreferences prefs = await SharedPreferences.getInstance();
-      await prefs.setString('auth_token', "null");
-                      Get.offAll(LandingScreen());
+                      final SharedPreferences prefs =
+                          await SharedPreferences.getInstance();
+                      await prefs.setString('auth_token', "null");
+                      Get.offAll(() => SpalshScreen());
                     },
                     child: Image.asset(
                         "Assets/Type=Edit Avatar, Component=Avatar.png")),
@@ -49,13 +52,160 @@ class _SettingsScreenState extends State<SettingsScreen> {
                   style: primaryFonts.copyWith(
                       fontSize: 14, fontWeight: FontWeight.w600),
                 ),
+                ksizedbox30,
                 Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     Row(
                       children: [
-                        //  Image.asset(name)
+                        Image.asset("Assets/Profile.png"),
+                        SizedBox(
+                          width: size.width * .03,
+                        ),
+                        Text(
+                          "Edit Profile",
+                          style: primaryFonts.copyWith(
+                              fontSize: 16,
+                              fontWeight: FontWeight.w600,
+                              color: Color(0xff212121)),
+                        ),
                       ],
-                    )
+                    ),
+                    Icon(
+                      Icons.arrow_forward_ios,
+                      size: 20,
+                      color: const Color.fromARGB(255, 110, 83, 83),
+                    ),
+                  ],
+                ),
+                ksizedbox15,
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Row(
+                      children: [
+                        Image.asset("Assets/Wallet.png"),
+                        SizedBox(
+                          width: size.width * .03,
+                        ),
+                        Text(
+                          "Payment",
+                          style: primaryFonts.copyWith(
+                              fontSize: 16,
+                              fontWeight: FontWeight.w600,
+                              color: Color(0xff212121)),
+                        ),
+                      ],
+                    ),
+                    Icon(
+                      Icons.arrow_forward_ios,
+                      size: 20,
+                      color: const Color.fromARGB(255, 110, 83, 83),
+                    ),
+                  ],
+                ),
+                ksizedbox15,
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Row(
+                      children: [
+                        Image.asset("Assets/Wallet.png"),
+                        SizedBox(
+                          width: size.width * .03,
+                        ),
+                        Text(
+                          "Time Table",
+                          style: primaryFonts.copyWith(
+                              fontSize: 16,
+                              fontWeight: FontWeight.w600,
+                              color: Color(0xff212121)),
+                        ),
+                      ],
+                    ),
+                    Icon(
+                      Icons.arrow_forward_ios,
+                      size: 20,
+                      color: const Color.fromARGB(255, 110, 83, 83),
+                    ),
+                  ],
+                ),
+                ksizedbox15,
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Row(
+                      children: [
+                        Image.asset("Assets/Lock.png"),
+                        SizedBox(
+                          width: size.width * .03,
+                        ),
+                        Text(
+                          "Privacy Policy",
+                          style: primaryFonts.copyWith(
+                              fontSize: 16,
+                              fontWeight: FontWeight.w600,
+                              color: Color(0xff212121)),
+                        ),
+                      ],
+                    ),
+                    Icon(
+                      Icons.arrow_forward_ios,
+                      size: 20,
+                      color: const Color.fromARGB(255, 110, 83, 83),
+                    ),
+                  ],
+                ),
+                ksizedbox15,
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Row(
+                      children: [
+                        Image.asset("Assets/Info Square.png"),
+                        SizedBox(
+                          width: size.width * .03,
+                        ),
+                        Text(
+                          "Help Centre",
+                          style: primaryFonts.copyWith(
+                              fontSize: 16,
+                              fontWeight: FontWeight.w600,
+                              color: Color(0xff212121)),
+                        ),
+                      ],
+                    ),
+                    Icon(
+                      Icons.arrow_forward_ios,
+                      size: 20,
+                      color: const Color.fromARGB(255, 110, 83, 83),
+                    ),
+                  ],
+                ),
+                ksizedbox15,
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Row(
+                      children: [
+                        Image.asset("Assets/Logout.png"),
+                        SizedBox(
+                          width: size.width * .03,
+                        ),
+                        Text(
+                          "LogOut",
+                          style: primaryFonts.copyWith(
+                              fontSize: 16,
+                              fontWeight: FontWeight.w600,
+                              color: Color(0xff212121)),
+                        ),
+                      ],
+                    ),
+                    Icon(
+                      Icons.arrow_forward_ios,
+                      size: 20,
+                      color: const Color.fromARGB(255, 110, 83, 83),
+                    ),
                   ],
                 ),
               ],

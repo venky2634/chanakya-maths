@@ -22,7 +22,7 @@ class _OnbordingScreenState extends State<OnbordingScreen> {
     _controller = PageController(initialPage: 0);
 
     super.initState();
-   // startTimer();
+    // startTimer();
   }
 
   @override
@@ -92,20 +92,24 @@ class _OnbordingScreenState extends State<OnbordingScreen> {
                         const SizedBox(
                           height: 20,
                         ),
-                        Text(
-                          contents[i].title,
-                          style: TextStyle(
-                              color: Colors.black,
-                              fontSize: 25,
-                              fontWeight: FontWeight.bold),
-                          // style: primaryFont.copyWith(
-                          // fontSize: 26,fontWeight: FontWeight.w600,color: AppColors.black,)
+                        Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 20),
+                          child: Text(
+                            contents[i].title,
+                            textAlign: TextAlign.center,
+                            style: TextStyle(
+                                color: Colors.black,
+                                fontSize: 25,
+                                fontWeight: FontWeight.bold),
+                            // style: primaryFont.copyWith(
+                            // fontSize: 26,fontWeight: FontWeight.w600,color: AppColors.black,)
+                          ),
                         ),
                         const SizedBox(height: 20),
                         Padding(
                           padding: const EdgeInsets.symmetric(horizontal: 15),
                           child: Text(contents[i].discription,
-                              textAlign: TextAlign.start,
+                              textAlign: TextAlign.center,
                               style:
                                   TextStyle(color: Colors.black, fontSize: 13)
                               // fontSize: 18,fontWeight: FontWeight.w300,color: AppColors.grey,)

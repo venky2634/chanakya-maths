@@ -19,6 +19,8 @@ class SignScreen extends StatefulWidget {
 class _SignScreenState extends State<SignScreen> {
   bool value = false;
   bool passwordVisible = false;
+  bool isChecked = false;
+  bool isClicked = false;
 
   TextEditingController userNamecontroller = TextEditingController();
   TextEditingController passwordcontroller = TextEditingController();
@@ -157,7 +159,7 @@ class _SignScreenState extends State<SignScreen> {
                       padding: const EdgeInsets.only(right: 20, left: 20),
                       child: TextFormField(
                         controller: passwordcontroller,
-                        keyboardType: TextInputType.number,
+                        
                         validator: (value) {
                           if (value!.isEmpty) {
                             return 'Enter your password';
@@ -197,11 +199,15 @@ class _SignScreenState extends State<SignScreen> {
                     SizedBox(
                       height: height * 0.01,
                     ),
-                    const Padding(
+                    Padding(
                       padding: EdgeInsets.only(right: 18),
                       child: Align(
-                          alignment: Alignment.centerRight,
-                          child: Text("Forget Password?")),
+                        alignment: Alignment.centerRight,
+                        child: Text(
+                          "Forget Password?",
+                          style: primaryFonts.copyWith(color: Colors.blue),
+                        ),
+                      ),
                     ),
                     SizedBox(
                       height: height * 0.05,
@@ -220,6 +226,7 @@ class _SignScreenState extends State<SignScreen> {
                             onChanged: (bool? value) {
                               setState(() {
                                 this.value = value!;
+                                isChecked = this.value;
                               });
                             },
                           ),
@@ -346,19 +353,39 @@ class _SignScreenState extends State<SignScreen> {
                         ],
                       ),
                     ),
+                    if (isClicked == true)
+                      Padding(
+                        padding: const EdgeInsets.only(left: 20),
+                        child: Align(
+                          alignment: Alignment.topLeft,
+                          child: Text(
+                            "Please agree the terms and conditions",
+                            style: primaryFonts.copyWith(
+                                color: Colors.red, fontSize: 15),
+                          ),
+                        ),
+                      ),
                     SizedBox(
                       height: height * 0.03,
                     ),
                     InkWell(
                       onTap: () {
-                        if (formKey.currentState!.validate()) {
-                          AppConstant.showLoader(context: context);
-                          controller.loginUser(
-                              username: userNamecontroller.text,
-                              password: passwordcontroller.text);
+                        if (isChecked != false) {
+                          setState(() {
+                            isClicked = false;
+                          });
+                          if (formKey.currentState!.validate()) {
+                            AppConstant.showLoader(context: context);
+                            controller.loginUser(
+                                username: userNamecontroller.text,
+                                password: passwordcontroller.text);
 
-                          FocusScope.of(context).unfocus();
-                          //  Get.to(HomeScreen());
+                            FocusScope.of(context).unfocus();
+                          }
+                        } else {
+                          setState(() {
+                            isClicked = true;
+                          });
                         }
                       },
                       child: Padding(
