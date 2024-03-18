@@ -2,8 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:online_class_app/const/app_fonts.dart';
 import 'package:online_class_app/controller/auth_api_controller/auth_api_controller.dart';
-import 'package:online_class_app/model/get_classlist_model.dart';
-import 'package:online_class_app/screen/Auth/signin_screen.dart';
 import 'package:online_class_app/screen/Auth/signup_screen.dart';
 
 class SelectClass extends StatefulWidget {

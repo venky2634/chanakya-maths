@@ -4,6 +4,7 @@ import 'package:get/get.dart';
 import 'package:online_class_app/const/app_fonts.dart';
 import 'package:online_class_app/const/constloader.dart';
 import 'package:online_class_app/controller/auth_api_controller/auth_api_controller.dart';
+import 'package:online_class_app/controller/auth_api_controller/profile_controller.dart';
 import 'package:online_class_app/screen/Auth/select_class.dart';
 import 'package:online_class_app/screen/Auth/signup_screen.dart';
 import 'package:online_class_app/screen/BottomNavigation/Home/home_screen.dart';
@@ -22,8 +23,17 @@ class _SignScreenState extends State<SignScreen> {
   TextEditingController userNamecontroller = TextEditingController();
   TextEditingController passwordcontroller = TextEditingController();
   final controller = Get.find<AuthController>();
+    final Profilecontroller = Get.find<ProfileController>();
 
   final formKey = GlobalKey<FormState>();
+
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+        Profilecontroller.getprivacypolicy();
+  }
   @override
   Widget build(BuildContext context) {
     double height = MediaQuery.of(context).size.height;
@@ -244,6 +254,86 @@ class _SignScreenState extends State<SignScreen> {
                                       fontSize: 13),
                                 ),
                                 TextSpan(
+
+                                      recognizer: TapGestureRecognizer()
+                                    ..onTap = () {
+                                      // Handle tap event here
+
+                                         showModalBottomSheet(
+        context: context,
+        isScrollControlled: true,
+        builder: (BuildContext context) {
+          return Container(
+            decoration: BoxDecoration(
+                color: Colors.white,
+                borderRadius: BorderRadius.only(
+                    topRight: Radius.circular(15),
+                    topLeft: Radius.circular(15))),
+            height: 600,
+            child: Center(
+              child: Padding(
+                padding: const EdgeInsets.all(10.0),
+                child: SingleChildScrollView(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Text(
+                            'Privacy & Policy',
+                            style: primaryFonts.copyWith(
+                                fontSize: 18, color: Colors.black),
+                          ),
+                          IconButton(
+                              onPressed: () {
+                                Get.back();
+                              },
+                              icon: Icon(
+                                Icons.clear,
+                                size: 20,
+                              ))
+                        ],
+                      ), Container(height: 500,
+                        child: ListView.builder(
+                          itemCount: Profilecontroller.getprivayData.length,
+                          itemBuilder: (context, index) {
+                            return Column(
+                              children: [
+                                ksizedbox15,
+                                Row(
+                                  children: [
+                                    Text(
+                                      Profilecontroller.getprivayData[index].title, // Assuming getprivayData is a List<String>
+                                      style: primaryFonts.copyWith(
+                                        fontSize: 16,
+                                        color: Colors.black,
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                                ksizedbox10,
+                                Text(
+                               Profilecontroller.getprivayData[index].description, 
+                                  style: primaryFonts.copyWith(
+                                    fontSize: 13,
+                                    color: Colors.black,
+                                  ),
+                                ),
+                              ],
+                            );
+                          },
+                        ),
+                      ),
+                   
+                    ],
+                  ),
+                ),
+              ),
+            ),
+          );
+        });
+                                    },
                                   text: ' Privacy Policy',
                                   style: TextStyle(
                                       decoration: TextDecoration.none,

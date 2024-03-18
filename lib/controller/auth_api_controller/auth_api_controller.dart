@@ -15,6 +15,7 @@ import 'package:online_class_app/services/network/auth_api_services/login_api_se
 import 'package:online_class_app/services/network/auth_api_services/otp_api_servie.dart';
 import 'package:online_class_app/services/network/auth_api_services/resend_otp_api_service.dart';
 import 'package:online_class_app/services/network/auth_api_services/signup_api_service.dart';
+import 'package:online_class_app/services/network/user_avilability/user_avilability_api_service.dart';
 import 'package:online_class_app/update_details/update_details.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:online_class_app/services/network/auth_api_services/update_bank_details_api_services.dart';
@@ -184,5 +185,29 @@ class AuthController extends GetxController {
         ),
       );
     }
+  }
+
+  RxBool isavilabe = false.obs;
+
+  TextEditingController userNamecontroller = TextEditingController();
+
+  UserAvilabilityServicesApi userAvilabilityServicesApi =
+      UserAvilabilityServicesApi();
+
+  Useravilability({
+    required String username,
+  }) async {
+    dio.Response<dynamic> response =
+        await userAvilabilityServicesApi.userAvilabilityApi(
+      username: username,
+    );
+
+    if (response.data["status"] == true) {
+      isavilabe(true);
+    } else {
+      isavilabe(false);
+      print('user not avilable');
+    }
+    update();
   }
 }

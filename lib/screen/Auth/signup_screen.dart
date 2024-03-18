@@ -3,8 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:online_class_app/const/app_fonts.dart';
 import 'package:online_class_app/controller/auth_api_controller/auth_api_controller.dart';
+import 'package:online_class_app/controller/auth_api_controller/profile_controller.dart';
 import 'package:online_class_app/model/signup_model.dart';
-import 'package:online_class_app/screen/Auth/Otp_screen.dart';
 import 'package:online_class_app/screen/Auth/signin_screen.dart';
 
 class SignupScreen extends StatefulWidget {
@@ -16,14 +16,24 @@ class SignupScreen extends StatefulWidget {
 }
 
 class _SignupScreenState extends State<SignupScreen> {
+
   AuthController authController = Get.find<AuthController>();
+  final controller =Get.find<ProfileController>();
   bool value = false;
   bool passwordVisible = false;
 
   var selectClassOption;
 
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    controller.getprivacypolicy();
+  }
+
   TextEditingController studentNamecontroller = TextEditingController();
-  TextEditingController userNamecontroller = TextEditingController();
+//  TextEditingController userNamecontroller = TextEditingController();
   TextEditingController emailcontroller = TextEditingController();
   TextEditingController mobilecontroller = TextEditingController();
   TextEditingController passwordcontroller = TextEditingController();
@@ -160,33 +170,74 @@ class _SignupScreenState extends State<SignupScreen> {
                       SizedBox(
                         height: height * 0.01,
                       ),
-                      Padding(
-                        padding: const EdgeInsets.only(right: 20, left: 20),
-                        child: TextFormField(
-                          controller: userNamecontroller,
-                          validator: (value) {
-                            if (value!.isEmpty) {
-                              return 'Enter a your Name';
-                            } else {
-                              return null;
-                            }
-                          },
-                          decoration: InputDecoration(
-                            border: InputBorder.none,
-                            fillColor: Colors.grey.withOpacity(0.10),
-                            filled: true,
-                            contentPadding: EdgeInsets.all(10),
-                            enabledBorder: OutlineInputBorder(
-                              borderSide: BorderSide.none,
-                              borderRadius: BorderRadius.circular(10.0),
-                            ),
-                            focusedBorder: OutlineInputBorder(
-                              borderSide: BorderSide.none,
-                              borderRadius: BorderRadius.circular(10.0),
-                            ),
+                      GetBuilder<AuthController>(builder: (_) {
+                        return Padding(
+                          padding: const EdgeInsets.only(right: 20, left: 20),
+                          child: Column(
+                            children: [
+                              TextFormField(
+                                controller: authController.userNamecontroller,
+                                onChanged: (value) {
+                                  // Call the method to check user availability here
+                                  authController.Useravilability(
+                                      username: value);
+                                },
+                                validator: (value) {
+                                  if (value!.isEmpty) {
+                                    return 'Enter your Name';
+                                  } else if (!authController.isavilabe.isTrue) {
+                                    return 'Username is not available';
+                                  }
+                                  return null;
+                                },
+                                decoration: InputDecoration(
+                                  suffix: authController.isavilabe.isTrue
+                                      ? Icon(
+                                          Icons.done,
+                                          color: Colors.green,
+                                        )
+                                      : Icon(
+                                          Icons.error,
+                                          color: Colors.red,
+                                        ),
+                                  border: InputBorder.none,
+                                  fillColor: Colors.grey.withOpacity(0.10),
+                                  filled: true,
+                                  contentPadding: EdgeInsets.all(10),
+                                  enabledBorder: OutlineInputBorder(
+                                    borderSide: BorderSide.none,
+                                    borderRadius: BorderRadius.circular(10.0),
+                                  ),
+                                  focusedBorder: OutlineInputBorder(
+                                    borderSide: BorderSide.none,
+                                    borderRadius: BorderRadius.circular(10.0),
+                                  ),
+                                ),
+                              ),
+                              ksizedbox10,
+                              Row(
+                                mainAxisAlignment: MainAxisAlignment.end,
+                                children: [
+                                  authController.isavilabe.isTrue
+                                      ? Text(
+                                          'Availabe',
+                                          style: TextStyle(
+                                              fontWeight: FontWeight.w500,
+                                              color: Colors.green),
+                                        )
+                                      : Text(
+                                          'Not Availabe',
+                                          style: TextStyle(
+                                              fontWeight: FontWeight.w500,
+                                              color: Colors.red),
+                                        )
+                                ],
+                              )
+                            ],
                           ),
-                        ),
-                      ),
+                        );
+                      }),
+
                       SizedBox(
                         height: height * 0.02,
                       ),
@@ -438,7 +489,83 @@ class _SignupScreenState extends State<SignupScreen> {
                                         color: Colors.black,
                                         fontSize: 13),
                                   ),
-                                  const TextSpan(
+                                   TextSpan(   recognizer: TapGestureRecognizer()
+                                      ..onTap = () {
+                                        showModalBottomSheet(
+        context: context,
+        isScrollControlled: true,
+        builder: (BuildContext context) {
+          return Container(
+            decoration: BoxDecoration(
+                color: Colors.white,
+                borderRadius: BorderRadius.only(
+                    topRight: Radius.circular(15),
+                    topLeft: Radius.circular(15))),
+            height: 600,
+            child: Center(
+              child: Padding(
+                padding: const EdgeInsets.all(10.0),
+                child: SingleChildScrollView(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Text(
+                            'Privacy & Policy',
+                            style: primaryFonts.copyWith(
+                                fontSize: 18, color: Colors.black),
+                          ),
+                          IconButton(
+                              onPressed: () {
+                                Get.back();
+                              },
+                              icon: Icon(
+                                Icons.clear,
+                                size: 20,
+                              ))
+                        ],
+                      ), Container(height: 500,
+                        child: ListView.builder(
+                          itemCount: controller.getprivayData.length,
+                          itemBuilder: (context, index) {
+                            return Column(
+                              children: [
+                                ksizedbox15,
+                                Row(
+                                  children: [
+                                    Text(
+                                      controller.getprivayData[index].title, // Assuming getprivayData is a List<String>
+                                      style: primaryFonts.copyWith(
+                                        fontSize: 16,
+                                        color: Colors.black,
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                                ksizedbox10,
+                                Text(
+                               controller.getprivayData[index].description, 
+                                  style: primaryFonts.copyWith(
+                                    fontSize: 13,
+                                    color: Colors.black,
+                                  ),
+                                ),
+                              ],
+                            );
+                          },
+                        ),
+                      ),
+                   
+                    ],
+                  ),
+                ),
+              ),
+            ),
+          );
+        });
+                                      },
                                     text: ' Privacy Policy',
                                     style: TextStyle(
                                         decoration: TextDecoration.none,
@@ -460,7 +587,8 @@ class _SignupScreenState extends State<SignupScreen> {
                             if (formKey.currentState!.validate()) {
                               SignUp signUp = SignUp(
                                   name: studentNamecontroller.text,
-                                  userName: userNamecontroller.text,
+                                  userName:
+                                      authController.userNamecontroller.text,
                                   email: emailcontroller.text,
                                   mobile: mobilecontroller.text,
                                   password: passwordcontroller.text);

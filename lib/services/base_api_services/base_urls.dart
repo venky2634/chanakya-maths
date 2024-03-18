@@ -15,16 +15,21 @@ abstract class BaseApiServices {
 
   final reSendOtpUrl =
       "https://chanakyamathskendra.batechnology.in/api/resendOtp";
-      
 
+  final String updateUserDetailsURL =
+      "https://chanakyamathskendra.batechnology.in/api/auth/update-user";
 
-  final String updateUserDetailsURL = "https://chanakyamathskendra.batechnology.in/api/auth/update-user";
-
-
-  final String updateBankDetailURL = "https://chanakyamathskendra.batechnology.in/api/auth/add-bank-details";
+  final String updateBankDetailURL =
+      "https://chanakyamathskendra.batechnology.in/api/auth/add-bank-details";
   final String getuserURI =
       "https://chanakyamathskendra.batechnology.in/api/auth/user-details";
 
+  final String LoginURI =
+      "https://chanakyamathskendra.batechnology.in/api/login";
 
-      final String LoginURI="https://chanakyamathskendra.batechnology.in/api/login";
+  final String useravilabilityURI =
+      "https://chanakyamathskendra.batechnology.in/api/check-username-availability";
+
+  final String getprivacypolicyURI =
+      "https://chanakyamathskendra.batechnology.in/api/privacy-policy";
 }
