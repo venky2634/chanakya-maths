@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:online_class_app/const/app_fonts.dart';
 import 'package:online_class_app/model/update_user_model.dart';
@@ -288,6 +289,11 @@ class _UpdatedDetailsState extends State<UpdatedDetails> {
             
                 TextFormField(
                   controller: fatherPhoneNumberController,
+                  inputFormatters: [
+                      LengthLimitingTextInputFormatter(10),
+                      FilteringTextInputFormatter.digitsOnly,
+                      FilteringTextInputFormatter.deny(RegExp(r'\s')),
+                    ],
                   validator: (value) {
                     if (value!.isEmpty) {
                       return 'Enter a Father Phone Number*';
@@ -358,6 +364,11 @@ class _UpdatedDetailsState extends State<UpdatedDetails> {
             
                 TextFormField(
                   controller: motherPhoneNumberController,
+                  inputFormatters: [
+                      LengthLimitingTextInputFormatter(10),
+                      FilteringTextInputFormatter.digitsOnly,
+                      FilteringTextInputFormatter.deny(RegExp(r'\s')),
+                    ],
                   validator: (value) {
                     if (value!.isEmpty) {
                       return 'Enter a Mother Phone Number*';

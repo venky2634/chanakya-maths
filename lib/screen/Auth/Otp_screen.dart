@@ -1,20 +1,64 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:online_class_app/const/app_fonts.dart';
+import 'package:online_class_app/controller/auth_api_controller/auth_api_controller.dart';
 import 'package:online_class_app/screen/Auth/Widget/cutom_otp_card.dart';
 import 'package:online_class_app/screen/Payment/payment_choose_screen.dart';
 import 'package:online_class_app/update_details/update_details.dart';
 
 class OtpValidation extends StatefulWidget {
-  const OtpValidation({super.key});
+ String? mobile;
+  OtpValidation({super.key, required this.mobile});
 
   @override
   State<OtpValidation> createState() => _OtpValidationState();
 }
 
 class _OtpValidationState extends State<OtpValidation> {
+
+  AuthController authController = Get.find<AuthController>();
   String field1 = '';
   String field2 = '';
   String field3 = '';
   String field4 = '';
+
+  late Timer timer;
+  int start = 60;
+  bool isLoading = false;
+  bool hasError = false;
+  String currentText = "";
+  // late StreamController<ErrorAnimationType> errorController;
+  startTimer() {
+    timer = Timer.periodic(Duration(seconds: 1), (Timer _timer) {
+      if (start == 0) {
+        setState(() {
+          timer.cancel();
+          isLoading = false;
+        });
+      } else {
+        setState(() {
+          start = start - 1;
+        });
+      }
+    });
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    // errorController = StreamController<ErrorAnimationType>();
+    startTimer();
+  }
+
+  @override
+  void dispose() {
+    //  errorController.close();
+    timer.cancel();
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
     double height = MediaQuery.of(context).size.height;
@@ -55,12 +99,12 @@ class _OtpValidationState extends State<OtpValidation> {
               ),
             ),
           ),
-          const Padding(
+          Padding(
             padding: EdgeInsets.only(left: 15),
             child: Align(
               alignment: Alignment.centerLeft,
               child: Text(
-                "Code is send to +91 9876543210",
+                "Code is send to ${widget.mobile}",
                 style: TextStyle(color: Colors.grey, fontSize: 16),
               ),
             ),
@@ -80,59 +124,122 @@ class _OtpValidationState extends State<OtpValidation> {
           SizedBox(
             height: height * 0.03,
           ),
-          InkWell(
-            onTap: () {
-              // Navigator.push(
-              //     context,
-              //     MaterialPageRoute(
-              //         builder: (context) => const ()));
-            },
-            child: RichText(
-              text: const TextSpan(
-                children: [
-                  TextSpan(
-                    text: "Don't receive code?",
-                    style: TextStyle(
-                        decoration: TextDecoration.none,
-                        color: Colors.black,
-                        fontSize: 14),
+          start != 0 ? Padding(
+                  padding:  EdgeInsets.only(left: 30),
+                  child: Row(
+                    children: [
+                      Text(
+                        "Resend Code in",
+                        style: primaryFonts.copyWith(
+                            color: Colors.black,
+                            fontSize: 14,
+                            fontWeight: FontWeight.w500),
+                      ),
+                      const SizedBox(width: 10),
+                      Text(
+                        start.toString(),
+                        style: TextStyle(
+                            color: Colors.blue,
+                            fontWeight: FontWeight.bold,
+                            fontSize: 20),
+                      ),
+                    ],
                   ),
-                  TextSpan(
-                    text: ' Request again',
-                    style: TextStyle(
-                        decoration: TextDecoration.none,
-                        color: Colors.blue,
-                        fontSize: 14),
+                )
+              : Padding(
+                  padding: const EdgeInsets.only(left: 30),
+                  child: Row(
+                    // mainAxisAlignment: MainAxisAlignment.spaceAround,
+                    children: [
+                      Text("Didn't receive SMS?",
+                          style: primaryFonts.copyWith(
+                              color: Colors.black,
+                              fontSize: 14,
+                              fontWeight: FontWeight.w500)),
+                      InkWell(
+                        onTap: () {
+                          setState(() {
+                            start = 10;
+                            isLoading = true;
+                            startTimer();
+                          });
+                          authController.resendOtpUser(widget.mobile!);
+                        },
+                        child: Text(" Resend code",
+                            style: primaryFonts.copyWith(
+                                //    decoration: TextDecoration.underline,
+                                color: Colors.blue,
+                                fontSize: 14,
+                                fontWeight: FontWeight.bold)),
+                      )
+                    ],
                   ),
-                ],
-              ),
-            ),
-          ),
+                ),
+          // InkWell(
+          //   onTap: () {
+          //     // Navigator.push(
+          //     //     context,
+          //     //     MaterialPageRoute(
+          //     //         builder: (context) => const ()));
+          //   },
+          //   child: RichText(
+          //     text: const TextSpan(
+          //       children: [
+          //         TextSpan(
+          //           text: "Don't receive code?",
+          //           style: TextStyle(
+          //               decoration: TextDecoration.none,
+          //               color: Colors.black,
+          //               fontSize: 14),
+          //         ),
+          //         TextSpan(
+          //           text: ' Request again',
+          //           style: TextStyle(
+          //               decoration: TextDecoration.none,
+          //               color: Colors.blue,
+          //               fontSize: 14),
+          //         ),
+          //       ],
+          //     ),
+          //   ),
+          // ),
           const Spacer(),
           Center(
               child: Padding(
             padding: const EdgeInsets.only(right: 20, left: 20),
             child: InkWell(
-              onTap: () {
-                Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                        builder: (context) => const UpdatedDetails()));
-              },
-              child: Container(
-                height: height * 0.05,
-                decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(10),
-                    color: Colors.blue),
-                child: const Center(
-                  child: Text(
-                    "Verify",
-                    style: TextStyle(color: Colors.white, fontSize: 18),
-                  ),
-                ),
-              ),
+            onTap: () {
+              String otpValue = "$field1$field2$field3$field4";
+
+              if (otpValue.length == 4) {
+                authController.signUpOtpUser(widget.mobile!, otpValue);
+              } else {
+                //    errorController.add(ErrorAnimationType.shake);
+                setState(() {
+                  hasError = true;
+                  //  scaffoldKey.currentState!;
+                });
+              }
+            },
+            child: Obx(
+              () => Padding(
+                padding: const EdgeInsets.only(right: 20, left: 20),
+                child: authController.isLoading.isTrue
+                    ? Container(child: CircularProgressIndicator())
+                    : Container(
+                        height: height * 0.05,
+                        decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(10),
+                            color: Colors.blue),
+                        child: const Center(
+                          child: Text(
+                            "Verify",
+                            style: TextStyle(color: Colors.white, fontSize: 18),
+                          ),
+                        ),
+                      ),
             ),
-          )),
+          )))),
           SizedBox(
             height: height * 0.05,
           ),

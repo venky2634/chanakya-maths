@@ -13,6 +13,7 @@ import 'package:online_class_app/services/network/auth_api_services/get_classlis
 import 'package:dio/dio.dart' as dio;
 import 'package:online_class_app/services/network/auth_api_services/login_api_service.dart';
 import 'package:online_class_app/services/network/auth_api_services/signup_api_service.dart';
+import 'package:online_class_app/update_details/update_details.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:online_class_app/services/network/auth_api_services/update_bank_details_api_services.dart';
 import 'package:online_class_app/services/network/auth_api_services/update_user_data_api_services.dart';
@@ -89,6 +90,38 @@ class AuthController extends GetxController {
         backgroundColor: Colors.green,
       );
     } 
+    print("----------------------------------------------------------");
+    print(response.data);
+    if (response.data["status"]) {
+      final SharedPreferences prefs = await SharedPreferences.getInstance();
+      await prefs.setString('auth_token', response.data['token']);
+      Get.offAll(UpdatedDetails());
+    } else {
+      Get.rawSnackbar(
+          backgroundColor: Colors.red,
+          messageText: Text(
+            response.data['message'],
+            style: TextStyle(color: Colors.white, fontSize: 15),
+          ));
+    }
+  }
+
+  ResendOtpApiServices resendOtpApiServices = ResendOtpApiServices();
+  resendOtpUser(String mobile) async {
+    dio.Response<dynamic> response =
+        await resendOtpApiServices.resendOtpUser(mobile);
+    print(response.data);
+    if (response.data['status']) {
+       final SharedPreferences prefs = await SharedPreferences.getInstance();
+      await prefs.setString("auth_token", response.data['token']);
+    } else {
+       Get.rawSnackbar(
+          backgroundColor: Colors.red,
+          messageText: Text(
+            response.data['message'],
+            style: const TextStyle(color: Colors.white, fontSize: 15),
+          ));
+    }
   }
   UpdateBankDetailsApiServices updateBankDetailsApiServices = UpdateBankDetailsApiServices();
   UpdateUserDataApiServices updateUserDataApiServices = UpdateUserDataApiServices();
