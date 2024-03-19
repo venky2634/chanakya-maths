@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get/get_core/src/get_main.dart';
+import 'package:online_class_app/controller/auth_api_controller/auth_api_controller.dart';
 import 'package:online_class_app/screen/BottomNavigation/bottom_navigation_screen.dart';
 // import 'package:online_class_app/screen/BottomNavigation/Home/home_screen.dart';
 import 'package:online_class_app/screen/onboarding/onboarding_screen.dart';
@@ -47,9 +48,11 @@ class _SpalshScreenState extends State<SpalshScreen> {
         () => OnbordingScreen(),
       );
     } else {
-      Get.offAll(BottomNavigationScreen());
+      Get.find<AuthController>().checkIsUserFilledAllScreens();
     }
   }
+
+  
   Widget build(BuildContext context) {
     return Scaffold(
       body: Container(

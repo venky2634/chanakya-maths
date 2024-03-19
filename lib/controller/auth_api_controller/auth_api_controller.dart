@@ -1,11 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:online_class_app/model/check_all_screen_model.dart';
 import 'package:online_class_app/model/get_classlist_model.dart';
 import 'package:online_class_app/model/get_termfee_plan_model.dart';
 import 'package:online_class_app/model/signup_model.dart';
 import 'package:online_class_app/model/update_bank_details_model.dart';
 import 'package:online_class_app/model/update_user_model.dart';
 import 'package:online_class_app/screen/Auth/Otp_screen.dart';
+import 'package:online_class_app/screen/Auth/signin_screen.dart';
+import 'package:online_class_app/update_details/metion_details.dart';
 import 'package:online_class_app/screen/Payment/payment_choose_screen.dart';
 import 'package:online_class_app/screen/BottomNavigation/bottom_navigation_screen.dart';
 import 'package:online_class_app/services/network/auth_api_services/add_plans_api_service.dart';
@@ -17,7 +20,10 @@ import 'package:online_class_app/services/network/auth_api_services/otp_api_serv
 import 'package:online_class_app/services/network/auth_api_services/resend_otp_api_service.dart';
 import 'package:online_class_app/services/network/auth_api_services/signup_api_service.dart';
 import 'package:online_class_app/services/network/user_avilability/user_avilability_api_service.dart';
+import 'package:online_class_app/services/network/validation_api_services/check_all_filled_up_api_services.dart';
+import 'package:online_class_app/update_details/update_bank_details_n_check.dart';
 import 'package:online_class_app/update_details/update_details.dart';
+import 'package:online_class_app/update_details/update_user_details_on_check.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:online_class_app/services/network/auth_api_services/update_bank_details_api_services.dart';
 import 'package:online_class_app/services/network/auth_api_services/update_user_data_api_services.dart';
@@ -124,15 +130,13 @@ class AuthController extends GetxController {
     isLoading(true);
     dio.Response<dynamic> response =
         await loginServicesApi.loginApi(username: username, password: password);
-    isLoading(false);
-    if (response.data["status"] == true) {
+       // isLoading(false);
+      if (response.data["status"] == true) {
       final prefs = await SharedPreferences.getInstance();
       await prefs.setString("auth_token", response.data["token"]);
       // await prefs.setString("user_id", response.data["user"]["id"]);
       await prefs.setString("verify", "true");
-      Get.offAll(BottomNavigationScreen());
-      print("------------------------>>>>>>>>>>>>>>>>>>>>>>>>>>>>");
-      print(response.data);
+      Get.find<AuthController>().checkIsUserFilledAllScreens();
       //  Get.find<ProfileController>().checkWhetherHeGo();
       Get.rawSnackbar(
         messageText: Text(
@@ -143,11 +147,11 @@ class AuthController extends GetxController {
       );
     } else {
       Get.rawSnackbar(
-          backgroundColor: Colors.red,
-          messageText: Text(
-            response.data['message'],
-            style: TextStyle(color: Colors.white, fontSize: 15),
-          ));
+      backgroundColor: Colors.red,
+      messageText: Text(
+      response.data['message'],
+      style: const TextStyle(color: Colors.white, fontSize: 15),
+      ));
     }
   }
 
@@ -180,7 +184,7 @@ class AuthController extends GetxController {
         .updateBankDetails(updateBankDetailsModel);
     isLoading(false);
     if (response.data["status"] == true) {
-      Get.offAll(PaymentChooseScreen());
+      Get.offAll(const PaymentChooseScreen());
     } else {
       Get.rawSnackbar(
         backgroundColor: Colors.red,
@@ -260,5 +264,83 @@ class AuthController extends GetxController {
             style: const TextStyle(color: Colors.white, fontSize: 15),
           ));
     }
+  }
+
+
+updateUserDataOnLater(UpdateUserModel updateUserModel) async {
+    isLoading(true);
+    dio.Response<dynamic> response =
+        await updateUserDataApiServices.updateUserData(updateUserModel);
+
+    if (response.data["status"] == true) {
+      // updateBankDetails(updateBankDetailsModel);
+      checkIsUserFilledAllScreens();
+    } else {
+      Get.rawSnackbar(
+        backgroundColor: Colors.red,
+        messageText: Text(
+          response.data['message'],
+          style: const TextStyle(color: Colors.white, fontSize: 15),
+        ),
+      );
+    }
+  }
+
+updateBankDetailsOnLater(UpdateBankDetailsModel updateBankDetailsModel) async {
+      isLoading(true);
+    dio.Response<dynamic> response = await updateBankDetailsApiServices
+        .updateBankDetails(updateBankDetailsModel);
+   
+    if (response.data["status"] == true) {
+        checkIsUserFilledAllScreens();
+    } else {
+      Get.rawSnackbar(
+        backgroundColor: Colors.red,
+        messageText: Text(
+          response.data['message'],
+          style: const TextStyle(color: Colors.white, fontSize: 15),
+        ),
+      );
+    }
+  }
+
+
+
+
+  CheckAllFilledUpApiServices checkAllFilledUpApiServices = CheckAllFilledUpApiServices();
+
+
+checkIsUserFilledAllScreens() async{
+  isLoading(true);
+    dio.Response<dynamic> response = await checkAllFilledUpApiServices.checkAllFilledUp();
+     isLoading(false);
+    if(response.data["status"]== true){
+      CheckAllScreenModel checkAllScreenModel = CheckAllScreenModel.fromJson(response.data);
+
+      if(checkAllScreenModel.screens.schoolScreen){
+
+        Get.offAll(()=> UpdateUserDetailsOnLater());
+
+      } else if(checkAllScreenModel.screens.bankScreen){
+
+         Get.offAll(()=> UpdateBanlDetailsOnLater());
+
+      } else if(checkAllScreenModel.screens.planScreen){
+
+         Get.offAll(()=> PaymentChooseScreen());
+        
+      }else{
+        Get.offAll(BottomNavigationScreen());
+      }
+   }
+}
+   
+
+
+
+  logoutUser() async{
+   final SharedPreferences prefs = await SharedPreferences.getInstance();
+   await prefs.setString('auth_token', "null");
+   Get.offAll(()=> SignScreen());
   }
 }

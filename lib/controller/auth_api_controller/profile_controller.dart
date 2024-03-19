@@ -5,6 +5,9 @@ import 'package:online_class_app/model/Get_user_model.dart';
 import 'package:online_class_app/model/get_privacy_policy.dart';
 import 'package:online_class_app/services/network/auth_api_services/get_profile_api_service.dart';
 import 'package:online_class_app/services/network/auth_api_services/privacy_policy/getprivacy_policy_api_service.dart';
+import 'package:online_class_app/screen/Auth/signin_screen.dart';
+import 'package:online_class_app/services/network/auth_api_services/get_profile_api_service.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class ProfileController extends GetxController {
 
@@ -49,6 +52,12 @@ class ProfileController extends GetxController {
       getprivayData = getPrivacyPolicy.data;
     } else {
       //  Get.offAll(BottomNaviBar());
+      if(response.data["status"] == "Token is Expired"){
+      final SharedPreferences prefs = await SharedPreferences.getInstance();
+      await prefs.setString('auth_token', "null");
+      Get.offAll(()=> SignScreen());
+      }
+
     }
     update();
   }
