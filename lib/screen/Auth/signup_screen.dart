@@ -240,7 +240,6 @@ class _SignupScreenState extends State<SignupScreen> {
                           ),
                         );
                       }),
-
                       SizedBox(
                         height: height * 0.02,
                       ),
@@ -613,7 +612,7 @@ class _SignupScreenState extends State<SignupScreen> {
                               if (formKey.currentState!.validate()) {
                                 SignUp signUp = SignUp(
                                     name: studentNamecontroller.text,
-                                    userName: userNamecontroller.text,
+                                    userName: authController.userNamecontroller.text,
                                     email: emailcontroller.text,
                                     mobile: mobilecontroller.text,
                                     password: passwordcontroller.text);

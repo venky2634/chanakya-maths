@@ -67,6 +67,7 @@ class _PaymentChooseScreenState extends State<PaymentChooseScreen> {
         //   ),
         // ),
         body: Container(
+          height: height,
           decoration: const BoxDecoration(
             gradient: LinearGradient(
               colors: [Color(0xFF171F5D), Color(0xFF111236)],
@@ -124,164 +125,167 @@ class _PaymentChooseScreenState extends State<PaymentChooseScreen> {
               ),
               Container(
                 height: 430,
-                child: GetBuilder<AuthController>(
-                  builder: (_) {
-                    return ListView.builder(
-                        itemCount: authController.termfeeList.length,
-                        itemBuilder: (context, index) {
-                          return InkWell(
-                            onTap: () {
-                              setState(() {
-                                selectedIndex = index;
-                                //  checkboxValues[index] = !checkboxValues[index];
-                                planId = authController.termfeeList[index].id;
-                                    price = authController.termfeeList[index].price;
-                              });
-                            },
-                            child: Padding(
-                              padding: const EdgeInsets.all(15),
-                              child: Container(
-                                height: height * 0.12,
-                                width: width * 0.70,
-                                decoration: BoxDecoration(
-                                    gradient: LinearGradient(
-                                      begin: Alignment.centerLeft,
-                                      end: Alignment.centerRight,
-                                      colors: [
-                                        Color(0xFFF8F8F8).withOpacity(0.2),
-                                        Color(0xFF929292).withOpacity(0.2)
+                child: GetBuilder<AuthController>(builder: (_) {
+                  return ListView.builder(
+                      itemCount: authController.termfeeList.length,
+                      itemBuilder: (context, index) {
+                        return InkWell(
+                          onTap: () {
+                            setState(() {
+                              selectedIndex = index;
+                              //  checkboxValues[index] = !checkboxValues[index];
+                              planId = authController.termfeeList[index].id;
+                              price = authController.termfeeList[index].price;
+                            });
+                          },
+                          child: Padding(
+                            padding: const EdgeInsets.all(15),
+                            child: Container(
+                              height: height * 0.12,
+                              width: width * 0.70,
+                              decoration: BoxDecoration(
+                                  gradient: LinearGradient(
+                                    begin: Alignment.centerLeft,
+                                    end: Alignment.centerRight,
+                                    colors: [
+                                      Color(0xFFF8F8F8).withOpacity(0.2),
+                                      Color(0xFF929292).withOpacity(0.2)
+                                    ],
+                                  ),
+                                  border: index == selectedIndex
+                                      ? Border.all(
+                                          color: const Color(0xFFFFCE8A))
+                                      : Border.all(color: Color(0xFF6A6DA6)),
+                                  color: Colors.white,
+                                  borderRadius: BorderRadius.circular(10)),
+                              child: Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                                children: [
+                                  Padding(
+                                    padding: const EdgeInsets.only(left: 10),
+                                    child: Column(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      children: [
+                                        SizedBox(
+                                          height: height * 0.01,
+                                        ),
+                                        Text(
+                                          authController
+                                              .termfeeList[index].title,
+                                          style: TextStyle(
+                                              color: Colors.white,
+                                              fontSize: 18,
+                                              fontWeight: FontWeight.w600),
+                                        ),
+                                        SizedBox(
+                                          height: height * 0.02,
+                                        ),
+                                        Row(
+                                          children: [
+                                            Container(
+                                              height: 5,
+                                              width: 5,
+                                              decoration: BoxDecoration(
+                                                borderRadius:
+                                                    BorderRadius.circular(50),
+                                                color: Colors.grey,
+                                              ),
+                                            ),
+                                            SizedBox(
+                                              width: width * 0.01,
+                                            ),
+                                            Text(
+                                              authController.termfeeList[index]
+                                                  .description,
+                                              style: TextStyle(
+                                                  color: Colors.white,
+                                                  fontSize: 12),
+                                            ),
+                                          ],
+                                        ),
+                                        SizedBox(
+                                          height: height * 0.01,
+                                        ),
+                                        Row(
+                                          children: [
+                                            Container(
+                                              height: 5,
+                                              width: 5,
+                                              decoration: BoxDecoration(
+                                                borderRadius:
+                                                    BorderRadius.circular(50),
+                                                color: Colors.grey,
+                                              ),
+                                            ),
+                                            SizedBox(
+                                              width: width * 0.01,
+                                            ),
+                                            Text(
+                                              authController
+                                                  .termfeeList[index].validTill,
+                                              style: TextStyle(
+                                                  color: Colors.white,
+                                                  fontSize: 12),
+                                            ),
+                                          ],
+                                        )
                                       ],
                                     ),
-                                    border: index == selectedIndex
-                                        ? Border.all(color: const Color(0xFFFFCE8A))
-                                        : Border.all(color: Color(0xFF6A6DA6)),
-                                    color: Colors.white,
-                                    borderRadius: BorderRadius.circular(10)),
-                                child: Row(
-                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                  children: [
-                                    Padding(
-                                      padding: const EdgeInsets.only(left: 10),
-                                      child: Column(
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.start,
-                                        children: [
-                                          SizedBox(
-                                            height: height * 0.01,
-                                          ),
-                                          Text(
-                                            authController.termfeeList[index].title,
-                                            style: TextStyle(
-                                                color: Colors.white,
-                                                fontSize: 18,
-                                                fontWeight: FontWeight.w600),
-                                          ),
-                                          SizedBox(
-                                            height: height * 0.02,
-                                          ),
-                                          Row(
-                                            children: [
-                                              Container(
-                                                height: 5,
-                                                width: 5,
-                                                decoration: BoxDecoration(
-                                                  borderRadius:
-                                                      BorderRadius.circular(50),
-                                                  color: Colors.grey,
-                                                ),
-                                              ),
-                                              SizedBox(
-                                                width: width * 0.01,
-                                              ),
-                                              Text(
-                                                authController
-                                                    .termfeeList[index].description,
-                                                style: TextStyle(
-                                                    color: Colors.white,
-                                                    fontSize: 12),
-                                              ),
-                                            ],
-                                          ),
-                                          SizedBox(
-                                            height: height * 0.01,
-                                          ),
-                                          Row(
-                                            children: [
-                                              Container(
-                                                height: 5,
-                                                width: 5,
-                                                decoration: BoxDecoration(
-                                                  borderRadius:
-                                                      BorderRadius.circular(50),
-                                                  color: Colors.grey,
-                                                ),
-                                              ),
-                                              SizedBox(
-                                                width: width * 0.01,
-                                              ),
-                                              Text(
-                                                authController
-                                                    .termfeeList[index].validTill,
-                                                style: TextStyle(
-                                                    color: Colors.white,
-                                                    fontSize: 12),
-                                              ),
-                                            ],
-                                          )
-                                        ],
-                                      ),
-                                    ),
-                                    Padding(
-                                      padding: const EdgeInsets.only(
-                                          right: 10, bottom: 10),
-                                      child: Column(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.spaceBetween,
-                                        children: [
-                                          selectedIndex == index
-                                              ? Padding(
-                                                  padding: const EdgeInsets.only(
-                                                      left: 20),
-                                                  child: Checkbox(
-                                                    shape: const CircleBorder(),
-                                                    checkColor: Colors.white,
-                                                    activeColor: Color(0xFFFFCE8A),
-                                                    value: true,
-                                                    onChanged: (bool? value) {
-                                                      // setState(() {
-                                                      //    checkboxValues[index] = value!;
-                                                      // });
-                                                    },
-                                                  ),
-                                                )
-                                              : Checkbox(
+                                  ),
+                                  Padding(
+                                    padding: const EdgeInsets.only(
+                                        right: 10, bottom: 10),
+                                    child: Column(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceBetween,
+                                      children: [
+                                        selectedIndex == index
+                                            ? Padding(
+                                                padding: const EdgeInsets.only(
+                                                    left: 20),
+                                                child: Checkbox(
                                                   shape: const CircleBorder(),
                                                   checkColor: Colors.white,
-                                                  activeColor: Color(0xFFFFCE8A),
-                                                  value: false,
+                                                  activeColor:
+                                                      Color(0xFFFFCE8A),
+                                                  value: true,
                                                   onChanged: (bool? value) {
                                                     // setState(() {
                                                     //    checkboxValues[index] = value!;
                                                     // });
                                                   },
                                                 ),
-                                          Text(
-                                            authController.termfeeList[index].price,
-                                            style: TextStyle(
-                                              color: Color(0xFFFFCE8A),
-                                            ),
-                                          )
-                                        ],
-                                      ),
+                                              )
+                                            : Checkbox(
+                                                shape: const CircleBorder(),
+                                                checkColor: Colors.white,
+                                                activeColor: Color(0xFFFFCE8A),
+                                                value: false,
+                                                onChanged: (bool? value) {
+                                                  // setState(() {
+                                                  //    checkboxValues[index] = value!;
+                                                  // });
+                                                },
+                                              ),
+                                        Text(
+                                          authController
+                                              .termfeeList[index].price,
+                                          style: TextStyle(
+                                            color: Color(0xFFFFCE8A),
+                                          ),
+                                        )
+                                      ],
                                     ),
-                                  ],
-                                ),
+                                  ),
+                                ],
                               ),
                             ),
-                          );
-                        });
-                  }
-                ),
+                          ),
+                        );
+                      });
+                }),
               ),
               Row(
                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -328,33 +332,43 @@ class _PaymentChooseScreenState extends State<PaymentChooseScreen> {
                     child: Text(
                       "Please agree the terms and conditions",
                       style: primaryFonts.copyWith(
-                          color: Colors.red, fontSize: 15),
+                          color: Colors.white, fontSize: 15),
                     ),
                   ),
                 ),
               SizedBox(
-                height: height * 0.02,
+                height: height * 0.03,
               ),
-            ],
-          ),
-        ),
-        bottomNavigationBar: Padding(
-          padding: const EdgeInsets.only(right: 20, left: 20, bottom: 10),
-          child: InkWell(
-            onTap: () {
-              authController.addPlanUser(price!, planId!);
-            },
-            child: Container(
-              height: height * 0.06,
-              decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(10), color: Colors.blue),
-              child: const Center(
-                child: Text(
-                  "Continue to Purchase",
-                  style: TextStyle(color: Colors.white, fontSize: 18),
+              Padding(
+                padding: const EdgeInsets.only(right: 20, left: 20, bottom: 10),
+                child: InkWell(
+                  onTap: () {
+                    if (isChecked != false) {
+                      setState(() {
+                        isClicked = false;
+                      });
+                      authController.addPlanUser(price!, planId!);
+                    } else {
+                      setState(() {
+                        isClicked = true;
+                      });
+                    }
+                  },
+                  child: Container(
+                    height: height * 0.06,
+                    decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(10),
+                        color: Colors.blue),
+                    child: const Center(
+                      child: Text(
+                        "Continue to Purchase",
+                        style: TextStyle(color: Colors.white, fontSize: 18),
+                      ),
+                    ),
+                  ),
                 ),
               ),
-            ),
+            ],
           ),
         ),
       ),

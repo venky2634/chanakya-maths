@@ -3,11 +3,13 @@ import 'package:get/get.dart';
 import 'package:online_class_app/model/check_all_screen_model.dart';
 import 'package:online_class_app/model/get_classlist_model.dart';
 import 'package:online_class_app/model/get_termfee_plan_model.dart';
+import 'package:online_class_app/model/qrcode_model.dart';
 import 'package:online_class_app/model/signup_model.dart';
 import 'package:online_class_app/model/update_bank_details_model.dart';
 import 'package:online_class_app/model/update_user_model.dart';
 import 'package:online_class_app/screen/Auth/Otp_screen.dart';
 import 'package:online_class_app/screen/Auth/signin_screen.dart';
+import 'package:online_class_app/services/network/auth_api_services/payment_option_api_services.dart';
 import 'package:online_class_app/update_details/metion_details.dart';
 import 'package:online_class_app/screen/Payment/payment_choose_screen.dart';
 import 'package:online_class_app/screen/BottomNavigation/bottom_navigation_screen.dart';
@@ -130,8 +132,8 @@ class AuthController extends GetxController {
     isLoading(true);
     dio.Response<dynamic> response =
         await loginServicesApi.loginApi(username: username, password: password);
-       // isLoading(false);
-      if (response.data["status"] == true) {
+    // isLoading(false);
+    if (response.data["status"] == true) {
       final prefs = await SharedPreferences.getInstance();
       await prefs.setString("auth_token", response.data["token"]);
       // await prefs.setString("user_id", response.data["user"]["id"]);
@@ -147,11 +149,11 @@ class AuthController extends GetxController {
       );
     } else {
       Get.rawSnackbar(
-      backgroundColor: Colors.red,
-      messageText: Text(
-      response.data['message'],
-      style: const TextStyle(color: Colors.white, fontSize: 15),
-      ));
+          backgroundColor: Colors.red,
+          messageText: Text(
+            response.data['message'],
+            style: const TextStyle(color: Colors.white, fontSize: 15),
+          ));
     }
   }
 
@@ -266,8 +268,7 @@ class AuthController extends GetxController {
     }
   }
 
-
-updateUserDataOnLater(UpdateUserModel updateUserModel) async {
+  updateUserDataOnLater(UpdateUserModel updateUserModel) async {
     isLoading(true);
     dio.Response<dynamic> response =
         await updateUserDataApiServices.updateUserData(updateUserModel);
@@ -286,13 +287,14 @@ updateUserDataOnLater(UpdateUserModel updateUserModel) async {
     }
   }
 
-updateBankDetailsOnLater(UpdateBankDetailsModel updateBankDetailsModel) async {
-      isLoading(true);
+  updateBankDetailsOnLater(
+      UpdateBankDetailsModel updateBankDetailsModel) async {
+    isLoading(true);
     dio.Response<dynamic> response = await updateBankDetailsApiServices
         .updateBankDetails(updateBankDetailsModel);
-   
+
     if (response.data["status"] == true) {
-        checkIsUserFilledAllScreens();
+      checkIsUserFilledAllScreens();
     } else {
       Get.rawSnackbar(
         backgroundColor: Colors.red,
@@ -304,43 +306,65 @@ updateBankDetailsOnLater(UpdateBankDetailsModel updateBankDetailsModel) async {
     }
   }
 
+  CheckAllFilledUpApiServices checkAllFilledUpApiServices =
+      CheckAllFilledUpApiServices();
 
+  checkIsUserFilledAllScreens() async {
+    isLoading(true);
+    dio.Response<dynamic> response =
+        await checkAllFilledUpApiServices.checkAllFilledUp();
+    isLoading(false);
+    if (response.data["status"] == true) {
+      CheckAllScreenModel checkAllScreenModel =
+          CheckAllScreenModel.fromJson(response.data);
 
-
-  CheckAllFilledUpApiServices checkAllFilledUpApiServices = CheckAllFilledUpApiServices();
-
-
-checkIsUserFilledAllScreens() async{
-  isLoading(true);
-    dio.Response<dynamic> response = await checkAllFilledUpApiServices.checkAllFilledUp();
-     isLoading(false);
-    if(response.data["status"]== true){
-      CheckAllScreenModel checkAllScreenModel = CheckAllScreenModel.fromJson(response.data);
-
-      if(checkAllScreenModel.screens.schoolScreen){
-
-        Get.offAll(()=> UpdateUserDetailsOnLater());
-
-      } else if(checkAllScreenModel.screens.bankScreen){
-
-         Get.offAll(()=> UpdateBanlDetailsOnLater());
-
-      } else if(checkAllScreenModel.screens.planScreen){
-
-         Get.offAll(()=> PaymentChooseScreen());
-        
-      }else{
+      if (checkAllScreenModel.screens.schoolScreen == false) {
+        Get.offAll(() => UpdateUserDetailsOnLater());
+      } else if (checkAllScreenModel.screens.bankScreen == false) {
+        Get.offAll(() => UpdateBanlDetailsOnLater());
+      } else if (checkAllScreenModel.screens.planScreen == false) {
+        Get.offAll(() => PaymentChooseScreen());
+      } else {
         Get.offAll(BottomNavigationScreen());
       }
-   }
-}
-   
+    } else {
+      if (response.data["status"] == "Token is Expired") {
+        logoutUser();
+      }
+    }
+  }
 
+  logoutUser() async {
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
+    await prefs.setString('auth_token', "null");
+    Get.offAll(() => SignScreen());
+  }
 
+  PaymentOptionApiService paymentOptionApiService = PaymentOptionApiService();
 
-  logoutUser() async{
-   final SharedPreferences prefs = await SharedPreferences.getInstance();
-   await prefs.setString('auth_token', "null");
-   Get.offAll(()=> SignScreen());
+  QrData? qrCodeData;
+
+  paymentOptionUser(String userId, String planId) async {
+    dio.Response<dynamic> response =
+        await paymentOptionApiService.paymentOptionUser(userId, planId);
+    if (response.data["status"] == true) {
+      Qrcode qrcode = Qrcode.fromJson(response.data);
+      qrCodeData = qrcode.data;
+      update();
+      Get.rawSnackbar(
+        backgroundColor: Colors.green,
+        messageText: Text(
+          "Payment has been done sucessfully",
+          style: TextStyle(color: Colors.white, fontSize: 15),
+        ),
+      );
+    } else {
+      Get.rawSnackbar(
+          backgroundColor: Colors.red,
+          messageText: Text(
+            response.data['message'],
+            style: const TextStyle(color: Colors.white, fontSize: 15),
+          ));
+    }
   }
 }

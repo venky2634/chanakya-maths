@@ -17,12 +17,14 @@ class PaymentSucessScreen extends StatefulWidget {
 class _PaymentSucessScreenState extends State<PaymentSucessScreen> {
   @override
   void initState() {
-    // TODO: implement initState
+ 
     super.initState();
-    Timer.periodic(const Duration(seconds: 3), (timer) {
-      Get.to(BottomNavigationScreen());
-      //  timer.cancel();
-    });
+    redirectToNextScreen();
+  }
+
+  redirectToNextScreen() async {
+    await Future.delayed(Duration(seconds: 2));
+    Get.offAll(BottomNavigationScreen());
   }
 
   @override

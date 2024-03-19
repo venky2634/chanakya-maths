@@ -43,9 +43,12 @@ abstract class BaseApiServices {
   // add plans
   final String addPlansUrl =
       "https://chanakyamathskendra.batechnology.in/api/auth/add-plans";
-      // final String LoginURI="https://chanakyamathskendra.batechnology.in/api/login";
+  // final String LoginURI="https://chanakyamathskendra.batechnology.in/api/login";
 
+  final String checkAllFilledUpURL =
+      "https://chanakyamathskendra.batechnology.in/api/auth/check-screens";
 
-
-  final String checkAllFilledUpURL = "https://chanakyamathskendra.batechnology.in/api/auth/check-screens";
+  // qr code
+  final String qrCodeUrl =
+      "https://chanakyamathskendra.batechnology.in/api/auth/generate-payment-qr";
 }
