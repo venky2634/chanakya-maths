@@ -9,7 +9,9 @@ import 'package:online_class_app/model/update_bank_details_model.dart';
 import 'package:online_class_app/model/update_user_model.dart';
 import 'package:online_class_app/screen/Auth/Otp_screen.dart';
 import 'package:online_class_app/screen/Auth/signin_screen.dart';
+import 'package:online_class_app/screen/BottomNavigation/Settings/pending_approval_screen.dart';
 import 'package:online_class_app/services/network/auth_api_services/payment_option_api_services.dart';
+import 'package:online_class_app/services/network/payment_api/submit_payement_api_services.dart';
 import 'package:online_class_app/update_details/metion_details.dart';
 import 'package:online_class_app/screen/Payment/payment_choose_screen.dart';
 import 'package:online_class_app/screen/BottomNavigation/bottom_navigation_screen.dart';
@@ -97,6 +99,7 @@ class AuthController extends GetxController {
     if (response.data["status"]) {
       final SharedPreferences prefs = await SharedPreferences.getInstance();
       await prefs.setString('auth_token', response.data['token']);
+      await prefs.setString('id', response.data['data']['user_id'].toString());
       Get.offAll(UpdatedDetails());
     } else {
       Get.rawSnackbar(
@@ -136,6 +139,7 @@ class AuthController extends GetxController {
     if (response.data["status"] == true) {
       final prefs = await SharedPreferences.getInstance();
       await prefs.setString("auth_token", response.data["token"]);
+      await prefs.setString('id', response.data['data']['user_id'].toString());
       // await prefs.setString("user_id", response.data["user"]["id"]);
       await prefs.setString("verify", "true");
       Get.find<AuthController>().checkIsUserFilledAllScreens();
@@ -246,27 +250,6 @@ class AuthController extends GetxController {
 
   AddPlansApiServices addPlansApiServices = AddPlansApiServices();
 
-  addPlanUser(String price, int planId) async {
-    dio.Response<dynamic> response =
-        await addPlansApiServices.addPlanUser(price, planId);
-    if (response.data["status"] == true) {
-      Get.rawSnackbar(
-        backgroundColor: Colors.green,
-        messageText: Text(
-          "Add plan sucessfully",
-          style: TextStyle(color: Colors.white, fontSize: 15),
-        ),
-      );
-      Get.offAll(PaymentSucessScreen());
-    } else {
-      Get.rawSnackbar(
-          backgroundColor: Colors.red,
-          messageText: Text(
-            response.data['message'],
-            style: const TextStyle(color: Colors.white, fontSize: 15),
-          ));
-    }
-  }
 
   updateUserDataOnLater(UpdateUserModel updateUserModel) async {
     isLoading(true);
@@ -347,17 +330,74 @@ class AuthController extends GetxController {
   paymentOptionUser(String userId, String planId) async {
     dio.Response<dynamic> response =
         await paymentOptionApiService.paymentOptionUser(userId, planId);
+    print(response.data);
     if (response.data["status"] == true) {
       Qrcode qrcode = Qrcode.fromJson(response.data);
       qrCodeData = qrcode.data;
       update();
+     
+    } else {
       Get.rawSnackbar(
-        backgroundColor: Colors.green,
-        messageText: Text(
-          "Payment has been done sucessfully",
-          style: TextStyle(color: Colors.white, fontSize: 15),
-        ),
-      );
+          backgroundColor: Colors.red,
+          messageText: Text(
+            response.data['message'],
+            style: const TextStyle(color: Colors.white, fontSize: 15),
+          ));
+    }
+  }
+
+  SubmitPaymentApiService submitPaymentApiService = SubmitPaymentApiService();
+
+  submitPaymentDetails({
+    required String txnId,
+    required String paymentId,
+    required int planId,
+    required String price,
+    required String paymentImage,
+  }) async{
+    isLoading(true);
+   dio.Response<dynamic> response = await submitPaymentApiService.submitPaymentApiServices(txnId, paymentId, paymentImage);
+    isLoading(false);
+   
+   if (response.data["status"] == true) {
+      
+
+     addPlanUser( price,  planId);
+        Get.rawSnackbar(
+          backgroundColor: Colors.green,
+          messageText: Text(
+            response.data['message'],
+            style: const TextStyle(color: Colors.white, fontSize: 15),
+          ));
+     
+   }else{
+ Get.rawSnackbar(
+          backgroundColor: Colors.red,
+          messageText: Text(
+            response.data['message'],
+            style: const TextStyle(color: Colors.white, fontSize: 15),
+          ));
+   }
+
+
+  }
+
+
+
+  
+  addPlanUser(String price, int planId) async {
+    dio.Response<dynamic> response =
+        await addPlansApiServices.addPlanUser(price, planId);
+    if (response.data["status"] == true) {
+      // Get.rawSnackbar(
+      //   backgroundColor: Colors.green,
+      //   messageText: Text(
+      //     "Add plan sucessfully",
+      //     style: TextStyle(color: Colors.white, fontSize: 15),
+      //   ),
+      // );
+      // Get.offAll(PaymentSucessScreen());
+       Get.offAll(()=> PendingApprovalScreen());
     } else {
       Get.rawSnackbar(
           backgroundColor: Colors.red,

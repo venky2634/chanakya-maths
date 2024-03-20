@@ -17,7 +17,6 @@ class PaymentSucessScreen extends StatefulWidget {
 class _PaymentSucessScreenState extends State<PaymentSucessScreen> {
   @override
   void initState() {
- 
     super.initState();
     redirectToNextScreen();
   }

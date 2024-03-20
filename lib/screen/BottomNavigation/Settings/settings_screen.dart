@@ -97,7 +97,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                 ksizedbox15,
                 InkWell(
                   onTap: () {
-                    Get.to(PaymentOption());
+                    // Get.to(PaymentOption());
                   },
                   child: Container(
                     child: Row(

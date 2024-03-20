@@ -4,6 +4,7 @@ import 'package:get/get.dart';
 import 'package:online_class_app/const/app_fonts.dart';
 import 'package:online_class_app/controller/auth_api_controller/auth_api_controller.dart';
 import 'package:online_class_app/model/term_fee_model.dart';
+import 'package:online_class_app/screen/BottomNavigation/Settings/payment.dart';
 import 'package:online_class_app/screen/Payment/Payment_sucess_screen.dart';
 
 class PaymentChooseScreen extends StatefulWidget {
@@ -347,7 +348,8 @@ class _PaymentChooseScreenState extends State<PaymentChooseScreen> {
                       setState(() {
                         isClicked = false;
                       });
-                      authController.addPlanUser(price!, planId!);
+                      // authController.addPlanUser(price!, planId!);
+                      Get.to(()=> PaymentOption(planId: planId!.toString(),));
                     } else {
                       setState(() {
                         isClicked = true;

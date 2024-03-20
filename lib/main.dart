@@ -4,6 +4,7 @@ import 'package:get/get.dart';
 import 'package:online_class_app/controller/auth_api_controller/auth_api_controller.dart';
 import 'package:online_class_app/controller/auth_api_controller/profile_controller.dart';
 import 'package:online_class_app/screen/BottomNavigation/Home/home_screen.dart';
+import 'package:online_class_app/screen/BottomNavigation/Settings/pending_approval_screen.dart';
 import 'package:online_class_app/screen/Payment/payment_choose_screen.dart';
 import 'package:online_class_app/screen/SplashScreen/splash_sreen.dart';
 import 'package:device_preview/device_preview.dart';
@@ -34,8 +35,9 @@ class MyApp extends StatelessWidget {
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
         useMaterial3: true,
       ),
-      home: //PaymentChooseScreen()
-          const SpalshScreen(),
+      home: const SpalshScreen(),
+      //  home: PendingApprovalScreen(),
+    
     );
   }
 }

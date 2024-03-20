@@ -7,15 +7,24 @@ import 'package:online_class_app/model/update_user_model.dart';
 import 'package:online_class_app/services/base_api_services/base_urls.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-class PaymentOptionApiService extends BaseApiServices {
-  Future paymentOptionUser(String userId, String planId) async {
+class SubmitPaymentApiService extends BaseApiServices {
+  Future submitPaymentApiServices(String txnId,String paymentId,String paymentImage) async {
     dynamic responseJson;
     try {
       var dio = Dio();
       final prefs = await SharedPreferences.getInstance();
       String? authtoken = prefs.getString("auth_token");
       String? _userId = prefs.getString("id");
-      var response = dio.post(qrCodeUrl,
+
+
+      FormData formData = FormData.fromMap({
+        "txn_id": txnId,
+        "payment_id": paymentId,
+        "payment_image":await MultipartFile.fromFile(paymentImage),
+      });
+
+
+      var response = dio.post(uploadPaymentURL,
           options: Options(
               headers: {
                 'Content-Type': 'application/json',
@@ -25,7 +34,7 @@ class PaymentOptionApiService extends BaseApiServices {
               validateStatus: (status) {
                 return status! <= 500;
               }),
-          data: {"user_id": _userId, "plan_id": planId});
+          data: formData);
       responseJson = response;
     } on SocketException {
       print("No internet");
