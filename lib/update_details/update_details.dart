@@ -402,6 +402,9 @@ class _UpdatedDetailsState extends State<UpdatedDetails> {
                     ),
                   ),
                 ),
+               const SizedBox(
+                  height: 40,
+                )
               ],
             ),
           ),

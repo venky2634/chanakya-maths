@@ -21,7 +21,7 @@ class _SignupScreenState extends State<SignupScreen> {
   AuthController authController = Get.find<AuthController>();
   final controller =Get.find<ProfileController>();
   bool value = false;
-  bool passwordVisible = false;
+  bool passwordVisible = true;
   bool isChecked = false;
   bool isClicked = false;
 
@@ -132,6 +132,7 @@ class _SignupScreenState extends State<SignupScreen> {
                         padding: const EdgeInsets.only(right: 20, left: 20),
                         child: TextFormField(
                           controller: studentNamecontroller,
+                          textCapitalization: TextCapitalization.words,
                           validator: (value) {
                             if (value!.isEmpty) {
                               return 'Enter a Student Name';
@@ -218,10 +219,10 @@ class _SignupScreenState extends State<SignupScreen> {
                                 ),
                               ),
                               ksizedbox10,
-                              Row(
+                           if(authController.userNamecontroller.text.isNotEmpty)   Row(
                                 mainAxisAlignment: MainAxisAlignment.end,
                                 children: [
-                                  authController.isavilabe.isTrue
+                                  authController.isavilabe.isTrue 
                                       ? Text(
                                           'Availabe',
                                           style: TextStyle(
@@ -505,7 +506,7 @@ class _SignupScreenState extends State<SignupScreen> {
         isScrollControlled: true,
         builder: (BuildContext context) {
           return Container(
-            decoration: BoxDecoration(
+            decoration: const BoxDecoration(
                 color: Colors.white,
                 borderRadius: BorderRadius.only(
                     topRight: Radius.circular(15),
@@ -574,7 +575,7 @@ class _SignupScreenState extends State<SignupScreen> {
             ),
           );
         });
-                                      },
+        },
                                     text: ' Privacy Policy',
                                     style: TextStyle(
                                         decoration: TextDecoration.none,

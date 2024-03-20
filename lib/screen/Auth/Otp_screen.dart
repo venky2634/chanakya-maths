@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:online_class_app/const/app_fonts.dart';
 import 'package:online_class_app/controller/auth_api_controller/auth_api_controller.dart';
@@ -84,7 +85,7 @@ class _OtpValidationState extends State<OtpValidation> {
       body: Column(
         children: [
           SizedBox(
-            height: height * 0.05,
+            height:20.h,
           ),
           const Padding(
             padding: const EdgeInsets.only(left: 15),
@@ -110,7 +111,7 @@ class _OtpValidationState extends State<OtpValidation> {
             ),
           ),
           SizedBox(
-            height: height * 0.05,
+            height: 30.h,
           ),
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -122,7 +123,7 @@ class _OtpValidationState extends State<OtpValidation> {
             ],
           ),
           SizedBox(
-            height: height * 0.03,
+            height: 30.h,
           ),
           start != 0 ? Padding(
                   padding:  EdgeInsets.only(left: 30),
@@ -241,7 +242,7 @@ class _OtpValidationState extends State<OtpValidation> {
             ),
           )))),
           SizedBox(
-            height: height * 0.05,
+            height: 20.h,
           ),
           Row(
             children: [
@@ -303,7 +304,7 @@ class _OtpValidationState extends State<OtpValidation> {
                     }),
                 icon: Text(
                   text,
-                  style: TextStyle(fontSize: 28),
+                  style: TextStyle(fontSize: 28.sp),
                 )),
           ),
         ),
@@ -326,9 +327,9 @@ class _OtpValidationState extends State<OtpValidation> {
                       }
                     },
                   ),
-              icon: const Icon(
+              icon:  Icon(
                 Icons.backspace_outlined,
-                size: 30,
+                size: 30.sp,
                 color: Colors.black,
               )),
         ),

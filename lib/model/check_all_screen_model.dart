@@ -32,17 +32,20 @@ class ScreensData {
     bool schoolScreen;
     bool bankScreen;
     bool planScreen;
+    bool isAdminApproved;
 
     ScreensData({
         required this.schoolScreen,
         required this.bankScreen,
         required this.planScreen,
+        required this.isAdminApproved,
     });
 
     factory ScreensData.fromJson(Map<String, dynamic> json) => ScreensData(
         schoolScreen: json["school_screen"],
         bankScreen: json["bank_screen"],
         planScreen: json["plan_screen"],
+        isAdminApproved: json["isAdminApproved"],
     );
 
     Map<String, dynamic> toJson() => {

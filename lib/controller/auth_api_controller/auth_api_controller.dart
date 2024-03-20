@@ -140,6 +140,7 @@ class AuthController extends GetxController {
       final prefs = await SharedPreferences.getInstance();
       await prefs.setString("auth_token", response.data["token"]);
       await prefs.setString('id', response.data['data']['user_id'].toString());
+         await prefs.setInt('std_id',int.parse(response.data['data']['std_id'].toString()));
       // await prefs.setString("user_id", response.data["user"]["id"]);
       await prefs.setString("verify", "true");
       Get.find<AuthController>().checkIsUserFilledAllScreens();
@@ -260,6 +261,7 @@ class AuthController extends GetxController {
       // updateBankDetails(updateBankDetailsModel);
       checkIsUserFilledAllScreens();
     } else {
+       isLoading(false);
       Get.rawSnackbar(
         backgroundColor: Colors.red,
         messageText: Text(
@@ -307,7 +309,9 @@ class AuthController extends GetxController {
         Get.offAll(() => UpdateBanlDetailsOnLater());
       } else if (checkAllScreenModel.screens.planScreen == false) {
         Get.offAll(() => PaymentChooseScreen());
-      } else {
+      }else if (checkAllScreenModel.screens.isAdminApproved == false) {
+        Get.offAll(() => PendingApprovalScreen());
+      }  else {
         Get.offAll(BottomNavigationScreen());
       }
     } else {

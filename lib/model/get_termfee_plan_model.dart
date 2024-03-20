@@ -34,6 +34,7 @@ class TermfeePlanModel {
     String description;
     String price;
     String validTill;
+    String standard;
 
     TermfeePlanModel({
         required this.id,
@@ -41,6 +42,7 @@ class TermfeePlanModel {
         required this.description,
         required this.price,
         required this.validTill,
+        required this.standard,
     });
 
     factory TermfeePlanModel.fromJson(Map<String, dynamic> json) => TermfeePlanModel(
@@ -48,6 +50,7 @@ class TermfeePlanModel {
         title: json["title"],
         description: json["description"],
         price: json["price"],
+        standard: json["standard"],
         validTill: json["valid_till"],
     );
 

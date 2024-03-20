@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:lottie/lottie.dart';
 import 'package:online_class_app/const/app_fonts.dart';
+import 'package:online_class_app/controller/auth_api_controller/auth_api_controller.dart';
 import 'package:online_class_app/screen/BottomNavigation/bottom_navigation_screen.dart';
 
 
@@ -19,7 +20,7 @@ class _PendingApprovalScreenState extends State<PendingApprovalScreen> {
 @override
 void initState() {
   super.initState();
-  redirectToNextScreen();
+  // redirectToNextScreen();
 }
 
    
@@ -36,8 +37,19 @@ void initState() {
   Widget build(BuildContext context) {
     var size = MediaQuery.of(context).size;
     return Scaffold(
+      appBar: AppBar(
+        actions: [
+          Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 15),
+          child: InkWell(
+            onTap: (){
+                    Get.find<AuthController>().logoutUser();       
+            },
+            child: const Icon(Icons.logout)),
+        )],
+      ),
       body: Container(
-        height: size.height,
+        height: size.height - 150,
         width: size.width,
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,

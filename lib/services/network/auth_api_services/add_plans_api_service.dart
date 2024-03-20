@@ -12,20 +12,18 @@ class AddPlansApiServices extends BaseApiServices {
       var dio = Dio();
       final prefs = await SharedPreferences.getInstance();
       String? authtoken = prefs.getString("auth_token");
+       int? stdId = prefs.getInt("std_id");
       var response = dio.post(addPlansUrl,
           options: Options(
               headers: {
-  'Content-Type': 'application/json',
-  'Authorization': 'Bearer $authtoken'
-},
+                'Content-Type': 'application/json',
+                'Authorization': 'Bearer $authtoken'
+              },
               followRedirects: false,
               validateStatus: (status) {
                 return status! <= 500;
               }),
-          data: {
-            "plan_id":1,
-    "price":price
-          });
+          data: {"plan_id": planId, "price": price,"total_amount": price,"std_id":stdId});
       responseJson = response;
     } on SocketException {
       print("No internet");

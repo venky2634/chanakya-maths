@@ -45,10 +45,10 @@ class _PaymentOptionState extends State<PaymentOption> {
           onTap: () {
             Get.back();
           },
-          child: Icon(
+          child: const Icon(
             Icons.arrow_back,
             size: 25,
-            color: const Color.fromARGB(255, 110, 83, 83),
+            color: Color.fromARGB(255, 110, 83, 83),
           ),
         ),
         title: const Text(
@@ -59,10 +59,10 @@ class _PaymentOptionState extends State<PaymentOption> {
       ),
       body: Padding(
         padding: const EdgeInsets.only(left: 20, right: 20, top: 15),
-        child: SingleChildScrollView(
-          child: Center(
-            child: GetBuilder<AuthController>(builder: (_) {
-              return Column(
+        child: Center(
+          child: GetBuilder<AuthController>(builder: (_) {
+            return SingleChildScrollView(
+              child: Column(
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
                   Text(
@@ -107,13 +107,11 @@ class _PaymentOptionState extends State<PaymentOption> {
                   //   ),
                   // ),
                   ksizedbox15,
-                  authController.qrCodeData == null
-                      ? Text("")
-                      : Text(
-                          "Amount: ₹${authController.qrCodeData!.paymentData.amount}",
-                          style: primaryFonts.copyWith(
-                              fontSize: 18, fontWeight: FontWeight.w700),
-                        ),
+                authController.qrCodeData == null ? Text(""):  Text(
+                    "Amount: ₹${authController.qrCodeData!.paymentData.amount}",
+                    style: primaryFonts.copyWith(
+                        fontSize: 18, fontWeight: FontWeight.w700),
+                  ),
                   ksizedbox15,
                   Text(
                     "After making the payment please upload the screenshot in below",
@@ -124,10 +122,10 @@ class _PaymentOptionState extends State<PaymentOption> {
                   ksizedbox15,
                   TextFormField(
                     controller: transactionIdController,
-                    decoration: InputDecoration(
+                    keyboardType: TextInputType.number,
+                    decoration: const InputDecoration(
                         hintText: "Enter Transaction ID",
-                        border: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(18))),
+                        border: OutlineInputBorder()),
                   ),
                   ksizedbox15,
                   Container(
@@ -140,7 +138,7 @@ class _PaymentOptionState extends State<PaymentOption> {
                           style: BorderStyle.solid,
                           width: 1,
                         ),
-                        borderRadius: BorderRadius.circular(20)),
+                        borderRadius: BorderRadius.circular(10)),
                     child: GestureDetector(
                       onTap: () async {
                         image =
@@ -173,9 +171,9 @@ class _PaymentOptionState extends State<PaymentOption> {
                   ),
                   ksizedbox20,
                 ],
-              );
-            }),
-          ),
+              ),
+            );
+          }),
         ),
       ),
       bottomNavigationBar: Obx(

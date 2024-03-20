@@ -12,16 +12,20 @@ class GetPlanApiServices extends BaseApiServices {
       var dio = Dio();
        final prefs = await SharedPreferences.getInstance();
       String? authtoken = prefs.getString("auth_token");
+      int? stdId = prefs.getInt("std_id");
       var response = dio.get(getplanUrl,
-        
+         queryParameters: {
+           "std_id": stdId
+         },
           options: Options(
             headers: {
-  'Authorization': 'Bearer $authtoken'
-},
+            'Authorization': 'Bearer $authtoken'
+          },
             followRedirects: false,
             validateStatus: (status) {
               return status! <= 500;
             },
+        
           ));
       responseJson = response;
     } on SocketException {

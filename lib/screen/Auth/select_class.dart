@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:online_class_app/const/app_fonts.dart';
 import 'package:online_class_app/controller/auth_api_controller/auth_api_controller.dart';
 import 'package:online_class_app/screen/Auth/signup_screen.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class SelectClass extends StatefulWidget {
   SelectClass({super.key});
@@ -57,15 +59,15 @@ class _SelectClassState extends State<SelectClass> {
             : Container(
                 decoration: BoxDecoration(
                     image: DecorationImage(
-                        image: AssetImage("Assets/Logo (2).png"))),
+                        image: AssetImage("Assets/Logo (2).png"),fit: BoxFit.fill)),
                 child: Center(
                   child: Column(
                     children: [
                       SizedBox(
-                        height: 140,
+                        height: 100.h,
                       ),
                       Padding(
-                        padding: const EdgeInsets.only(bottom: 100),
+                        padding: const EdgeInsets.only(bottom: 60),
                         child: Text("Select Class you want to Learn",
                             style: primaryFonts.copyWith(
                                 fontSize: 18,
@@ -94,7 +96,7 @@ class _SelectClassState extends State<SelectClass> {
                                   margin: EdgeInsets.only(
                                       bottom: 15, right: 15, left: 15),
                                   padding: EdgeInsets.symmetric(horizontal: 15),
-                                  height: 50,
+                                  height: 50.h,
                                   width: size.width * .9,
                                   alignment: Alignment.center,
                                   decoration: BoxDecoration(
@@ -109,12 +111,12 @@ class _SelectClassState extends State<SelectClass> {
                                           authController
                                               .classesList[index].standard,
                                           style: primaryFonts.copyWith(
-                                              fontSize: 17,
+                                              fontSize: 17.sp,
                                               fontWeight: FontWeight.w500,
                                               color: Colors.blue)),
                                       Container(
-                                        height: 25,
-                                        width: 25,
+                                        height: 25.h,
+                                        width: 25.w,
                                         decoration: BoxDecoration(
                                             color: isSelected == index
                                                 ? Colors.blue
@@ -134,10 +136,12 @@ class _SelectClassState extends State<SelectClass> {
                             });
                       }),
                       SizedBox(
-                        height: size.height * 0.11,
+                        height: size.height * 0.10,
                       ),
                       InkWell(
-                        onTap: () {
+                        onTap: () async{
+                            final prefs = await SharedPreferences.getInstance();
+                             await prefs.setInt('std_id', selectedId!);
                           Get.to(SignupScreen(id: selectedId!));
                         },
                         child: Padding(

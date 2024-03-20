@@ -1,5 +1,6 @@
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:online_class_app/const/app_fonts.dart';
 import 'package:online_class_app/controller/auth_api_controller/auth_api_controller.dart';
@@ -74,62 +75,62 @@ class _PaymentChooseScreenState extends State<PaymentChooseScreen> {
               colors: [Color(0xFF171F5D), Color(0xFF111236)],
             ),
           ),
-          child: SingleChildScrollView(
-            child: Column(
-              children: [
-                SizedBox(
-                  height: height * 0.03,
-                ),
-                Padding(
-                  padding: const EdgeInsets.only(left: 15),
-                  child: Align(
-                    alignment: Alignment.centerLeft,
-                    child: InkWell(
-                      onTap: () {
-                        Get.back();
-                      },
-                      child: Icon(
-                        Icons.arrow_back_ios_new,
-                        size: 15,
-                        color: Colors.white,
+          child:  GetBuilder<AuthController>(builder: (_) {
+              return SingleChildScrollView(
+                child: Column(
+                  children: [
+                    SizedBox(
+                      height: height * 0.03,
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.only(left: 15),
+                      child: Align(
+                        alignment: Alignment.centerLeft,
+                        child: InkWell(
+                          onTap: () {
+                            Get.back();
+                          },
+                          child: const Icon(
+                            Icons.arrow_back_ios_new,
+                            size: 15,
+                            color: Colors.white,
+                          ),
+                        ),
                       ),
                     ),
-                  ),
-                ),
-                SizedBox(
-                  height: height * 0.05,
-                ),
-                const Padding(
-                  padding: const EdgeInsets.only(left: 15),
-                  child: Align(
-                    alignment: Alignment.centerLeft,
-                    child: Text(
-                      "Choose Your Plan",
-                      style: TextStyle(
-                          color: Colors.white,
-                          fontSize: 25,
-                          fontWeight: FontWeight.bold),
+                    SizedBox(
+                      height: height * 0.05,
                     ),
-                  ),
-                ),
-                const Padding(
-                  padding: EdgeInsets.only(left: 15),
-                  child: Align(
-                    alignment: Alignment.centerLeft,
-                    child: Text(
-                      "10th Class",
-                      style: TextStyle(color: Colors.white, fontSize: 16),
+                    const Padding(
+                      padding:  EdgeInsets.only(left: 15),
+                      child: Align(
+                        alignment: Alignment.centerLeft,
+                        child: Text(
+                          "Choose Your Fee",
+                          style: TextStyle(
+                              color: Colors.white,
+                              fontSize: 25,
+                              fontWeight: FontWeight.bold),
+                        ),
+                      ),
                     ),
-                  ),
-                ),
-                SizedBox(
-                  height: height * 0.02,
-                ),
-                Container(
-                  height: 470,
-                  child: GetBuilder<AuthController>(builder: (_) {
-                    return ListView.builder(
+                 if(authController.termfeeList.isNotEmpty)    Padding(
+                      padding: EdgeInsets.only(left: 15),
+                      child: Align(
+                        alignment: Alignment.centerLeft,
+                        child: Text(
+                          authController.termfeeList.first.standard,
+                          style:const  TextStyle(color: Colors.white, fontSize: 16),
+                        ),
+                      ),
+                    ),
+                    SizedBox(
+                      height: height * 0.02,
+                    ),
+                    ListView.builder(
                         itemCount: authController.termfeeList.length,
+                        shrinkWrap: true,
+                        physics: NeverScrollableScrollPhysics(),
                         itemBuilder: (context, index) {
                           return InkWell(
                             onTap: () {
@@ -143,8 +144,8 @@ class _PaymentChooseScreenState extends State<PaymentChooseScreen> {
                             child: Padding(
                               padding: const EdgeInsets.all(15),
                               child: Container(
-                                height: height * 0.13,
-                                // width: width * 0.70,
+                                height: 100,
+                                width: width * 0.70,
                                 decoration: BoxDecoration(
                                     gradient: LinearGradient(
                                       begin: Alignment.centerLeft,
@@ -167,14 +168,12 @@ class _PaymentChooseScreenState extends State<PaymentChooseScreen> {
                                     Padding(
                                       padding: const EdgeInsets.only(left: 10),
                                       child: Column(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.spaceAround,
                                         crossAxisAlignment:
                                             CrossAxisAlignment.start,
                                         children: [
-                                          // SizedBox(
-                                          //   height: height * 0.01,
-                                          // ),
+                                          SizedBox(
+                                            height: height * 0.01,
+                                          ),
                                           Text(
                                             authController
                                                 .termfeeList[index].title,
@@ -184,7 +183,7 @@ class _PaymentChooseScreenState extends State<PaymentChooseScreen> {
                                                 fontWeight: FontWeight.w600),
                                           ),
                                           SizedBox(
-                                            height: height * 0.01,
+                                            height: height * 0.02,
                                           ),
                                           Row(
                                             children: [
@@ -201,10 +200,9 @@ class _PaymentChooseScreenState extends State<PaymentChooseScreen> {
                                                 width: width * 0.01,
                                               ),
                                               Text(
-                                                authController
-                                                    .termfeeList[index]
+                                                authController.termfeeList[index]
                                                     .description,
-                                                style: TextStyle(
+                                                style: const TextStyle(
                                                     color: Colors.white,
                                                     fontSize: 12),
                                               ),
@@ -229,9 +227,8 @@ class _PaymentChooseScreenState extends State<PaymentChooseScreen> {
                                               ),
                                               Text(
                                                 authController
-                                                    .termfeeList[index]
-                                                    .validTill,
-                                                style: TextStyle(
+                                                    .termfeeList[index].validTill,
+                                                style: const TextStyle(
                                                     color: Colors.white,
                                                     fontSize: 12),
                                               ),
@@ -245,13 +242,12 @@ class _PaymentChooseScreenState extends State<PaymentChooseScreen> {
                                           right: 10, bottom: 10),
                                       child: Column(
                                         mainAxisAlignment:
-                                            MainAxisAlignment.spaceAround,
+                                            MainAxisAlignment.spaceBetween,
                                         children: [
                                           selectedIndex == index
                                               ? Padding(
-                                                  padding:
-                                                      const EdgeInsets.only(
-                                                          left: 20),
+                                                  padding: const EdgeInsets.only(
+                                                      left: 20),
                                                   child: Checkbox(
                                                     shape: const CircleBorder(),
                                                     checkColor: Colors.white,
@@ -268,8 +264,7 @@ class _PaymentChooseScreenState extends State<PaymentChooseScreen> {
                                               : Checkbox(
                                                   shape: const CircleBorder(),
                                                   checkColor: Colors.white,
-                                                  activeColor:
-                                                      Color(0xFFFFCE8A),
+                                                  activeColor: Color(0xFFFFCE8A),
                                                   value: false,
                                                   onChanged: (bool? value) {
                                                     // setState(() {
@@ -292,96 +287,93 @@ class _PaymentChooseScreenState extends State<PaymentChooseScreen> {
                               ),
                             ),
                           );
-                        });
-                  }),
-                ),
-                Row(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Checkbox(
-                      shape: const RoundedRectangleBorder(
-                          borderRadius: BorderRadius.all(Radius.circular(5.0))),
-                      checkColor: Colors.white,
-                      activeColor: Colors.blue,
-                      value: value,
-                      onChanged: (bool? value) {
-                        setState(() {
-                          this.value = value!;
-                          isChecked = this.value;
-                        });
-                      },
-                    ),
-                    RichText(
-                        text: TextSpan(children: [
-                      TextSpan(
-                        text:
-                            "These Terms will be applied fully and affect to your \nuse of this Website. By using this Website, you \nagreed to accept all terms and conditions written in \nhere. You must not use this Website if you disagree \nwith any of these Website Standard ",
-                        style: TextStyle(fontSize: 13, color: Colors.white),
-                      ),
-                      TextSpan(
-                        recognizer: TapGestureRecognizer()
-                          ..onTap = () {
-                            popUp();
+                        }),
+                    Row(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Checkbox(
+                          shape: const RoundedRectangleBorder(
+                              borderRadius: BorderRadius.all(Radius.circular(5.0))),
+                          checkColor: Colors.white,
+                          activeColor: Colors.blue,
+                          value: value,
+                          onChanged: (bool? value) {
+                            setState(() {
+                              this.value = value!;
+                              isChecked = this.value;
+                            });
                           },
-                        text: "\nTerms and Conditions.",
-                        style: TextStyle(
-                            fontSize: 14,
-                            color: Colors.blue,
-                            decoration: TextDecoration.underline),
-                      )
-                    ])),
-                  ],
-                ),
-                if (isClicked == true)
-                  Padding(
-                    padding: const EdgeInsets.only(left: 20),
-                    child: Align(
-                      alignment: Alignment.topLeft,
-                      child: Text(
-                        "Please agree the terms and conditions",
-                        style: primaryFonts.copyWith(
-                            color: Colors.white, fontSize: 15),
-                      ),
+                        ),
+                        RichText(
+                            text: TextSpan(children: [
+                          TextSpan(
+                            text:
+                                "These Terms will be applied fully and affect to your \nuse of this Website. By using this Website, you \nagreed to accept all terms and conditions written in \nhere. You must not use this Website if you disagree \nwith any of these Website Standard ",
+                            style: TextStyle(fontSize: 13, color: Colors.white),
+                          ),
+                          TextSpan(
+                            recognizer: TapGestureRecognizer()
+                              ..onTap = () {
+                                popUp();
+                              },
+                            text: "\nTerms and Conditions.",
+                            style: TextStyle(
+                                fontSize: 14,
+                                color: Colors.blue,
+                                decoration: TextDecoration.underline),
+                          )
+                        ])),
+                      ],
                     ),
-                  ),
-                SizedBox(
-                  height: height * 0.03,
-                ),
-                Padding(
-                  padding:
-                      const EdgeInsets.only(right: 20, left: 20, bottom: 10),
-                  child: InkWell(
-                    onTap: () {
-                      if (isChecked != false) {
-                        setState(() {
-                          isClicked = false;
-                        });
-                        // authController.addPlanUser(price!, planId!);
-                        Get.to(() => PaymentOption(
-                              planId: planId!.toString(),
-                            ));
-                      } else {
-                        setState(() {
-                          isClicked = true;
-                        });
-                      }
-                    },
-                    child: Container(
-                      height: height * 0.06,
-                      decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(10),
-                          color: Colors.blue),
-                      child: const Center(
-                        child: Text(
-                          "Continue to Purchase",
-                          style: TextStyle(color: Colors.white, fontSize: 18),
+                    if (isClicked == true)
+                      Padding(
+                        padding: const EdgeInsets.only(left: 20),
+                        child: Align(
+                          alignment: Alignment.topLeft,
+                          child: Text(
+                            "Please agree the terms and conditions",
+                            style: primaryFonts.copyWith(
+                                color: Colors.white, fontSize: 15),
+                          ),
+                        ),
+                      ),
+                    SizedBox(
+                      height: 40.h,
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.only(right: 20, left: 20, bottom: 10),
+                      child: InkWell(
+                        onTap: () {
+                          if (isChecked != false) {
+                            setState(() {
+                              isClicked = false;
+                            });
+                            // authController.addPlanUser(price!, planId!);
+                            Get.to(()=> PaymentOption(planId: planId!.toString(),));
+                          } else {
+                            setState(() {
+                              isClicked = true;
+                            });
+                          }
+                        },
+                        child: Container(
+                          height: height * 0.06,
+                          decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(10),
+                              color: Colors.blue),
+                          child: const Center(
+                            child: Text(
+                              "Continue to Purchase",
+                              style: TextStyle(color: Colors.white, fontSize: 18),
+                            ),
+                          ),
                         ),
                       ),
                     ),
-                  ),
+                  ],
                 ),
-              ],
-            ),
+              );
+            }
           ),
         ),
       ),
@@ -394,7 +386,7 @@ class _PaymentChooseScreenState extends State<PaymentChooseScreen> {
         isScrollControlled: true,
         builder: (BuildContext context) {
           return Container(
-            decoration: BoxDecoration(
+            decoration: const BoxDecoration(
                 color: Colors.white,
                 borderRadius: BorderRadius.only(
                     topRight: Radius.circular(15),
