@@ -1,16 +1,9 @@
 
-
-
-
 import 'dart:io';
 import 'package:dio/dio.dart';
 
 import 'package:online_class_app/services/base_api_services/base_urls.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-
-
-
-
 
 class ProfileApiServices extends BaseApiServices {
   Future getProfileApiServices() async {

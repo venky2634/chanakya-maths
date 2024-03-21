@@ -5,12 +5,14 @@ import 'package:online_class_app/model/get_classlist_model.dart';
 import 'package:online_class_app/model/get_termfee_plan_model.dart';
 import 'package:online_class_app/model/qrcode_model.dart';
 import 'package:online_class_app/model/signup_model.dart';
+import 'package:online_class_app/model/termsand_condition_model/termsand_condition_model.dart';
 import 'package:online_class_app/model/update_bank_details_model.dart';
 import 'package:online_class_app/model/update_user_model.dart';
 import 'package:online_class_app/screen/Auth/Otp_screen.dart';
 import 'package:online_class_app/screen/Auth/signin_screen.dart';
 import 'package:online_class_app/screen/BottomNavigation/Settings/pending_approval_screen.dart';
 import 'package:online_class_app/services/network/auth_api_services/payment_option_api_services.dart';
+import 'package:online_class_app/services/network/auth_api_services/privacy_policy/termsand_condition_api_service.dart';
 import 'package:online_class_app/services/network/payment_api/submit_payement_api_services.dart';
 import 'package:online_class_app/update_details/metion_details.dart';
 import 'package:online_class_app/screen/Payment/payment_choose_screen.dart';
@@ -386,9 +388,6 @@ class AuthController extends GetxController {
 
   }
 
-
-
-  
   addPlanUser(String price, int planId) async {
     dio.Response<dynamic> response =
         await addPlansApiServices.addPlanUser(price, planId);
@@ -411,4 +410,21 @@ class AuthController extends GetxController {
           ));
     }
   }
+
+  TermsandconditionApiService tearmsandconditionapiservice =
+   TermsandconditionApiService();
+   List<TermData> termsdata = [];
+
+   gettermsandcondition()async{
+    isLoading(true);
+    dio.Response<dynamic>response = await tearmsandconditionapiservice.termsAndConditionApi();
+
+    isLoading(false);
+    if(response.data['status']==true){
+      TermsAndConditionModel termsandcondition = TermsAndConditionModel.fromJson(response.data);
+      termsdata = termsandcondition.data!;
+    }
+    update();
+
+   }
 }

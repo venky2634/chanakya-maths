@@ -35,6 +35,8 @@ abstract class BaseApiServices {
   final String loginURI =
       "https://chanakyamathskendra.batechnology.in/api/login";
 
+      final String profileupdateURL = 'https://chanakyamathskendra.batechnology.in/api/auth/update-user';
+
  // get choose plan
 
   final String getplanUrl =
@@ -53,4 +55,7 @@ abstract class BaseApiServices {
       "https://chanakyamathskendra.batechnology.in/api/auth/generate-payment-qr";
 
   final String uploadPaymentURL = "https://chanakyamathskendra.batechnology.in/api/auth/update/payment/details";
+     
+  //termsandcondition
+  final String termsandconditionURL = 'https://chanakyamathskendra.batechnology.in/api/terms-and-conditions';
 }
