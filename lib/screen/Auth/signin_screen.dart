@@ -34,7 +34,6 @@ class _SignScreenState extends State<SignScreen> {
 
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
     authController.gettermsandcondition();
     Profilecontroller.getprivacypolicy();
@@ -341,14 +340,19 @@ class _SignScreenState extends State<SignScreen> {
                                                                 return Column(
                                                                   children: [
                                                                     ksizedbox15,
-                                                                    HtmlWidget(Profilecontroller
+                                                                   HtmlWidget(Profilecontroller
                                                                         .getprivayData[
                                                                             index]
-                                                                        .title),
-                                                                    HtmlWidget(Profilecontroller
-                                                                        .getprivayData[
-                                                                            index]
-                                                                        .description),
+                                                                        .content,textStyle: primaryFonts.copyWith(
+                                                                        fontSize:
+                                                                            16,
+                                                                        color:
+                                                                            Colors.black,
+                                                                      ), ),
+                                                                    // HtmlWidget(Profilecontroller
+                                                                    //     .getprivayData[
+                                                                    //         index]
+                                                                    //     .description),
                                                                     //   ksizedbox10,
                                                                     //   Text(
                                                                     //  Profilecontroller.getprivayData[index].description,

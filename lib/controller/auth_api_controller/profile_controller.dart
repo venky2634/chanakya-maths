@@ -15,8 +15,6 @@ import 'package:online_class_app/services/network/profile_api_service/update_pro
 import 'package:shared_preferences/shared_preferences.dart';
 
 class ProfileController extends GetxController {
-
-  
   ProfileApiServices profileApiServices = ProfileApiServices();
   UsersData? getUserData;
   RxBool isLoading = false.obs;
@@ -31,40 +29,39 @@ class ProfileController extends GetxController {
     if (response.data["status"] == true) {
       GetUserModel getUserModel = GetUserModel.fromJson(response.data);
       getUserData = getUserModel.data;
-      
     } else {
       //  Get.offAll(BottomNaviBar());
     }
     update();
   }
 
-UpdateProfileApiService updateprofileapiservice = UpdateProfileApiService();
+  UpdateProfileApiService updateprofileapiservice = UpdateProfileApiService();
 
-   updateprofile({required Updateprofile updateprofileModel})async{
+  updateprofile({required Updateprofile updateprofileModel}) async {
     isLoading(true);
-    dio.Response<dynamic>response = await updateprofileapiservice.updateProfileApi(
-      updateprofile: updateprofileModel);
+    dio.Response<dynamic> response = await updateprofileapiservice
+        .updateProfileApi(updateprofile: updateprofileModel);
 
     isLoading(false);
-    if(response.data['status']==true){
-       Get.rawSnackbar(
+    if (response.data['status'] == true) {
+      Get.rawSnackbar(
           backgroundColor: Colors.green,
           messageText: Text(
             response.data['message'],
-            style:TextStyle(color: Colors.white),
-          
+            style: TextStyle(color: Colors.white),
           ));
-          update();
-       
+      update();
     }
-
-   }
+  }
 
   PrivacyPolicyServicesApi privacyPolicyServicesApi =
       PrivacyPolicyServicesApi();
   List<GetPrivaydatalist> getprivayData = [];
-  //RxBool isLoading = false.obs;
-  getprivacypolicy() async {
+
+//   GetPrivacyPolicy
+// GetPrivaydatalist
+      //RxBool isLoading = false.obs;
+      getprivacypolicy() async {
     isLoading(true);
     update();
     dio.Response<dynamic> response =
@@ -78,12 +75,11 @@ UpdateProfileApiService updateprofileapiservice = UpdateProfileApiService();
       getprivayData = getPrivacyPolicy.data;
     } else {
       //  Get.offAll(BottomNaviBar());
-      if(response.data["status"] == "Token is Expired"){
-      final SharedPreferences prefs = await SharedPreferences.getInstance();
-      await prefs.setString('auth_token', "null");
-      Get.offAll(()=> SignScreen());
+      if (response.data["status"] == "Token is Expired") {
+        final SharedPreferences prefs = await SharedPreferences.getInstance();
+        await prefs.setString('auth_token', "null");
+        Get.offAll(() => SignScreen());
       }
-
     }
     update();
   }

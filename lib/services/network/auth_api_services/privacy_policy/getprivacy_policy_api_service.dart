@@ -12,7 +12,6 @@ class PrivacyPolicyServicesApi extends BaseApiServices {
       var dio = Dio();
       // final prefs = await SharedPreferences.getInstance();
       // String? authtoken = prefs.getString("auth_token");
-
       var response = await dio.get(getprivacypolicyURI,
           options: Options(
               headers: {

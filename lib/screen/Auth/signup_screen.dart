@@ -571,36 +571,41 @@ class _SignupScreenState extends State<SignupScreen> {
                                                                 return Column(
                                                                   children: [
                                                                     ksizedbox15,
-                                                                    Row(
-                                                                      children: [
-                                                                        Text(
-                                                                          controller
-                                                                              .getprivayData[index]
-                                                                              .title, // Assuming getprivayData is a List<String>
-                                                                          style:
-                                                                              primaryFonts.copyWith(
-                                                                            fontSize:
-                                                                                16,
-                                                                            color:
-                                                                                Colors.black,
-                                                                          ),
-                                                                        ),
-                                                                      ],
-                                                                    ),
-                                                                    ksizedbox10,
-                                                                    Text(
-                                                                      controller
-                                                                          .getprivayData[
-                                                                              index]
-                                                                          .description,
-                                                                      style: primaryFonts
-                                                                          .copyWith(
+                                                                     HtmlWidget(Profilecontroller
+                                                                        .getprivayData[
+                                                                            index]
+                                                                        .content,textStyle: primaryFonts.copyWith(
                                                                         fontSize:
-                                                                            13,
-                                                                        color: Colors
-                                                                            .black,
-                                                                      ),
-                                                                    ),
+                                                                            16,
+                                                                        color:
+                                                                            Colors.black,
+                                                                      ), ),
+                                                                    // Text(
+                                                                    //   controller
+                                                                    //       .getprivayData[index]
+                                                                    //       .content, // Assuming getprivayData is a List<String>
+                                                                    //   style:
+                                                                    //       primaryFonts.copyWith(
+                                                                    //     fontSize:
+                                                                    //         16,
+                                                                    //     color:
+                                                                    //         Colors.black,
+                                                                    //   ),
+                                                                    // ),
+                                                                   // ksizedbox10,
+                                                                    // Text(
+                                                                    //   controller
+                                                                    //       .getprivayData[
+                                                                    //           index]
+                                                                    //       .description,
+                                                                    //   style: primaryFonts
+                                                                    //       .copyWith(
+                                                                    //     fontSize:
+                                                                    //         13,
+                                                                    //     color: Colors
+                                                                    //         .black,
+                                                                    //   ),
+                                                                    // ),
                                                                   ],
                                                                 );
                                                               },
