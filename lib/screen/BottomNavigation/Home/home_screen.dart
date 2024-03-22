@@ -73,7 +73,13 @@ class _HomeScreenState extends State<HomeScreen> {
                                             fontSize: 18,
                                             fontWeight: FontWeight.w600,
                                             color: Colors.white)),
-                                Text(controller.getUserData!.standard,
+                            controller.isLoading.isTrue
+                                    ? Text('Loading...',
+                                        style: primaryFonts.copyWith(
+                                            fontSize: 18,
+                                            fontWeight: FontWeight.w600,
+                                            color: Colors.white))
+                                    :    Text(controller.getUserData!.standard,
                                     style: primaryFonts.copyWith(
                                         fontSize: 14,
                                         fontWeight: FontWeight.w500,

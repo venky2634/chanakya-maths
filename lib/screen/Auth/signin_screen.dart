@@ -1,5 +1,6 @@
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_widget_from_html/flutter_widget_from_html.dart';
 import 'package:get/get.dart';
 import 'package:online_class_app/const/app_fonts.dart';
 import 'package:online_class_app/const/constloader.dart';
@@ -26,7 +27,7 @@ class _SignScreenState extends State<SignScreen> {
   TextEditingController userNamecontroller = TextEditingController();
   TextEditingController passwordcontroller = TextEditingController();
   final authController = Get.find<AuthController>();
-    final Profilecontroller = Get.find<ProfileController>();
+  final Profilecontroller = Get.find<ProfileController>();
   final controller = Get.find<AuthController>();
 
   final formKey = GlobalKey<FormState>();
@@ -36,7 +37,7 @@ class _SignScreenState extends State<SignScreen> {
     // TODO: implement initState
     super.initState();
     authController.gettermsandcondition();
-        Profilecontroller.getprivacypolicy();
+    Profilecontroller.getprivacypolicy();
   }
 
   @override
@@ -273,84 +274,102 @@ class _SignScreenState extends State<SignScreen> {
                                     ..onTap = () {
                                       // Handle tap event here
 
-                                         showModalBottomSheet(
-        context: context,
-        isScrollControlled: true,
-        builder: (BuildContext context) {
-          return Container(
-            decoration: BoxDecoration(
-                color: Colors.white,
-                borderRadius: BorderRadius.only(
-                    topRight: Radius.circular(15),
-                    topLeft: Radius.circular(15))),
-            height: 600,
-            child: Center(
-              child: Padding(
-                padding: const EdgeInsets.all(10.0),
-                child: SingleChildScrollView(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Text(
-                            'Privacy & Policy',
-                            style: primaryFonts.copyWith(
-                                fontSize: 18, color: Colors.black),
-                          ),
-                          IconButton(
-                              onPressed: () {
-                                Get.back();
-                              },
-                              icon: Icon(
-                                Icons.clear,
-                                size: 20,
-                              ))
-                        ],
-                      ), Container(height: 500,
-                        child: GetBuilder<AuthController>(
-                          builder: (_) {
-                            return ListView.builder(
-                              itemCount: authController.termsdata.length,
-                              itemBuilder: (context, index) {
-                                return Column(
-                                  children: [
-                                    ksizedbox15,
-                                    Row(
-                                      children: [
-                                        Text(
-                                          authController.termsdata[index].content.toString(), // Assuming getprivayData is a List<String>
-                                          style: primaryFonts.copyWith(
-                                            fontSize: 16,
-                                            color: Colors.black,
-                                          ),
-                                        ),
-                                      ],
-                                    ),
-                                  //   ksizedbox10,
-                                  //   Text(
-                                  //  Profilecontroller.getprivayData[index].description, 
-                                  //     style: primaryFonts.copyWith(
-                                  //       fontSize: 13,
-                                  //       color: Colors.black,
-                                  //     ),
-                                  //   ),
-                                  ],
-                                );
-                              },
-                            );
-                          }
-                        ),
-                      ),
-                   
-                    ],
-                  ),
-                ),
-              ),
-            ),
-          );
-        });
+                                      showModalBottomSheet(
+                                          context: context,
+                                          isScrollControlled: true,
+                                          builder: (BuildContext context) {
+                                            return Container(
+                                              decoration: BoxDecoration(
+                                                  color: Colors.white,
+                                                  borderRadius:
+                                                      BorderRadius.only(
+                                                          topRight:
+                                                              Radius.circular(
+                                                                  15),
+                                                          topLeft:
+                                                              Radius.circular(
+                                                                  15))),
+                                              height: 600,
+                                              child: Center(
+                                                child: Padding(
+                                                  padding: const EdgeInsets.all(
+                                                      10.0),
+                                                  child: SingleChildScrollView(
+                                                    child: Column(
+                                                      crossAxisAlignment:
+                                                          CrossAxisAlignment
+                                                              .start,
+                                                      children: [
+                                                        Row(
+                                                          mainAxisAlignment:
+                                                              MainAxisAlignment
+                                                                  .spaceBetween,
+                                                          children: [
+                                                            Text(
+                                                              'Privacy & Policy',
+                                                              style: primaryFonts
+                                                                  .copyWith(
+                                                                      fontSize:
+                                                                          18,
+                                                                      color: Colors
+                                                                          .black),
+                                                            ),
+                                                            IconButton(
+                                                                onPressed: () {
+                                                                  Get.back();
+                                                                },
+                                                                icon: Icon(
+                                                                  Icons.clear,
+                                                                  size: 20,
+                                                                ))
+                                                          ],
+                                                        ),
+                                                        Container(
+                                                          height: 500,
+                                                          child: GetBuilder<
+                                                                  ProfileController>(
+                                                              builder: (_) {
+                                                            return ListView
+                                                                .builder(
+                                                              itemCount:
+                                                                  Profilecontroller
+                                                                      .getprivayData
+                                                                      .length,
+                                                              itemBuilder:
+                                                                  (context,
+                                                                      index) {
+                                                                return Column(
+                                                                  children: [
+                                                                    ksizedbox15,
+                                                                    HtmlWidget(Profilecontroller
+                                                                        .getprivayData[
+                                                                            index]
+                                                                        .title),
+                                                                    HtmlWidget(Profilecontroller
+                                                                        .getprivayData[
+                                                                            index]
+                                                                        .description),
+                                                                    //   ksizedbox10,
+                                                                    //   Text(
+                                                                    //  Profilecontroller.getprivayData[index].description,
+                                                                    //     style: primaryFonts.copyWith(
+                                                                    //       fontSize: 13,
+                                                                    //       color: Colors.black,
+                                                                    //     ),
+                                                                    //   ),
+                                                                  ],
+                                                                );
+                                                              },
+                                                            );
+                                                          }),
+                                                        ),
+                                                      ],
+                                                    ),
+                                                  ),
+                                                ),
+                                              ),
+                                            );
+                                          });
                                     },
                                   text: ' Privacy Policy',
                                   style: TextStyle(
@@ -513,146 +532,141 @@ class _SignScreenState extends State<SignScreen> {
         context: context,
         isScrollControlled: true,
         builder: (BuildContext context) {
-          return  GetBuilder<AuthController>(
-            builder: (_) {
-              return Container(
-                    decoration: BoxDecoration(
-                        color: Colors.white,
-                        borderRadius: BorderRadius.only(
-                            topRight: Radius.circular(15),
-                            topLeft: Radius.circular(15))),
-                    height: 600,
-                    child: Center(
-                      child: Padding(
-                        padding: const EdgeInsets.all(10.0),
-                        child: SingleChildScrollView(
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Row(
-                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                children: [
-                                  Text(
-                                    'Terms and Conditions',
-                                    style: primaryFonts.copyWith(
-                                        fontSize: 18, color: Colors.black),
-                                  ),
-                                  IconButton(
-                                      onPressed: () {
-                                        Get.back();
-                                      },
-                                      icon: Icon(
-                                        Icons.clear,
-                                        size: 20,
-                                      ))
-                                ],
-                              ),
-                              Container(
-                                child: GetBuilder<AuthController>(
-                                  builder: (_) {
-                                    return ListView.builder(
-                                      shrinkWrap: true,
-                                      itemCount: authController.termsdata.length,
-                                      itemBuilder: (context,index){
-                                      return Column(
-                                        children: [
-                                          Text(authController.termsdata[index].content.toString(),
-                                           style: primaryFonts.copyWith(
-                                                                              fontSize: 16, color: Colors.black),),
-                                        ],
-                                      );
-                                    });
-                                  }
-                                ),
-                              ),
-                           
-                              // ksizedbox10,
-                              // Text(
-                              //   'Welcome to the “Chanakya” group. Whatever class be you ward going to join, we will teach maths perfectly in dedicate manner consider as my child. By your side if you ward is responsible then no issue otherwise please do something to check they are attending in class or doing something while classes are going there. By keeping mic ‘on’ mode, if they are produce sound that will disturb our class. Such kind of disturbance strictly we never allow.',
-                              //   style: primaryFonts.copyWith(
-                              //       fontSize: 13, color: Colors.black),
-                              // ),
-                              // ksizedbox15,
-                              // Text(
-                              //   'Your child must be;',
-                              //   style: primaryFonts.copyWith(
-                              //       fontSize: 16, color: Colors.black),
-                              // ),
-                              // ksizedbox10,
-                              // Text(
-                              //   '1. Attentive in the class',
-                              //   style: primaryFonts.copyWith(
-                              //       fontSize: 13, color: Colors.black),
-                              // ),
-                              // ksizedbox5,
-                              // Text(
-                              //   '2.Daily HomeWork will be given in class they must try by themselves.',
-                              //   style: primaryFonts.copyWith(
-                              //       fontSize: 13, color: Colors.black),
-                              // ),
-                              // ksizedbox5,
-                              // Text(
-                              //   '3.Doubts will be cleared in next day itself.',
-                              //   style: primaryFonts.copyWith(
-                              //       fontSize: 13, color: Colors.black),
-                              // ),
-                              // ksizedbox5,
-                              // Text(
-                              //   '5.By an avoiding circumstance of the student not able to attend the class you must inform us (In the office no: 9531813846) and before attending next class he/she must watch the left class (or) classes. Otherwise they will face problem to understand the further classes.',
-                              //   style: primaryFonts.copyWith(
-                              //       fontSize: 13, color: Colors.black),
-                              // ),
-                              // ksizedbox5,
-                              // Text(
-                              //   '6.Every class must be recorded, the student will allow to watch once.',
-                              //   style: primaryFonts.copyWith(
-                              //       fontSize: 13, color: Colors.black),
-                              // ),
-                              // ksizedbox5,
-                              // Text(
-                              //   '7.Those who are absent only allow to see the recorded video. ',
-                              //   style: primaryFonts.copyWith(
-                              //       fontSize: 13, color: Colors.black),
-                              // ),
-                              // ksizedbox5,
-                              // Text(
-                              //   '8.If the student are  not attentive. After somedays if he/she wants to the recorded video that time the student will allow to see the video by paying Rs. 100 per video.',
-                              //   style: primaryFonts.copyWith(
-                              //       fontSize: 13, color: Colors.black),
-                              // ),
-                              // ksizedbox5,
-                              // Text(
-                              //   '9.So students must sincere in listening and taking notes and doing HomeWork daily and asking doubts. ',
-                              //   style: primaryFonts.copyWith(
-                              //       fontSize: 13, color: Colors.black),
-                              // ),
-                              // ksizedbox5,
-                              // Text(
-                              //   '10.For any doubt and clarifications parents can call me in ',
-                              //   style: primaryFonts.copyWith(
-                              //       fontSize: 13, color: Colors.black),
-                              // ),
-                              // ksizedbox5,
-                              // Text(
-                              //   'Punitha - 9434272193  (only between 11:00am to 1:00pm on weekends only)',
-                              //   style: primaryFonts.copyWith(
-                              //       fontSize: 13, color: Colors.black),
-                              // ),
-                              // ksizedbox5,
-                              // Text(
-                              //   'Thanks to Choose Chanakya.',
-                              //   style: primaryFonts.copyWith(
-                              //       fontSize: 13, color: Colors.black),
-                              // ),
-                            ],
-                          ),
+          return GetBuilder<AuthController>(builder: (_) {
+            return Container(
+              decoration: BoxDecoration(
+                  color: Colors.white,
+                  borderRadius: BorderRadius.only(
+                      topRight: Radius.circular(15),
+                      topLeft: Radius.circular(15))),
+              height: 600,
+              child: Center(
+                child: Padding(
+                  padding: const EdgeInsets.all(10.0),
+                  child: SingleChildScrollView(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.end,
+                          children: [
+                            IconButton(
+                                onPressed: () {
+                                  Get.back();
+                                },
+                                icon: Icon(
+                                  Icons.clear,
+                                  size: 20,
+                                ))
+                          ],
                         ),
-                      ),
+                        Container(
+                          child: GetBuilder<AuthController>(builder: (_) {
+                            return ListView.builder(
+                                shrinkWrap: true,
+                                itemCount: authController.termsdata.length,
+                                itemBuilder: (context, index) {
+                                  return Column(
+                                    children: [
+                                      HtmlWidget(authController
+                                          .termsdata[index].content!)
+                                      // Text(
+                                      //   authController.termsdata[index].content
+                                      //       .toString(),
+                                      //   style: primaryFonts.copyWith(
+                                      //       fontSize: 16, color: Colors.black),
+                                      // ),
+                                    ],
+                                  );
+                                });
+                          }),
+                        ),
+
+                        // ksizedbox10,
+                        // Text(
+                        //   'Welcome to the “Chanakya” group. Whatever class be you ward going to join, we will teach maths perfectly in dedicate manner consider as my child. By your side if you ward is responsible then no issue otherwise please do something to check they are attending in class or doing something while classes are going there. By keeping mic ‘on’ mode, if they are produce sound that will disturb our class. Such kind of disturbance strictly we never allow.',
+                        //   style: primaryFonts.copyWith(
+                        //       fontSize: 13, color: Colors.black),
+                        // ),
+                        // ksizedbox15,
+                        // Text(
+                        //   'Your child must be;',
+                        //   style: primaryFonts.copyWith(
+                        //       fontSize: 16, color: Colors.black),
+                        // ),
+                        // ksizedbox10,
+                        // Text(
+                        //   '1. Attentive in the class',
+                        //   style: primaryFonts.copyWith(
+                        //       fontSize: 13, color: Colors.black),
+                        // ),
+                        // ksizedbox5,
+                        // Text(
+                        //   '2.Daily HomeWork will be given in class they must try by themselves.',
+                        //   style: primaryFonts.copyWith(
+                        //       fontSize: 13, color: Colors.black),
+                        // ),
+                        // ksizedbox5,
+                        // Text(
+                        //   '3.Doubts will be cleared in next day itself.',
+                        //   style: primaryFonts.copyWith(
+                        //       fontSize: 13, color: Colors.black),
+                        // ),
+                        // ksizedbox5,
+                        // Text(
+                        //   '5.By an avoiding circumstance of the student not able to attend the class you must inform us (In the office no: 9531813846) and before attending next class he/she must watch the left class (or) classes. Otherwise they will face problem to understand the further classes.',
+                        //   style: primaryFonts.copyWith(
+                        //       fontSize: 13, color: Colors.black),
+                        // ),
+                        // ksizedbox5,
+                        // Text(
+                        //   '6.Every class must be recorded, the student will allow to watch once.',
+                        //   style: primaryFonts.copyWith(
+                        //       fontSize: 13, color: Colors.black),
+                        // ),
+                        // ksizedbox5,
+                        // Text(
+                        //   '7.Those who are absent only allow to see the recorded video. ',
+                        //   style: primaryFonts.copyWith(
+                        //       fontSize: 13, color: Colors.black),
+                        // ),
+                        // ksizedbox5,
+                        // Text(
+                        //   '8.If the student are  not attentive. After somedays if he/she wants to the recorded video that time the student will allow to see the video by paying Rs. 100 per video.',
+                        //   style: primaryFonts.copyWith(
+                        //       fontSize: 13, color: Colors.black),
+                        // ),
+                        // ksizedbox5,
+                        // Text(
+                        //   '9.So students must sincere in listening and taking notes and doing HomeWork daily and asking doubts. ',
+                        //   style: primaryFonts.copyWith(
+                        //       fontSize: 13, color: Colors.black),
+                        // ),
+                        // ksizedbox5,
+                        // Text(
+                        //   '10.For any doubt and clarifications parents can call me in ',
+                        //   style: primaryFonts.copyWith(
+                        //       fontSize: 13, color: Colors.black),
+                        // ),
+                        // ksizedbox5,
+                        // Text(
+                        //   'Punitha - 9434272193  (only between 11:00am to 1:00pm on weekends only)',
+                        //   style: primaryFonts.copyWith(
+                        //       fontSize: 13, color: Colors.black),
+                        // ),
+                        // ksizedbox5,
+                        // Text(
+                        //   'Thanks to Choose Chanakya.',
+                        //   style: primaryFonts.copyWith(
+                        //       fontSize: 13, color: Colors.black),
+                        // ),
+                      ],
                     ),
-                  
-              );
-            }
-          );
+                  ),
+                ),
+              ),
+            );
+          });
         });
   }
 }

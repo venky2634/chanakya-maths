@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:online_class_app/const/app_fonts.dart';
+import 'package:online_class_app/controller/auth_api_controller/profile_controller.dart';
 import 'package:online_class_app/screen/Auth/landing_screen.dart';
 import 'package:online_class_app/screen/BottomNavigation/Settings/edit_profile.dart';
 import 'package:online_class_app/screen/BottomNavigation/Settings/help_centre.dart';
@@ -46,13 +47,13 @@ class _SettingsScreenState extends State<SettingsScreen> {
                         "Assets/Type=Edit Avatar, Component=Avatar.png")),
                 ksizedbox10,
                 Text(
-                  "Andrew Ainsley",
+                 Get.find<ProfileController>().getUserData!.studentName,
                   style: primaryFonts.copyWith(
                       fontSize: 22, fontWeight: FontWeight.w700),
                 ),
                 ksizedbox5,
                 Text(
-                  "12th Class Student",
+                   Get.find<ProfileController>().getUserData!.standard,
                   style: primaryFonts.copyWith(
                       fontSize: 14, fontWeight: FontWeight.w600),
                 ),
