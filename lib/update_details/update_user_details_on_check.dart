@@ -113,6 +113,7 @@ class _UpdatedDetailsState extends State<UpdateUserDetailsOnLater> {
                 // ),
                 TextFormField(
                   controller: schoolNameController,
+                  textCapitalization: TextCapitalization.words,
                   validator: (value) {
                     if (value!.isEmpty) {
                       return 'Enter School Name';

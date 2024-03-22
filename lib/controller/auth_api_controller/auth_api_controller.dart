@@ -9,8 +9,14 @@ import 'package:online_class_app/model/termsand_condition_model/termsand_conditi
 import 'package:online_class_app/model/update_bank_details_model.dart';
 import 'package:online_class_app/model/update_user_model.dart';
 import 'package:online_class_app/screen/Auth/Otp_screen.dart';
+import 'package:online_class_app/screen/Auth/create_new_password.dart';
+import 'package:online_class_app/screen/Auth/forget_password_otp.dart';
 import 'package:online_class_app/screen/Auth/signin_screen.dart';
+import 'package:online_class_app/screen/BottomNavigation/Home/home_screen.dart';
 import 'package:online_class_app/screen/BottomNavigation/Settings/pending_approval_screen.dart';
+import 'package:online_class_app/services/network/auth_api_services/create_password_Api_servies.dart';
+import 'package:online_class_app/services/network/auth_api_services/forget_Password_api_services.dart';
+import 'package:online_class_app/services/network/auth_api_services/forget_password_otp_api_services.dart';
 import 'package:online_class_app/services/network/auth_api_services/payment_option_api_services.dart';
 import 'package:online_class_app/services/network/auth_api_services/privacy_policy/termsand_condition_api_service.dart';
 import 'package:online_class_app/services/network/payment_api/submit_payement_api_services.dart';
@@ -131,6 +137,86 @@ class AuthController extends GetxController {
     }
   }
 
+  ForgetPasswordApiServices forgetPasswordApiServices =
+      ForgetPasswordApiServices();
+  forgetPasswordUser(String mobile) async {
+    isLoading(true);
+    dio.Response<dynamic> response =
+        await forgetPasswordApiServices.forgetPasswordUser(mobile);
+    isLoading(false);
+    if (response.data['status'] == true) {
+      //     final SharedPreferences prefs = await SharedPreferences.getInstance();
+      // await prefs.setString("auth_token", response.data['token']);
+
+      Get.rawSnackbar(
+        backgroundColor: Colors.green,
+        messageText: Text(
+          "Enter the 4 digits OTP",
+          style: TextStyle(color: Colors.white, fontSize: 15),
+        ),
+      );
+      Get.to(ForgetPasswordOtpValidation(
+        mobile: mobile,
+      ));
+    } else {
+      Get.rawSnackbar(
+          backgroundColor: Colors.red,
+          messageText: Text(
+            response.data['message'],
+            style: const TextStyle(color: Colors.white, fontSize: 15),
+          ));
+    }
+  }
+
+  ForgetPasswordOtpApiServices forgetPasswordOtpApiServices =
+      ForgetPasswordOtpApiServices();
+
+  forgetPasswordOtpUser(String mobile, String otp) async {
+    isLoading(true);
+    dio.Response<dynamic> response =
+        await forgetPasswordOtpApiServices.forgetPasswordOtpUser(mobile, otp);
+    isLoading(false);
+    print("----------------------------------------------------------");
+    print(response.data);
+    if (response.data["status"] == true) {
+      final SharedPreferences prefs = await SharedPreferences.getInstance();
+      await prefs.setString('auth_token', response.data['token']);
+      await prefs.setString('id', response.data['data']['user_id'].toString());
+      Get.to(CreateNewPassword());
+    } else {
+      Get.rawSnackbar(
+          backgroundColor: Colors.red,
+          messageText: Text(
+            response.data['message'],
+            style: TextStyle(color: Colors.white, fontSize: 15),
+          ));
+    }
+  }
+
+  CreatePasswordApiServices createPasswordApiServices =
+      CreatePasswordApiServices();
+   createPasswordUser(String newPassword, String confirmPassword) async {
+    dio.Response<dynamic> response = await createPasswordApiServices
+        .createPasswordUser(newPassword, confirmPassword);
+    if (response.data["status"] == true) {
+      Get.rawSnackbar(
+        backgroundColor: Colors.green,
+        messageText: Text(
+          "Sucessfully Created new password",
+          style: TextStyle(color: Colors.white, fontSize: 15),
+        ),
+      );
+       Get.find<AuthController>().checkIsUserFilledAllScreens();
+    } else {
+      Get.rawSnackbar(
+          backgroundColor: Colors.red,
+          messageText: Text(
+            response.data['message'],
+            style: TextStyle(color: Colors.white, fontSize: 15),
+          ));
+    }
+  }
+
   LoginServicesApi loginServicesApi = LoginServicesApi();
 
   loginUser({required String username, required String password}) async {
@@ -142,7 +228,8 @@ class AuthController extends GetxController {
       final prefs = await SharedPreferences.getInstance();
       await prefs.setString("auth_token", response.data["token"]);
       await prefs.setString('id', response.data['data']['user_id'].toString());
-         await prefs.setInt('std_id',int.parse(response.data['data']['std_id'].toString()));
+      await prefs.setInt(
+          'std_id', int.parse(response.data['data']['std_id'].toString()));
       // await prefs.setString("user_id", response.data["user"]["id"]);
       await prefs.setString("verify", "true");
       Get.find<AuthController>().checkIsUserFilledAllScreens();
@@ -253,7 +340,6 @@ class AuthController extends GetxController {
 
   AddPlansApiServices addPlansApiServices = AddPlansApiServices();
 
-
   updateUserDataOnLater(UpdateUserModel updateUserModel) async {
     isLoading(true);
     dio.Response<dynamic> response =
@@ -263,7 +349,7 @@ class AuthController extends GetxController {
       // updateBankDetails(updateBankDetailsModel);
       checkIsUserFilledAllScreens();
     } else {
-       isLoading(false);
+      isLoading(false);
       Get.rawSnackbar(
         backgroundColor: Colors.red,
         messageText: Text(
@@ -311,9 +397,9 @@ class AuthController extends GetxController {
         Get.offAll(() => UpdateBanlDetailsOnLater());
       } else if (checkAllScreenModel.screens.planScreen == false) {
         Get.offAll(() => PaymentChooseScreen());
-      }else if (checkAllScreenModel.screens.isAdminApproved == false) {
+      } else if (checkAllScreenModel.screens.isAdminApproved == false) {
         Get.offAll(() => PendingApprovalScreen());
-      }  else {
+      } else {
         Get.offAll(BottomNavigationScreen());
       }
     } else {
@@ -341,7 +427,6 @@ class AuthController extends GetxController {
       Qrcode qrcode = Qrcode.fromJson(response.data);
       qrCodeData = qrcode.data;
       update();
-     
     } else {
       Get.rawSnackbar(
           backgroundColor: Colors.red,
@@ -360,32 +445,28 @@ class AuthController extends GetxController {
     required int planId,
     required String price,
     required String paymentImage,
-  }) async{
+  }) async {
     isLoading(true);
-   dio.Response<dynamic> response = await submitPaymentApiService.submitPaymentApiServices(txnId, paymentId, paymentImage);
+    dio.Response<dynamic> response = await submitPaymentApiService
+        .submitPaymentApiServices(txnId, paymentId, paymentImage);
     isLoading(false);
-   
-   if (response.data["status"] == true) {
-      
 
-     addPlanUser( price,  planId);
-        Get.rawSnackbar(
+    if (response.data["status"] == true) {
+      addPlanUser(price, planId);
+      Get.rawSnackbar(
           backgroundColor: Colors.green,
           messageText: Text(
             response.data['message'],
             style: const TextStyle(color: Colors.white, fontSize: 15),
           ));
-     
-   }else{
- Get.rawSnackbar(
+    } else {
+      Get.rawSnackbar(
           backgroundColor: Colors.red,
           messageText: Text(
             response.data['message'],
             style: const TextStyle(color: Colors.white, fontSize: 15),
           ));
-   }
-
-
+    }
   }
 
   addPlanUser(String price, int planId) async {
@@ -400,7 +481,7 @@ class AuthController extends GetxController {
       //   ),
       // );
       // Get.offAll(PaymentSucessScreen());
-       Get.offAll(()=> PendingApprovalScreen());
+      Get.offAll(() => PendingApprovalScreen());
     } else {
       Get.rawSnackbar(
           backgroundColor: Colors.red,

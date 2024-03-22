@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:online_class_app/const/app_fonts.dart';
+import 'package:online_class_app/controller/auth_api_controller/auth_api_controller.dart';
 import 'package:online_class_app/controller/auth_api_controller/profile_controller.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -12,26 +13,29 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
+  AuthController authController = Get.find<AuthController>();
   @override
   void initState() {
-    super.initState();
     getdata();
+    super.initState();
   }
 
   getdata() {
     WidgetsBinding.instance.addPostFrameCallback((_) async {
       controller.getprofile();
+      authController.getClassListUser();
     });
   }
 
   final controller = Get.find<ProfileController>();
+
   @override
   Widget build(BuildContext context) {
     var size = MediaQuery.of(context).size;
     return Scaffold(
-      body: GetBuilder<ProfileController>(builder: (_) {
-        return SingleChildScrollView(
-          child: Column(
+      body: SingleChildScrollView(
+        child: GetBuilder<ProfileController>(builder: (_) {
+          return Column(
             children: [
               Container(
                 child: Stack(
@@ -44,7 +48,7 @@ class _HomeScreenState extends State<HomeScreen> {
                       ),
                     ),
                     Positioned(
-                        top: 90,
+                        top: 60,
                         left: 20,
                         child: Row(
                           children: [
@@ -69,7 +73,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                             fontSize: 18,
                                             fontWeight: FontWeight.w600,
                                             color: Colors.white)),
-                                Text("10th Class",
+                                Text(controller.getUserData!.standard,
                                     style: primaryFonts.copyWith(
                                         fontSize: 14,
                                         fontWeight: FontWeight.w500,
@@ -79,25 +83,23 @@ class _HomeScreenState extends State<HomeScreen> {
                           ],
                         )),
                     Positioned(
-                      top: 170,
+                      top: 140,
                       left: 20,
                       child: Text("Discover the best Maths \nOnline Course",
                           style: primaryFonts.copyWith(
-                              fontSize: 23,
+                              fontSize: 23.sp,
                               fontWeight: FontWeight.w700,
                               color: Colors.white)),
                     ),
                     Positioned(
-                      top: 280.h, left: 0, right: 0,
+                      top: 250.h, left: 0, right: 0,
                       child: Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 20),
+                        padding:
+                            const EdgeInsets.only(top: 15, right: 35, left: 35),
                         child: Container(
-                          margin: EdgeInsets.only(
-                            right: 30,
-                          ),
                           padding: EdgeInsets.only(
                             left: 10,
-                            right: 15,
+                            right: 20,
                           ),
                           height: 50,
                           width: size.width,
@@ -113,7 +115,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                   Container(
                                     padding: EdgeInsets.only(top: 12),
                                     height: 50,
-                                    width: 250,
+                                    width: 210,
                                     child: TextFormField(
                                       //  controller: studentNamecontroller,
                                       validator: (value) {
@@ -213,7 +215,7 @@ class _HomeScreenState extends State<HomeScreen> {
               Padding(
                 padding: const EdgeInsets.only(left: 20, right: 10),
                 child: Container(
-                  height: size.height * .30,
+                  height: 265.h,
                   child: ListView.builder(
                       itemCount: 3,
                       shrinkWrap: true,
@@ -221,149 +223,155 @@ class _HomeScreenState extends State<HomeScreen> {
                       itemBuilder: (context, index) {
                         return Container(
                           margin: EdgeInsets.only(right: 10),
-                          height: size.height * .30,
                           width: size.width * .81,
                           decoration: BoxDecoration(
-                              color: Colors.green,
+                              boxShadow: <BoxShadow>[
+                                BoxShadow(
+                                    offset: Offset(0.0, 0.75),
+                                    blurRadius: 1,
+                                    color: Colors.grey)
+                              ],
+                              color: Colors.white,
                               borderRadius: BorderRadius.circular(18)),
-                          child: Stack(
+                          child: Column(
                             children: [
-                              ClipRRect(
-                                borderRadius: BorderRadius.circular(18),
-                                child: Container(
-                                    height: size.height * .30,
-                                    width: size.width * .81,
-                                    child: Image.asset(
-                                      "Assets/Rectangle 40.png",
-                                      fit: BoxFit.cover,
-                                    )),
-                              ),
-                              Positioned(
-                                left: 10,
-                                top: 10,
-                                child: Container(
-                                  height: size.height * .03,
-                                  width: size.width * .17,
-                                  decoration: BoxDecoration(
-                                      color: Colors.pink,
-                                      borderRadius: BorderRadius.circular(15)),
-                                  child: Row(
-                                    mainAxisAlignment:
-                                        MainAxisAlignment.spaceBetween,
-                                    children: [
-                                      Container(
-                                        margin: EdgeInsets.only(left: 5),
-                                        height: 20,
-                                        width: 20,
-                                        decoration: BoxDecoration(
-                                            color: Colors.white,
-                                            shape: BoxShape.circle),
-                                        child: Center(
-                                          child: Container(
-                                            padding: EdgeInsets.only(left: 5),
-                                            height: 10,
-                                            width: 10,
-                                            alignment: Alignment.center,
-                                            decoration: BoxDecoration(
-                                                color: Colors.pink,
-                                                shape: BoxShape.circle),
-                                          ),
-                                        ),
-                                      ),
-                                      Padding(
-                                        padding:
-                                            const EdgeInsets.only(right: 9),
-                                        child: Text(
-                                          "Live",
-                                          style: primaryFonts.copyWith(
-                                              fontSize: 13,
-                                              color: Colors.white),
-                                        ),
-                                      ),
-                                    ],
+                              Stack(
+                                children: [
+                                  ClipRRect(
+                                    borderRadius: BorderRadius.only(
+                                        topLeft: Radius.circular(18),
+                                        topRight: Radius.circular(18)),
+                                    child: Container(
+                                        height: 140.h,
+                                        width: size.width * .81,
+                                        child: Image.asset(
+                                          "Assets/Rectangle 40.png",
+                                          fit: BoxFit.cover,
+                                        )),
                                   ),
-                                ),
-                              ),
-                              Positioned(
-                                top: 135,
-                                child: Container(
-                                  padding: EdgeInsets.all(6),
-                                  height: size.height * .16,
-                                  width: size.width * .81,
-                                  decoration: BoxDecoration(
-                                      color: Colors.white,
-                                      borderRadius: BorderRadius.only(
-                                          bottomLeft: Radius.circular(17),
-                                          bottomRight: Radius.circular(17))),
-                                  child: Column(
-                                    children: [
-                                      Row(
+                                  Positioned(
+                                    left: 10,
+                                    top: 10,
+                                    child: Container(
+                                      height: size.height * .04,
+                                      width: size.width * .17,
+                                      decoration: BoxDecoration(
+                                          color: Colors.pink,
+                                          borderRadius:
+                                              BorderRadius.circular(15)),
+                                      child: Row(
                                         mainAxisAlignment:
                                             MainAxisAlignment.spaceBetween,
                                         children: [
-                                          Row(
-                                            children: [
-                                              Text("Maths",
-                                                  style: primaryFonts.copyWith(
-                                                      fontSize: 16,
-                                                      fontWeight:
-                                                          FontWeight.w600,
-                                                      color: Colors.black)),
-                                            ],
-                                          ),
-                                          Row(
-                                            children: [
-                                              Icon(Icons
-                                                  .account_circle_outlined),
-                                              kwidth5,
-                                              Text("1K+",
-                                                  style: primaryFonts.copyWith(
-                                                      fontSize: 12,
-                                                      fontWeight:
-                                                          FontWeight.w400,
-                                                      color: Colors.blue)),
-                                            ],
-                                          ),
-                                        ],
-                                      ),
-                                      Text(
-                                          "These Terms will be applied fully and affect to your use of this Website. By using this Website, you agreed to",
-                                          style: primaryFonts.copyWith(
-                                              fontSize: 11,
-                                              fontWeight: FontWeight.w500,
-                                              color: Colors.grey)),
-                                      // ksizedbox5,
-                                      Row(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.spaceBetween,
-                                        children: [
-                                          Text(
-                                            "Total Students Added 1000+",
-                                            style: primaryFonts.copyWith(
-                                                fontSize: 9,
-                                                fontWeight: FontWeight.w400,
-                                                color: Colors.grey),
-                                          ),
                                           Container(
-                                            height: size.height * .035,
-                                            width: size.width * .30,
-                                            alignment: Alignment.center,
+                                            margin: EdgeInsets.only(left: 5),
+                                            height: 20,
+                                            width: 20,
                                             decoration: BoxDecoration(
-                                                color: Colors.blue,
-                                                borderRadius:
-                                                    BorderRadius.circular(20)),
+                                                color: Colors.white,
+                                                shape: BoxShape.circle),
+                                            child: Center(
+                                              child: Container(
+                                                padding:
+                                                    EdgeInsets.only(left: 5),
+                                                height: 10,
+                                                width: 10,
+                                                alignment: Alignment.center,
+                                                decoration: BoxDecoration(
+                                                    color: Colors.pink,
+                                                    shape: BoxShape.circle),
+                                              ),
+                                            ),
+                                          ),
+                                          Padding(
+                                            padding:
+                                                const EdgeInsets.only(right: 9),
                                             child: Text(
-                                              "Join Now",
+                                              "Live",
                                               style: primaryFonts.copyWith(
-                                                  fontSize: 15,
-                                                  fontWeight: FontWeight.w500,
+                                                  fontSize: 13,
                                                   color: Colors.white),
                                             ),
-                                          )
+                                          ),
                                         ],
                                       ),
-                                    ],
+                                    ),
                                   ),
+                                ],
+                              ),
+                              Container(
+                                padding: EdgeInsets.all(6),
+                                width: size.width * 0.81,
+                                decoration: BoxDecoration(
+                                    color: Colors.white,
+                                    borderRadius: BorderRadius.only(
+                                        bottomLeft: Radius.circular(17),
+                                        bottomRight: Radius.circular(17))),
+                                child: Column(
+                                  children: [
+                                    Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceBetween,
+                                      children: [
+                                        Row(
+                                          children: [
+                                            Text("Maths",
+                                                style: primaryFonts.copyWith(
+                                                    fontSize: 16,
+                                                    fontWeight: FontWeight.w600,
+                                                    color: Colors.black)),
+                                          ],
+                                        ),
+                                        Row(
+                                          children: [
+                                            Icon(Icons.account_circle_outlined),
+                                            kwidth5,
+                                            Text("1K+",
+                                                style: primaryFonts.copyWith(
+                                                    fontSize: 12,
+                                                    fontWeight: FontWeight.w400,
+                                                    color: Colors.black)),
+                                          ],
+                                        ),
+                                      ],
+                                    ),
+                                    Text(
+                                        "These Terms will be applied fully and affect to your use of this Website. By using this Website, you agreed to",
+                                        style: primaryFonts.copyWith(
+                                            fontSize: 11,
+                                            fontWeight: FontWeight.w500,
+                                            color: Colors.grey)),
+                                    // ksizedbox5,
+                                    Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceBetween,
+                                      children: [
+                                        Text(
+                                          "Total Students Added 1000+",
+                                          style: primaryFonts.copyWith(
+                                              fontSize: 9,
+                                              fontWeight: FontWeight.w400,
+                                              color: Colors.grey),
+                                        ),
+                                        Container(
+                                          height: size.height * .035,
+                                          width: size.width * .30,
+                                          alignment: Alignment.center,
+                                          decoration: BoxDecoration(
+                                              color: Colors.blue,
+                                              borderRadius:
+                                                  BorderRadius.circular(20)),
+                                          child: Text(
+                                            "Join Now",
+                                            style: primaryFonts.copyWith(
+                                                fontSize: 15,
+                                                fontWeight: FontWeight.w500,
+                                                color: Colors.white),
+                                          ),
+                                        )
+                                      ],
+                                    ),
+                                  ],
                                 ),
                               ),
                             ],
@@ -429,9 +437,9 @@ class _HomeScreenState extends State<HomeScreen> {
                 height: size.height * .02,
               )
             ],
-          ),
-        );
-      }),
+          );
+        }),
+      ),
     );
   }
 }

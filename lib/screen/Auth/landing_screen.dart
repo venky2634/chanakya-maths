@@ -26,6 +26,8 @@ class _LandingScreenState extends State<LandingScreen> {
     double width = MediaQuery.of(context).size.width;
     return Scaffold(
       body: Container(
+        width: width,
+        height: height,
         decoration: BoxDecoration(
             image: DecorationImage(image: AssetImage("Assets/Group 9295.png"))),
         child: Center(

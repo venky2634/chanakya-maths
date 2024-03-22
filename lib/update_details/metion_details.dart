@@ -8,23 +8,19 @@ import 'package:online_class_app/screen/Payment/payment_choose_screen.dart';
 
 class MentionDetails extends StatefulWidget {
   UpdateUserModel updateUserModel;
-   MentionDetails({super.key,required this.updateUserModel});
+  MentionDetails({super.key, required this.updateUserModel});
 
   @override
   State<MentionDetails> createState() => _MentionDetailsState();
 }
 
 class _MentionDetailsState extends State<MentionDetails> {
-
-
-
   var authController = Get.find<AuthController>();
 
- var _formKey = GlobalKey<FormState>();
-var nameOfAccountController = TextEditingController();
-var accountHolderName = TextEditingController();
-var accountRelatedController = TextEditingController();
-
+  var _formKey = GlobalKey<FormState>();
+  var nameOfAccountController = TextEditingController();
+  var accountHolderName = TextEditingController();
+  var accountRelatedController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -43,7 +39,7 @@ var accountRelatedController = TextEditingController();
           ),
         ),
         title: const Text(
-          "Update Details",
+          "Mention Details",
           style: TextStyle(color: Colors.black, fontSize: 20),
         ),
         centerTitle: true,
@@ -65,6 +61,7 @@ var accountRelatedController = TextEditingController();
                   )),
               TextFormField(
                 controller: nameOfAccountController,
+                textCapitalization: TextCapitalization.words,
                 validator: (value) {
                   if (value!.isEmpty) {
                     return 'Enter a Name of Bank';
@@ -99,6 +96,7 @@ var accountRelatedController = TextEditingController();
                   )),
               TextFormField(
                 controller: accountHolderName,
+                textCapitalization: TextCapitalization.words,
                 validator: (value) {
                   if (value!.isEmpty) {
                     return 'Enter a Account Holder Name';
@@ -159,33 +157,38 @@ var accountRelatedController = TextEditingController();
           ),
         ),
       ),
-      bottomNavigationBar: Obx(()=> authController.isLoading.isTrue ?  Center(child: CircularProgressIndicator()) : InkWell(
-          onTap: () {
-        
-            if(_formKey.currentState!.validate()){
-              UpdateBankDetailsModel updateBankDetailsModel = UpdateBankDetailsModel(
-              accHolderName: nameOfAccountController.text,
-              accRelatedTo: accountHolderName.text,
-              bankName: accountRelatedController.text
-            );
-              authController.updateUserData(widget.updateUserModel, updateBankDetailsModel);
-            }
-          },
-          child: Padding(
-            padding: const EdgeInsets.only(right: 20, left: 20, bottom: 5),
-            child: Container(
-              height: height * 0.05,
-              decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(10), color: Colors.blue),
-              child: const Center(
-                child: Text(
-                  "Update Now",
-                  style: TextStyle(color: Colors.white, fontSize: 18),
+      bottomNavigationBar: Obx(
+        () => authController.isLoading.isTrue
+            ? Center(child: CircularProgressIndicator())
+            : InkWell(
+                onTap: () {
+                  if (_formKey.currentState!.validate()) {
+                    UpdateBankDetailsModel updateBankDetailsModel =
+                        UpdateBankDetailsModel(
+                            accHolderName: nameOfAccountController.text,
+                            accRelatedTo: accountHolderName.text,
+                            bankName: accountRelatedController.text);
+                    authController.updateUserData(
+                        widget.updateUserModel, updateBankDetailsModel);
+                  }
+                },
+                child: Padding(
+                  padding:
+                      const EdgeInsets.only(right: 20, left: 20, bottom: 5),
+                  child: Container(
+                    height: height * 0.05,
+                    decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(10),
+                        color: Colors.blue),
+                    child: const Center(
+                      child: Text(
+                        "Update Now",
+                        style: TextStyle(color: Colors.white, fontSize: 18),
+                      ),
+                    ),
+                  ),
                 ),
               ),
-            ),
-          ),
-        ),
       ),
     );
   }

@@ -17,16 +17,14 @@ class SignupScreen extends StatefulWidget {
 }
 
 class _SignupScreenState extends State<SignupScreen> {
-
   AuthController authController = Get.find<AuthController>();
-  final controller =Get.find<ProfileController>();
+  final controller = Get.find<ProfileController>();
   bool value = false;
   bool passwordVisible = true;
   bool isChecked = false;
   bool isClicked = false;
 
   var selectClassOption;
-
 
   @override
   void initState() {
@@ -36,7 +34,7 @@ class _SignupScreenState extends State<SignupScreen> {
   }
 
   TextEditingController studentNamecontroller = TextEditingController();
- TextEditingController userNamecontroller = TextEditingController();
+  TextEditingController userNamecontroller = TextEditingController();
   TextEditingController emailcontroller = TextEditingController();
   TextEditingController mobilecontroller = TextEditingController();
   TextEditingController passwordcontroller = TextEditingController();
@@ -219,24 +217,26 @@ class _SignupScreenState extends State<SignupScreen> {
                                 ),
                               ),
                               ksizedbox10,
-                           if(authController.userNamecontroller.text.isNotEmpty)   Row(
-                                mainAxisAlignment: MainAxisAlignment.end,
-                                children: [
-                                  authController.isavilabe.isTrue 
-                                      ? Text(
-                                          'Availabe',
-                                          style: TextStyle(
-                                              fontWeight: FontWeight.w500,
-                                              color: Colors.green),
-                                        )
-                                      : Text(
-                                          'Not Availabe',
-                                          style: TextStyle(
-                                              fontWeight: FontWeight.w500,
-                                              color: Colors.red),
-                                        )
-                                ],
-                              )
+                              if (authController
+                                  .userNamecontroller.text.isNotEmpty)
+                                Row(
+                                  mainAxisAlignment: MainAxisAlignment.end,
+                                  children: [
+                                    authController.isavilabe.isTrue
+                                        ? Text(
+                                            'Available',
+                                            style: TextStyle(
+                                                fontWeight: FontWeight.w500,
+                                                color: Colors.green),
+                                          )
+                                        : Text(
+                                            'Not Availabe',
+                                            style: TextStyle(
+                                                fontWeight: FontWeight.w500,
+                                                color: Colors.red),
+                                          )
+                                  ],
+                                )
                             ],
                           ),
                         );
@@ -499,83 +499,117 @@ class _SignupScreenState extends State<SignupScreen> {
                                         color: Colors.black,
                                         fontSize: 13),
                                   ),
-                                   TextSpan(   recognizer: TapGestureRecognizer()
+                                  TextSpan(
+                                    recognizer: TapGestureRecognizer()
                                       ..onTap = () {
                                         showModalBottomSheet(
-        context: context,
-        isScrollControlled: true,
-        builder: (BuildContext context) {
-          return Container(
-            decoration: const BoxDecoration(
-                color: Colors.white,
-                borderRadius: BorderRadius.only(
-                    topRight: Radius.circular(15),
-                    topLeft: Radius.circular(15))),
-            height: 600,
-            child: Center(
-              child: Padding(
-                padding: const EdgeInsets.all(10.0),
-                child: SingleChildScrollView(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Text(
-                            'Privacy & Policy',
-                            style: primaryFonts.copyWith(
-                                fontSize: 18, color: Colors.black),
-                          ),
-                          IconButton(
-                              onPressed: () {
-                                Get.back();
-                              },
-                              icon: Icon(
-                                Icons.clear,
-                                size: 20,
-                              ))
-                        ],
-                      ), Container(height: 500,
-                        child: ListView.builder(
-                          itemCount: controller.getprivayData.length,
-                          itemBuilder: (context, index) {
-                            return Column(
-                              children: [
-                                ksizedbox15,
-                                Row(
-                                  children: [
-                                    Text(
-                                      controller.getprivayData[index].title, // Assuming getprivayData is a List<String>
-                                      style: primaryFonts.copyWith(
-                                        fontSize: 16,
-                                        color: Colors.black,
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                                ksizedbox10,
-                                Text(
-                               controller.getprivayData[index].description, 
-                                  style: primaryFonts.copyWith(
-                                    fontSize: 13,
-                                    color: Colors.black,
-                                  ),
-                                ),
-                              ],
-                            );
-                          },
-                        ),
-                      ),
-                   
-                    ],
-                  ),
-                ),
-              ),
-            ),
-          );
-        });
-        },
+                                            context: context,
+                                            isScrollControlled: true,
+                                            builder: (BuildContext context) {
+                                              return Container(
+                                                decoration: const BoxDecoration(
+                                                    color: Colors.white,
+                                                    borderRadius:
+                                                        BorderRadius.only(
+                                                            topRight: Radius
+                                                                .circular(15),
+                                                            topLeft:
+                                                                Radius.circular(
+                                                                    15))),
+                                                height: 600,
+                                                child: Center(
+                                                  child: Padding(
+                                                    padding:
+                                                        const EdgeInsets.all(
+                                                            10.0),
+                                                    child:
+                                                        SingleChildScrollView(
+                                                      child: Column(
+                                                        crossAxisAlignment:
+                                                            CrossAxisAlignment
+                                                                .start,
+                                                        children: [
+                                                          Row(
+                                                            mainAxisAlignment:
+                                                                MainAxisAlignment
+                                                                    .spaceBetween,
+                                                            children: [
+                                                              Text(
+                                                                'Privacy & Policy',
+                                                                style: primaryFonts
+                                                                    .copyWith(
+                                                                        fontSize:
+                                                                            18,
+                                                                        color: Colors
+                                                                            .black),
+                                                              ),
+                                                              IconButton(
+                                                                  onPressed:
+                                                                      () {
+                                                                    Get.back();
+                                                                  },
+                                                                  icon: Icon(
+                                                                    Icons.clear,
+                                                                    size: 20,
+                                                                  ))
+                                                            ],
+                                                          ),
+                                                          Container(
+                                                            height: 500,
+                                                            child: ListView
+                                                                .builder(
+                                                              itemCount: controller
+                                                                  .getprivayData
+                                                                  .length,
+                                                              itemBuilder:
+                                                                  (context,
+                                                                      index) {
+                                                                return Column(
+                                                                  children: [
+                                                                    ksizedbox15,
+                                                                    Row(
+                                                                      children: [
+                                                                        Text(
+                                                                          controller
+                                                                              .getprivayData[index]
+                                                                              .title, // Assuming getprivayData is a List<String>
+                                                                          style:
+                                                                              primaryFonts.copyWith(
+                                                                            fontSize:
+                                                                                16,
+                                                                            color:
+                                                                                Colors.black,
+                                                                          ),
+                                                                        ),
+                                                                      ],
+                                                                    ),
+                                                                    ksizedbox10,
+                                                                    Text(
+                                                                      controller
+                                                                          .getprivayData[
+                                                                              index]
+                                                                          .description,
+                                                                      style: primaryFonts
+                                                                          .copyWith(
+                                                                        fontSize:
+                                                                            13,
+                                                                        color: Colors
+                                                                            .black,
+                                                                      ),
+                                                                    ),
+                                                                  ],
+                                                                );
+                                                              },
+                                                            ),
+                                                          ),
+                                                        ],
+                                                      ),
+                                                    ),
+                                                  ),
+                                                ),
+                                              );
+                                            });
+                                      },
                                     text: ' Privacy Policy',
                                     style: TextStyle(
                                         decoration: TextDecoration.none,
@@ -613,7 +647,8 @@ class _SignupScreenState extends State<SignupScreen> {
                               if (formKey.currentState!.validate()) {
                                 SignUp signUp = SignUp(
                                     name: studentNamecontroller.text,
-                                    userName: authController.userNamecontroller.text,
+                                    userName:
+                                        authController.userNamecontroller.text,
                                     email: emailcontroller.text,
                                     mobile: mobilecontroller.text,
                                     password: passwordcontroller.text);
@@ -819,6 +854,11 @@ class _SignupScreenState extends State<SignupScreen> {
                       ksizedbox5,
                       Text(
                         '3.Doubts will be cleared in next day itself.',
+                        style: primaryFonts.copyWith(
+                            fontSize: 13, color: Colors.black),
+                      ),
+                      Text(
+                        '4.Without talking leave they must attend the class.',
                         style: primaryFonts.copyWith(
                             fontSize: 13, color: Colors.black),
                       ),

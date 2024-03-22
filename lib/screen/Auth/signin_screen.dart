@@ -5,6 +5,7 @@ import 'package:online_class_app/const/app_fonts.dart';
 import 'package:online_class_app/const/constloader.dart';
 import 'package:online_class_app/controller/auth_api_controller/auth_api_controller.dart';
 import 'package:online_class_app/controller/auth_api_controller/profile_controller.dart';
+import 'package:online_class_app/screen/Auth/forget_password.dart';
 import 'package:online_class_app/screen/Auth/select_class.dart';
 import 'package:online_class_app/screen/Auth/signup_screen.dart';
 import 'package:online_class_app/screen/BottomNavigation/Home/home_screen.dart';
@@ -26,9 +27,9 @@ class _SignScreenState extends State<SignScreen> {
   TextEditingController passwordcontroller = TextEditingController();
   final authController = Get.find<AuthController>();
     final Profilecontroller = Get.find<ProfileController>();
+  final controller = Get.find<AuthController>();
 
   final formKey = GlobalKey<FormState>();
-
 
   @override
   void initState() {
@@ -37,10 +38,12 @@ class _SignScreenState extends State<SignScreen> {
     authController.gettermsandcondition();
         Profilecontroller.getprivacypolicy();
   }
+
   @override
   Widget build(BuildContext context) {
     double height = MediaQuery.of(context).size.height;
     double width = MediaQuery.of(context).size.width;
+
     return Scaffold(
       appBar: AppBar(
         leading: InkWell(
@@ -160,7 +163,6 @@ class _SignScreenState extends State<SignScreen> {
                       padding: const EdgeInsets.only(right: 20, left: 20),
                       child: TextFormField(
                         controller: passwordcontroller,
-                        
                         validator: (value) {
                           if (value!.isEmpty) {
                             return 'Enter your password';
@@ -204,9 +206,14 @@ class _SignScreenState extends State<SignScreen> {
                       padding: EdgeInsets.only(right: 18),
                       child: Align(
                         alignment: Alignment.centerRight,
-                        child: Text(
-                          "Forget Password?",
-                          style: primaryFonts.copyWith(color: Colors.blue),
+                        child: GestureDetector(
+                          onTap: () {
+                            Get.to(ForgetPassword());
+                          },
+                          child: Text(
+                            "Forget Password?",
+                            style: primaryFonts.copyWith(color: Colors.blue),
+                          ),
                         ),
                       ),
                     ),
@@ -262,8 +269,7 @@ class _SignScreenState extends State<SignScreen> {
                                       fontSize: 13),
                                 ),
                                 TextSpan(
-
-                                      recognizer: TapGestureRecognizer()
+                                  recognizer: TapGestureRecognizer()
                                     ..onTap = () {
                                       // Handle tap event here
 

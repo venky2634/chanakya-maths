@@ -112,6 +112,7 @@ class _UpdatedDetailsState extends State<UpdatedDetails> {
                 // ),
                 TextFormField(
                   controller: schoolNameController,
+                  textCapitalization: TextCapitalization.words,
                   validator: (value) {
                     if (value!.isEmpty) {
                       return 'Enter School Name';
@@ -402,7 +403,7 @@ class _UpdatedDetailsState extends State<UpdatedDetails> {
                     ),
                   ),
                 ),
-               const SizedBox(
+                const SizedBox(
                   height: 40,
                 )
               ],

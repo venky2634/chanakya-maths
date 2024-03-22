@@ -24,6 +24,9 @@ abstract class BaseApiServices {
   final String getuserURI =
       "https://chanakyamathskendra.batechnology.in/api/auth/user-details";
 
+  final String profileupdateURL =
+      "https://chanakyamathskendra.batechnology.in/api/auth/update-user";
+
   final String LoginURI =
       "https://chanakyamathskendra.batechnology.in/api/login";
 
@@ -35,9 +38,7 @@ abstract class BaseApiServices {
   final String loginURI =
       "https://chanakyamathskendra.batechnology.in/api/login";
 
-      final String profileupdateURL = 'https://chanakyamathskendra.batechnology.in/api/auth/update-user';
-
- // get choose plan
+  // get choose plan
 
   final String getplanUrl =
       "https://chanakyamathskendra.batechnology.in/api/get-plans";
@@ -54,8 +55,15 @@ abstract class BaseApiServices {
   final String qrCodeUrl =
       "https://chanakyamathskendra.batechnology.in/api/auth/generate-payment-qr";
 
-  final String uploadPaymentURL = "https://chanakyamathskendra.batechnology.in/api/auth/update/payment/details";
-     
-  //termsandcondition
-  final String termsandconditionURL = 'https://chanakyamathskendra.batechnology.in/api/terms-and-conditions';
+  final String uploadPaymentURL =
+      "https://chanakyamathskendra.batechnology.in/api/auth/update/payment/details";
+
+  final String forgetPasswordUrl =
+      "https://chanakyamathskendra.batechnology.in/api/forgot-password";
+
+  final String createPasswordUrl =
+      "https://chanakyamathskendra.batechnology.in/api/change-password";
+
+  final String termsandconditionURL =
+      "https://chanakyamathskendra.batechnology.in/api/terms-and-conditions";
 }
